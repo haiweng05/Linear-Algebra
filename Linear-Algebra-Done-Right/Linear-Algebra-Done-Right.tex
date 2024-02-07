@@ -1,0 +1,4117 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{ctex}
+
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+% 导入 xparse 宏包以支持 LaTeX3 语法
+\usepackage{xparse}
+\usepackage{pgfplots}
+% 用于插入带有坐标轴、标签和曲线的图像
+
+% \begin{tikzpicture}
+%     \begin{axis}[
+%       xlabel=$x$,
+%       ylabel=$f(x)$,
+%       axis lines=middle,
+%       xmin=-5, xmax=5,
+%       ymin=-2, ymax=8,
+%       width=\textwidth,
+%       height=8cm
+%     ]
+%     \addplot[blue,domain=-3:3] {x^2};
+%     \end{axis}
+%   \end{tikzpicture}
+\usepackage{tikz}
+% 用于绘制一般的图像
+
+% \begin{tikzpicture}[scale=0.8]
+%     \draw[->] (-4,0) -- (4,0) node[right] {$x$};
+%     \draw[->] (0,-1) -- (0,9) node[above] {$f(x)$};
+%     \draw[domain=-3:3,smooth,variable=\x,blue] plot ({\x},{\x^2});
+%   \end{tikzpicture}
+
+\newtheorem{theorem}{Theorem}[subsection]
+\newtheorem{lemma}{Lemma}[subsection]
+\newtheorem{corollary}{corollary}[subsection]
+\newtheorem{example}{Example}[subsection]
+\newtheorem{definition}{Definition}[subsection]
+
+% 为了证明中可以使用中文，后续定义证明时使用cproof而不是proof
+\newenvironment{cproof}{%
+{
+    \textbf{Proof\\}
+    }
+}{
+%   \hfill $\square$ 添加结束符号
+%   \par\bigskip 可选的垂直间距
+}
+\newenvironment{exercise}{%
+{\textbf{Exercise\\}
+    }
+}{
+%   \hfill $\square$ 
+%   \par\bigskip 
+}
+
+\newenvironment{solution}{%
+{
+    \textbf{Solution\\}
+    }
+}{
+  \hfill $\square$ 
+  \par\bigskip 
+}
+
+
+% \newenvironment{identification}{%
+% \heiti{定义}\kaishu
+% }{%
+% %   \hfill $\square$ 添加结束符号
+% %   \par\bigskip 可选的垂直间距
+% }
+
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\FF}{\mathbb{F}}
+% 简化各种常见数的集合
+
+\newcommand{\parameter}[1]{\left(#1\right)}
+
+\newcommand{\bracket}[1]{\left[#1\right]}
+
+% 各种自动变化大小的括号的简化
+
+\newcommand{\ve}{\boldsymbol}
+% 为了适应David C Lay线性代数中，简化斜体+粗体向量的书写
+
+\newcommand{\base}{\mathcal}
+
+\newcommand{\tb}{\textbf}
+
+\newcommand{\col}{\text{Col}}
+
+\newcommand{\row}{\text{Row}}
+\newcommand{\nul}{\text{Nul}}
+\newcommand{\spans}{\text{Span}}
+\newcommand{\proj}{\text{proj}}
+\newcommand{\adj}{\text{adj.}}
+\newcommand{\rank}{\text{rank}}
+\newcommand{\range}{\text{range}}
+\newcommand{\n}{\text{null}}
+% 简化粗体字体的书写
+
+\newcommand{\f}[2]{\frac}
+\newcommand{\df}[2]{\dfrac}
+
+\newcommand{\ip}[1]{\left<#1\right>}
+
+\newcommand{\pa}{\paragraph}
+\newcommand{\spa}{\subparagraph}
+\newcommand{\se}{\section}
+\newcommand{\sse}{\subsection}
+\newcommand{\ssse}{\subsubsection}
+
+% \NewDocumentCommand{\vs}{m m m}{
+%     \ve{#1}_{#2},\cdots,\ve{#1}_{#3}
+% }
+% % 快速书写一个向量组，第一个参数为向量名称，后两个为首末角标
+
+% % $\vs{b}{1}{n} $这是多参数命令的使用示例
+
+% \NewDocumentCommand{\cvs}{m m m m m}{
+%     #1_{#4}\ve{#2}_{#4} #3 \cdots #3 #1_{#5}\ve{#2}_{#5}
+% }
+% % 快速书写一个向量线性组合，第一个参数为系数，第二个参数为向量名称，第三个参数为运算符，后两个参数为角标
+
+\NewDocumentCommand{\size}{m m}{
+    #1\times#2
+}
+
+\title{Linear Algebra Done Right}
+\author{Haiweng Xu}
+\date{2024.1.12}
+
+\begin{document}
+
+\begin{CJK}{UTF8}{gkai}
+
+\maketitle
+\tableofcontents
+
+\section{Vector Spaces}
+
+\subsection{$\RR^n$~and~$\CC^n$ }
+
+\subsubsection{Complex Numbers}
+$\FF$ stands for either $\RR$ or $\CC$\\
+
+\subsubsection{Lists}
+
+\begin{definition}
+    Suppose $n$ is a nonnegative integer. A list of length $n$ is an ordered collection of $n$ elements (which might be numbers, other lists, or more abstractobjects).\\
+
+    Twolists are equal if and only if they have the same length and the sameelements in the same order.
+\end{definition}
+
+Notice that the length of a list is finite, while that of what we call sequence is infinite. 
+
+\subsubsection{$\FF^n$}
+
+\begin{definition}
+    $\FF^n$ is the \textbf{set} of all lists of length $n$ of elements of $\FF$:
+
+    $\FF^n = {(x_1,\ldots,x_n) : x_k \in \FF \text{for} k = 1,\ldots,n}$.
+
+    For $(x_1,\ldots,x_n) \in \FF^n$ and $k \in {1,\ldots,n}$, we say that $x_k$ is the $k$th coordinate of
+    $(x_1, \ldots,x_n)$.
+\end{definition}
+
+    A field is a set containing at least two distinct elements called $0$ and $1$, along with
+ operations of addition and multiplication satisfying all properties.
+ Thus $\RR$ and $\CC$ are fields, as is the set of rational numbers along with the usual
+ operations of addition and multiplication. Another example of a field is the set
+ ${0, 1}$ with the usual operations of addition and multiplication except that $1 + 1$ is
+ defined to equal $0$.
+
+\subsection{Definition of Vector Space}
+
+\begin{definition}
+    \textbf{real vector space, complex vector space}
+
+    A vector space over $\RR$ is called a real vector space.
+
+    A vector space over $\CC$ is called a complex vector space.
+\end{definition}
+
+The scalar multiplication depends on $\FF$
+
+\begin{definition}
+    $\FF^\infty$ is defined to be the set of all \textbf{sequences} of elements of $\FF^n$:
+
+    $\FF^{\infty} = {(x_1,x_2,\cdots) : x_k \in \FF^n \text{~for~} k = 1,2,\cdots}$.\\
+
+    Addition and scalar multiplication on $\FF^\infty$ are defined as expected:
+
+    \[(x_1, x_2, \cdots) + (y_1,y_2,\cdots) = (x_1 +y_1,x_2 +y_2,\cdots),\]
+    \[\lambda (x_1,x_2,\cdots) = (\lambda x_1, \lambda x_2,\cdots).\]
+
+    With these definitions, $\FF^\infty$ becomes a vector space over $\FF^n$, as you should verify.
+    The additive identity in this vector space is the sequence of all $0$'s.
+\end{definition}
+
+\begin{definition}
+    notation: $\FF^S$\\
+
+ • If $S$ is a set, then $\FF^S$ denotes the set of functions from S to $\FF$.
+ • For $fg \in \FF^S$, the sum $f+g \in \FF^S$ is the function defined by
+
+ \[( f +g)(x) = f(x)+g(x)\]
+ for all $x \in S$.
+ • For $\lambda  \in \FF$ and $f \in \FF^S$,the product $\lambda f \in \FF^S$ is the function defined by
+ \[(\lambda f)(x) = \lambda f(x)\]
+ for all $x \in S$.
+\end{definition}
+
+We can write the definition in the word of set
+\[\FF^S = \{f | f: S \rightarrow \FF \}\]
+
+If $S$ is not empty, then $\FF^S$ is a vector space over $\FF$\\
+
+Actually, the set $\FF^n$ and $\FF^\infty$ is the special case of $\FF^S$, in the first one, $S = \{1,2,\ldots,n\}$, and in the latter one, $S = \{1,2\ldots\}$
+
+\paragraph{Some interesting facts in Exercises\\}
+
+\begin{exercise}
+1. The emptyset is not a vector space. The empty set fails to satisfy only one
+of the requirements listed in the definition of a vector space. Which
+one?\\
+\end{exercise}
+\begin{solution}
+It fails to satisfy that there exists a addition indentity. Since there is no element in it.\\
+
+But why it satisfy the other properties? Because such as the scalar multiplication, if it has no element, then the requirement will never be violated.\\
+\end{solution}
+\begin{exercise}
+2. Define $\bar{\RR} = \RR \bigcup  \{\infty, - \infty\}$, and for $t\in RR$ define
+\[t \infty = 
+\begin{cases}
+    -\infty ,&\text{if} t < 0\\ 
+    0 ,&\text{if} t = 0\\ 
+    \infty ,&\text{if} t > 0\\     
+\end{cases},\quad
+t(-\infty) = 
+\begin{cases}
+    \infty ,&\text{if} t < 0\\ 
+    0 ,&\text{if} t = 0\\ 
+    -\infty ,&\text{if} t > 0\\     
+\end{cases}
+\]
+and
+\[\begin{aligned}
+    t + \infty &= \infty + t = \infty\\
+    t + (-\infty) &= (-\infty) + t = -\infty\\
+    \infty  + (-\infty) &= -\infty + \infty = 0\\
+\end{aligned}\]
+
+Is $\bar{\RR}$ a vector space?\\
+
+\end{exercise}
+\begin{solution}
+No. \[(2 + (-1)) \infty = 1 \infty = \infty , \text{but} 2 \infty + (-1) \infty = \infty + (-\infty) = 0\]
+
+It doesn't satisfy the distributive law.\\
+\end{solution}
+
+
+\subsection{Subspaces}
+
+\begin{example}
+    \textbf{subspaces}
+
+    (a) If $b \in \FF$, then
+    \[{(x_1, x_2, x_3, x_4) \in \FF^4 : x_3 = 5x_4 + b}\]
+    is a subspace of $\FF^4$ if and only if $b = 0$.
+
+    (b) Theset of continuous real-valued functions on the interval $[0,1]$ is a subspace
+    of $\RR^{[0,1]}$.
+
+    (c) The set of differentiable real-valued functions on $\RR$ is a subspace of $\RR$.
+
+    (d) The set of differentiable real-valued functions $f$ on the interval $(0,3)$ such
+    that $f'(2) = b$ is a subspace of $\RR^{(0,3)}$ if and only if $b = 0$.
+
+    (e) The set of all sequences of complex numbers with limit $0$ is a subspace of $\CC^\infty$.
+\end{example}
+
+\subsubsection{Sum of Spaces}
+
+\begin{definition}
+    Suppose $V_1,\ldots,V_m$ are subspaces of $V$. The sum of $V_1,\ldots,V_m$, denoted by
+ $V_1 +\cdots+V_m$, is the set of all possible sums of elements of $V_1, \ldots, V_m$. 
+
+ More precisely,
+ \[V_1 +\cdots+V_m ={\ve{v}_1 + \cdots + \ve{v}_m :\ve{v}_1 \in V_1,\ldots,\ve{v}_m \in V_m}\]
+\end{definition}
+
+\begin{theorem}
+    sum of subspaces is the smallest containing subspace\\
+
+    Suppose $V_1,\ldots,V_m$ are subspaces of $V$. Then $V_1 + \cdots + V_m$ is the smallest
+    subspace of $V containing V_1,\ldots,V_m$.
+\end{theorem}
+
+The proof contains three part: (1) subspace, (2) containing $V_1, \ldots , V_m$, (3) Smallest \\
+
+The third one is hard to think, but you only need to prove that ``Every subspace containing $V_1,\ldots,V_m$ contains $V_1 + \cdots + V_m$''\\
+
+\subsubsection{Direct Sums}
+
+\begin{definition}
+    definition: direct sum, $\oplus$
+
+    Suppose $V_1,\ldots,V_m$ are subspaces of $V$.
+
+    • The sum $V_1+ \cdots +V_m$ is called a direct sum if each element of $V_1+ \cdots +V_m$can be written \textbf{in only one way} as a sum $\ve{v}_1 + \cdots +\ve{v}_m$, where each $\ve{v}_k \in V_k$.
+
+    • If $V_1 +\cdots+V_m$ is a direct sum, then $V_1 \oplus\cdots \oplus V_m$ denotes $V_1 +\cdots+V_m$,with the $\oplus$ notation serving as an indication that this is a direct sum
+\end{definition}
+
+How can we prove that the sum of two subspace is direct sum?
+
+Here there are two theorems:
+
+\begin{theorem}
+    condition for a direct sum
+
+ Suppose $V_1,\ldots,V_m$ are subspaces of $V$. Then $V_1 + \cdots +V_m$ is a direct sum if
+ and only if the only way to write $\ve{0}$ as a sum $\ve{v}_1 +\cdots+\ve{v}_m$, where each $\ve{v}_k \in V_k$,
+ is by taking each $\ve{v}_k$ equal to $0$.
+\end{theorem}
+
+This theorem is the most gereral, and for the case with only 2 subspaces, the theorem below can solve.
+
+\begin{theorem}
+    direct sum of two subspaces
+
+    Suppose $U$ and $W$ are subspaces of $V$. Then
+ \[U + W \text{is a direct sum} \Leftrightarrow U\bigcap W =\{\ve{0}\}\]
+\end{theorem}
+
+Notice that this theorem only work for the two subspaces case. And more importantly, for the $3$ subspaces case, with $V_1,V_2,V_3$, it's \textbf{no enough} to just prove:
+\[V_1 \bigcap V_2 =\{\ve{0}\}, V_1 \bigcap V_3 =\{\ve{0}\}, V_2 \bigcap V_3 =\{\ve{0}\}\]
+
+Why? Imagine $3$ lines in $\RR^2$ space! (It's always useful to find a counterexample in such a simple space)
+
+\paragraph{Some interesting facts in Exercises\\}
+\begin{exercise}
+1. Is $\RR^2$ a subspace of the complex vector space $\CC^2$?\\
+\end{exercise}
+
+\begin{solution}
+
+No. When we talked about $\CC^2$, we should notice that now we are talking about the vector space over $\CC$, thus the scalar can be \textbf{complex number}\\
+
+But of course, form the aspect of set, $\RR^2$ is the subset of $\CC^2$, so be aware of the difference between the two perspective.
+\end{solution}
+
+\begin{exercise}
+2. A function $f: \RR \rightarrow \RR$ iscalled periodic if there exists a positive number p such that $f(x) = f(x + p)$ for all $x \in \RR$. Is the set of periodic functions from $\RR$ to $\RR$ a subspace of $\RR^{\RR}$? Explain\\
+\end{exercise}
+
+\begin{solution}
+
+No. Actually this exercises is more about the property of periodic functions
+\[f(x) = \sin \sqrt{2} x , g(x) = \cos  x\]
+thus
+\[f,g\in \RR^{\RR}\]
+However, assume that $p > 0$ is the period of $f + g$,then
+\[1 = f(0) + g(0) = f(p) + g(p) = f(-p)+ g(-p)\]
+\[i.e. 1 = \sin \sqrt{2} p + \cos  p = \sin \sqrt{2} p - \cos  p\]
+thus
+\[
+\begin{cases}
+    \sin \sqrt{2} p = 0\\
+    \cos p = 1\\  
+\end{cases}    
+\]
+from which we can know that $\sqrt{2} p = l \pi, l\in \ZZ$ and $p = 2k \pi, k\in \ZZ$ 
+\[\sqrt{2} = \dfrac{l\pi}{2k\pi} = \dfrac{l}{2k} \in\QQ\] 
+which is impossible!\\
+\end{solution}
+
+
+\begin{exercise}
+3. Prove that the union of three subspaces of V is a subspace of V if and only if one of the subspaces contains the other two.\\
+
+
+This exercise is not true if we replace $\FF$ with a field containing only two elements.\\
+\end{exercise}
+\begin{solution}
+See (in tex):
+
+https://math.stackexchange.com/questions/60698/if-a-field-f-is-such-that-leftf-rightn-1-why-is-v-a-vector-space-over
+
+for the reason\\
+
+If we ignore this case, this exercises is not so hard.\\
+\end{solution}
+
+
+\section{Finite-Dimensional Vector Spaces}
+
+\subsection{Span and Linear Independence}
+
+Some theorems and definitions have been taught in the Book ``Linear Algebra and Its Application'' by David C.Lay, so we ignore them for concision.
+
+\begin{definition}
+    A vector space is called finite-dimensional if some list of vectors in it spans the space.\\   
+
+    Avector space is called infinite-dimensional if it is not finite-dimensional.\\
+\end{definition}
+
+\begin{definition}
+    \textbf{polynomial} $\mathcal{P} (\FF)$
+
+ • A function $p: \FF \rightarrow \FF$ is called a polynomial with coefficients in $\FF$ if there exist $a_0, \ldots,a_m \in \FF$ such that for all $z \in \FF$.
+
+ \[p(z_) = a_0 +a_1 z +a_2 z^2 +\cdots+a_m z^m\]
+
+ • $\mathcal{P}(\FF)$is the set of all polynomials with coefficients in $\FF$
+\end{definition}
+
+\begin{definition}
+    degree of a polynomial, $\deg p$
+
+ • A polynomial $p \in \mathcal{P}(\FF)$ is said to have \textbf{degree} $m$ if there exist scalars $a_0, a_1, \ldots,a_m \in \FF$ with $a_m \neq 0$ such that for every $z \in \FF$, we have
+
+ \[p(z) = a_0 +a_1 z+ \cdots + a_m z^m\]
+
+ • The polynomial that is identically $0$ is said to have degree $-\infty$.
+
+ • The degree of a polynomial $p$ is denoted by $\deg p$.
+\end{definition}
+
+\begin{definition}
+    notation: $\mathcal{P}_m(\FF)$
+
+ For $m$ a nonnegative integer, $\mathcal{P}_m(\FF)$ denotes the set of all polynomials with
+ coefficients in $\FF$ and degree \textbf{at most} $m$.
+\end{definition}
+
+\begin{example}
+    example: $\mathcal{P}(\FF)$ is infinite-dimensional.
+
+ Consider any list of elements of $\mathcal{P}(\FF)$. Let $m$ denote the highest degree of the
+ polynomials in this list. Then every polynomial in the span of this list has degree
+ at most $m$. Thus $z^{m+1}$ is not in the span of our list. Hence no list spans $\mathcal{P}(\FF)$.
+ Thus $\mathcal{P}(\FF)$ is infinite-dimensional
+\end{example}
+
+\subsection{Bases}
+We also skip most parts we learned on class.
+
+\begin{theorem}
+    every subspace of $V$ is part of a direct sum equal to $V$
+    Suppose $V$ is finite-dimensional and $U$ is a subspace of $V$. Then there is a
+    subspace $W$ of $V$ such that $V = U\oplus W$
+\end{theorem}
+
+\paragraph{Some interesting facts in Exercises\\}
+
+1. Prove or give a counterexample: If $p_0,p_1,p_2,p_3$ is a list in $\mathcal{P}_3(\FF)$ such that none of the polynomials $p_0,p_1,p_2,p_3$ has degree $2$, then $p_0,p_1,p_2,p_3$ is not a basis of $\mathcal{P}_3(\FF)$.\\
+
+We should be alert to that the degree only tells us the greatest power of the polynomial, ``not having polynomial degree 2 '' doesn't mean that there is no term like $c z^2$ in the vectors!\\
+
+Thus it's obvious that it can be a basis. For example
+
+\[p_1 = 1, \quad p_2 = z,\quad p_3 = z^2 + z^3,\quad p_4 = z^3\]
+
+\subsection{Dimensions}
+\paragraph{Notice:}
+
+The real vector space $\RR^2$ has dimension two; the complex vector space $\CC$ has dimension one. As sets, $\RR^2$ can be identified with $\CC$ (and addition is the same on both spaces, as is scalar multiplication by real numbers). Thus when we talk about the dimension of a vector space, the role played by the choice of $\FF$ cannot be neglected.
+
+\begin{theorem}
+    \textbf{dimension of a sum}
+
+    If $V_1$ and $V_2$ are subspaces of a finite-dimensional vector space, then
+    \[\dim (V_1 + V_2) = \dim V_1 +\dim V_2 -\dim (V_1 \bigcap V_2).\]
+\end{theorem}
+
+The analogy between unions of subsets (in the context of sets) and sums of subspaces (in the context of vector spaces).\\
+
+\begin{center}
+    
+    
+    \begin{tabular}{|p{0.4\textwidth}|p{0.4\textwidth}|}
+        \hline
+        \textbf{set}&\textbf{vector spaces}\\
+    \hline
+    $S$ is a finite set& $V$ is a finite-dimensional vector space\\
+    \hline
+    $\#S$&$\dim V$\\
+    \hline
+    for subsets $S_1,S_2 of S$, the union $S_1 \bigcup  S_2$ is the smallest subset of $S$ containing $S_1$ and $S_2$& for subspaces $V_1,V_2$ of $V$, the sum $V_1+V_2$ is the smallest subspace of $V$ containing $V_1$ and $V_2$\\
+    \hline
+    $\#(S_1 \bigcup S_2) = \#S_1 +\#S_2 -\#(S_1 \bigcap S_2)$& $\dim(V_1 + V_2) = \dim V_1 +\dim V_2 -\dim(V_1 \bigcap V_2)$\\
+    \hline
+    $\#(S_1 \bigcup S_2) = \#S_1 +\#S_2 \Leftrightarrow S_1\bigcap S_2 = \varnothing  $ &$\dim(V_1 + V_2) = \dim  V_1 +\dim V_2 \Leftrightarrow V_1\bigcap V_2= \{\ve{0}\}$\\
+    \hline
+    $S_1 \bigcup  \cdots \bigcup S_m$ is a disjoint union $\Leftrightarrow \#(S_1 \bigcup \cdots \bigcup S_m) = \#S_1+\cdots +\#S_m $ & $V_1 + \cdots  + V_m$ is a direct sum $\Leftrightarrow\dim(V_1 + \cdots  + V_m)=\dim V_1 +\cdots +\dim V_m$\\
+    \hline
+\end{tabular}
+
+\end{center}
+
+\paragraph{Some interesting facts in Exercises\\}
+\begin{exercise}
+1.Suppose $v_1,\ldots,v_m$ is linearly independent in $V$ and $w \in V$. Prove that
+\[\dim \spans(v_1 + w,\ldots,v_m + w) \geq m-1\]
+\end{exercise}
+\begin{solution}
+There are mainly two solutions.
+
+(1) It's obvious that
+\[v_2 - v_1, \cdots v_m - v_1 \in \spans(v_1 + w,\ldots,v_m + w)\]
+and they are linearly independent, and the length of the spanning list $\geq$ linearly indenpendent list, so
+\[\dim \spans(v_1 + w,\ldots,v_m + w) \geq m-1\]
+
+(2) Let $V$ denote $\spans(v_1 + w,\ldots,v_m + w)$
+It's also obvious that
+
+\[\dim \spans(w,v_1 + w,\ldots,v_m + w) = m\]
+and
+\[\spans(w,v_1 + w,\ldots,v_m + w) = \spans(v_1 + w,\ldots,v_m + w) + \spans(w)\]
+therefore
+\[
+\begin{aligned}  
+    m &= \dim \spans(w,v_1 + w,\ldots,v_m + w)\\ 
+    &= \dim V + \dim\spans(w) - \dim \parameter{V \bigcap \dim\spans(w)}\\
+    &\leq \dim V + \dim\spans(w) \\
+    &= \dim V + 1\\
+\end{aligned}      
+\]
+\end{solution}
+
+\section{Linear Maps}
+
+\subsection{Vector Space of Linear Maps}
+
+\begin{definition}
+    linear map\\
+
+    A linear map from $V$ to $W$ is a function $T: V \to W$ with the following properties.\\
+
+    additivity
+
+    \[T(\ve{u} +\ve{v} ) = T\ve{u}+T\ve{v} forall \ve{u},\ve{v}  \in V\]
+
+    homogeneity
+
+    \[T(\lambda \ve{v} ) = \lambda (T\ve{v} ) \forall \lambda  \in \FF and \forall \ve{v}  \in V\]
+\end{definition}
+
+\begin{definition}
+    notation: $\mathcal{L}(V,W), \mathcal{L}(V)$\\
+
+ • The \textbf{set of linear maps} from $V$ to $W$ is denoted by $\mathcal{L}(V,W)$.
+
+ • The set of linear maps from $V$ to $V$ is denoted by $\mathcal{L}(V)$.
+ 
+ In other words,$\mathcal{L}(V) = \mathcal{L}(V,V)$.\\
+\end{definition}
+
+\begin{example}
+    Linear maps\\
+% \paragraph{linear maps\\}
+
+\textbf{zero\\}
+
+In addition to its other uses, we let the symbol 0 denote the linear map that takes every element of some vector space t the additive identity of another (or possibly the same) vector space. To be specific, $0 \in \mathcal{L}(V,W)$ is defined by \[0\ve{v}  = \ve{0}\]
+
+The $0$ on the left side of the equation above is a function from $V$ to $W$, whereas the $\ve{0}$ on the right side is the additive identity in $W$. As usual, the context should allow you to distinguish between the many uses of the symbol $0$.\\
+
+\textbf{identity operator\\}
+
+The identity operator, denoted by I, is the linear map on some vector space that takes each element to itself. To be specific, $I \in \mathcal{L}(V)$ is defined by
+\[I\ve{v} = \ve{v}\]
+
+\textbf{differentiation\\}
+
+Define $D \in \mathcal{L}(\mathcal{P}(\RR))by$
+\[Dp =p'\]
+The assertion that this function is a linear map is another way of stating a basic result about differentiation: $(f + g)' = f' +g'$ and $(\lambda f)' = \lambda f' $whenever $f,g$ are differentiable and $\lambda$  is a constant.\\
+\\
+
+\textbf{integration\\}
+
+Define $T \in \mathcal{L}(\mathcal{P}(\RR),\RR)$ by
+\[T p = \int_{0}^{1}p\]
+The assertion that this function is linear is another way of stating a basic result about integration: the integral of the sum of two functions equals the sum of the integrals, and the integral of a constant times a function equals the constant times the integral of the function. \\
+\\
+
+\textbf{multiplication by $x^2$\\} 
+
+Define a linear map $T \in \mathcal{L}(\mathcal{P}(\RR))$ by 
+\[(Tp)(x) = x^2p(x)\]
+for each $x \in \RR$.\\
+\\
+
+\textbf{backward shift\\}
+
+Recall that $\FF^\infty$ denotes the vector space of all sequences of elements of $\FF$. Define a linear map $T \in \mathcal{L}(\FF^\infty)$ by
+\[T(x_1,x_2,x_3,\cdots) = (x_2,x_3,\cdots)\]\\
+
+\textbf{composition\\}
+
+\textbf{Fix a polynomial} $q \in \mathcal{Pj}(\RR)$. Define a linear map $T \in \mathcal{L}(\mathcal{P}(\RR))$ by
+\[(Tp)(x) = p(q(x)) = p \circ q\]
+
+Actually, the last one is hard to believe, so we can verify it.\\
+
+First fix a polynomial $q$, which won't change in the process.\\
+
+1.firstly verify $T(0) = 0(q(x)) = 0$\\
+
+2.suppose $p_1 = a_{10} + a_{11} x + \cdots + a_{1n} x^n$, $p_2 = a_{20} + a_{21} x + \cdots + a_{2n} x^n$, then
+\[T(p_1) = a_{10} + a_{11} q(x) + \cdots + a_{1n} q(x)^n \]
+\[T(p_2) = a_{20} + a_{21} q(x) + \cdots + a_{2n} q(x)^n\]
+\[
+\begin{aligned}
+    T(p_1 + p_2) &= (a_{10} + a_{20}) + (a_{11}+a_{21}) q(x) + \cdots + (a_{1n} + a_{2n}) q(x)^n \\
+    &=a_{10} + a_{20} + a_{11} q(x) + a_{21} q(x) + \cdots + a_{1n} q(x)^n + a_{2n} q(x)^n\\
+    &= T(p_1) + T(p_2)
+\end{aligned}    
+\]\\
+
+3. Like in 2, we can verify $T(cp) = cT(p)$\\
+
+Be aware of that it isn't correct if the position of $p$ and $q$ are changed, since not all polynomials are linear, for example, $x^2$ are not.
+
+\end{example}
+
+Some properties of Linear maps we have already learned on class will not be mentioned again.\\
+
+\begin{theorem}
+    Linear map lemma\\
+
+ Suppose $v_1,\ldots,v_n$ is a basis of $V$ and $w_1,\ldots,w_n \in W$. Then there exists a
+ unique linear map $T: V \to W$ such that
+ \[Tv_k = w_k\]
+ for each $k = 1,\ldots,n$.
+\end{theorem}
+
+\begin{theorem}
+    $\mathcal{L}(V,W)$is a vector space\\
+\end{theorem}
+
+\paragraph{Some interesting facts in Exercises\\}
+
+\begin{exercise}
+1. Suppose that $T \in \mathcal(\FF^n,\FF^m)$. Show that there exist scalars $A_{j,k} \in \FF$ for $j = 1,\ldots,m$ and $k = 1,\ldots,n$ such that
+\[T(x_1,\ldots,x_n) = (A_{1,1}x_1 + \cdots + A_{1,n}x_n,\ldots,A_{m,1}x_1 + \cdots + A_{m,n}x_n)\]
+for every $(x_1,\ldots,x_n) \in \FF^n$\\
+\end{exercise}
+
+\begin{solution}
+The exercises itself is simple, but be aware that it's always useful to describe the effect of a linear transformation with the basis.\\
+
+For example,
+\[T(1,0,\ldots,0) = (A_{1,1},A_{2,1},\ldots ,A_{m,1})\]
+and so on.\\
+\end{solution}
+
+\begin{exercise}
+2. Give an example of a function $\varphi : \CC \to \CC$ such that
+\[\varphi (w+z) = \varphi (w)+\varphi (z)\]
+for all $w,z \in \CC$ but$\varphi$ is not linear. (Here $\CC$ is thought of as a complex vector space.)\\
+\end{exercise}
+
+\begin{solution}
+Actually if you treat the real part and the imaginary part of the complex number differently, then you can easily find some problem.\\
+
+Example 1: 
+\[\varphi(z) = \text{Re} z\]
+
+Example 2:
+\[\varphi(z) = \bar{z}\]
+
+if you then choose the scalar $i$, and you can make it.\\
+
+\textbf{Further Thinking:\\}
+
+There also exists a function $\varphi : \RR \to \RR$ such that $\varphi$ satisfies the additivity condition above but $\varphi$ is not linear. However, showing the existence of such a function involves considerably \textbf{more advanced tools}.\\
+
+https://math.stackexchange.com/questions/16175/on-sort-of-linear-functions-does-fxy-fx-fy-imply-f-alpha-x-a\\
+\end{solution}
+
+\begin{exercise}
+3. Suppose $V$ is finite-dimensional and $T \in \mathcal{L}(V)$. Prove that $T$ is a scalar multiple of the identity if and only if $ST = TS$ for every $S \in \mathcal{L}(V)$.\\
+\end{exercise}j
+
+\begin{solution}
+$\Rightarrow$ is easy, so we just ignore that part.\\
+
+$\Leftarrow$:\\
+
+Suppose $e_1,\ldots , e_n$ is a basis of $V$\\
+
+Since the choice of $S$ is random, we define $S_{j} \in \mathcal{L}(V) ( 1\leq j \leq n )$ as
+\[S_j e_i = 
+\begin{cases}
+    e_i, i\neq j\\
+    2e_i, i = j\\
+\end{cases}
+\]
+\[  
+    TS_{j}e_j= T(2e_j) = 2c_{j1} e_1 +\cdots + 2c_{ji} e_i + \cdots + 2c_{jj} e_j+  \cdots + 2c_{jn} e_n
+\]
+\[
+    S_{j}T(e_j)=c_{j1} e_1 +\cdots + c_{ji} e_1 + \cdots + 2c_{jj} e_j + \cdots + c_{jn} e_n
+\]
+
+So \[c_{ji} = 0 (i \neq j) , \forall j , 1\leq j \leq n\]
+
+\[\therefore T e_j = c_{jj} e_j ,\forall j, 1\leq j \leq n\]
+
+The exercise tells up don't be so ``greedy'' at a single time might help us, be focus on just one things (rather than thinking of swaping two base vector or make a loop of $n$ vectors)
+\end{solution}
+
+\begin{exercise}
+4. Suppose $V$ is finite-dimensional. Show that the only two-sided ideals of $\mathcal{L}(V)$ are $\{0\}$ and $\mathcal{L}(V)$.\\
+
+A subspace $\mathcal{E}$  of $\mathcal{L}(V)$ is called a \textbf{two-sided ideal} of $\mathcal{L}(V)$ if $TE \in \mathcal{E}$  and
+$ET \in\mathcal{E}$ $\forall E \in \mathcal{E}$ and $\forall T \in \mathcal{L}(V)$.\\
+
+Here it introduce a new definition called two-sided ideal, which is a definition in the group theory.\\
+\end{exercise}
+
+\begin{solution}
+To sole this problem, first you can verify that $\{0\}, \mathcal{L}(V) $ satisfy the definition.\\
+
+Then, to prove that there is no other subspace that satisfy this property, suppose that $U$ is a different but appropriate subspace.\\
+
+Since $V$ is a finite-dimensional space, we assume $v_1,\ldots , v_n$ is a basis of $V$ 
+\[Tv_i = c_{i1} v_1 + \cdots + c_{in} v_n\]
+
+suppose$S_i v_j = \delta_{ij} v_j$, then $S_i T \in \mathcal{E}$, then
+\[I = \sum_{i = 1}^n \dfrac{1}{c_{ii}} S_i T \in \mathcal{E}\]
+
+because$U \neq \mathcal{L}(V), \exists T \in \mathcal{L}, s.t. T\notin U$, but according to the definition of the two-sided ideal, $IT = T \in U$, that is a contradition!
+\end{solution}
+
+\subsection{Null Spaces and Ranges}
+
+Actually this section introduce nothing too new, but the exercises in the end really require a good command of the knowledge.
+
+\begin{theorem}
+    fundamental theorem of linear maps\\
+
+    Suppose $V$ is finite-dimensional and  $T  \in \mathcal{L}(V,W)$. Then range $T$ is finite dimensional and $\dim V =  \dim \n T +\dim \range T$.
+\end{theorem}
+
+This theorem is also nothing new in essence, but it's from the perspective of the linear map rather than the column and rank of the matrix.\\
+
+\paragraph{Important facts before the exercises\\}
+1.  Suppose $T \in \mathcal{L}(V,W)$is injective and $v_1,\ldots,v_n$ is linearly independent in $V$.Prove that $Tv_1,\ldots,Tv_n$ is linearly independent in $W$.\\
+
+A obvious facts, prove with linear independence by yourself.\\
+
+2. Suppose $v_1,\ldots,v_n$ spans $V$ and $T \in \mathcal(V,W)$. Show that $Tv_1,\ldots,Tv_n$ spans $\text{range} T$.\\
+
+This simple fact is significantly useful in many exercises.\\
+
+any $v \in V$ can be expressed with 
+\[v = c_1 v_1 + \cdots + c_n v_n\]
+
+then
+\[Tv = c_1 Tv_1 + \cdots + c_n T v_n\]
+
+therefore $\text{range} T \in \spans(Tv_1,\ldots, Tv_n)$\\
+
+On the other hand $Tv_i \in \text{range} T$, so by definition, $Tv_1,\ldots , T v_n$ spans $\text{range} T$\\
+
+To sum up, these two facts will play a key role in the analyze in the future.\\
+
+\paragraph{Some interesting facts in Exercises\\}
+
+\begin{exercise}
+1. Suppose $U$ and $V$ are finite-dimensional vector spaces and $S \in  \mathcal{L}(V ,W)$ and $T \in\mathcal{L}(U,V)$. Prove that
+\[\dim \n S T \leq \dim \n S +\dim \n T\]
+\end{exercise}
+
+\begin{solution}
+\[
+\begin{aligned}
+\dim \n ST &= \dim U - \dim \range ST\\
+&= \dim \n T + \dim  \range T - \dim \range ST\\
+&\leq \dim \n T + \dim V - \dim \range ST\\
+&= \dim \n T + \dim V - \dim \range S + \dim \range S - \dim \range ST\\
+&= \dim \n T + \dim \n S + \dim \range S - \dim \range ST
+\end{aligned}
+\]
+
+Since $\range  ST \subset \range  S$
+
+\[\dim \range  ST \leq \dim \range  S\]
+
+\[\therefore \dim \n S T \leq \dim \n S +\dim \n T\]
+\end{solution}
+
+\begin{exercise}
+2. Suppose $D \in \mathcal{L}(\mathcal{P}(\RR))$ is such that $\deg Dp$ = $(\deg p) - 1$ for every non-constant polynomial $p \in \mathcal{P}(\RR)$. Prove that $D$ is surjective.\\
+\end{exercise}
+
+\begin{solution}
+For any $j \in \NN$, there is a polynomial $D x^{j + 1}$ with degree j, thus
+\[\spans(Dx,Dx^2,Dx^3,\cdots) \subset \text{range} D\]
+
+Meanwhile \[\spans(Dx,Dx^2,Dx^3,\cdots) = \spans(1,x,x^2,\cdots)\]
+
+Hence$\spans(1,x,x^2,\cdots) \subset \text{range} D$, namely $\text{range} D = \mathcal{P}(\RR)$\\
+\end{solution}
+
+\begin{exercise}
+3. Suppose $p \in \mathcal{P}(\RR)$. Prove that there exists a polynomial $q \in \mathcal{P}(\RR)$ such
+that \[5q'' + 3q' = p\]
+\end{exercise}
+
+\begin{solution}
+Denote differentiation by $D$. Since $D\in \mathcal{P}(\RR), 5D^2 + 3D \in \mathcal{P}(\RR)$\\
+
+From the exercises above, we know $5D^2 + 3D$ is surjective, thus for $\forall p\in \mathcal{P}(\RR)$, $\exists q \in \mathcal{P}(\RR) s.t. 5 q'' + 3q' = p $\\
+\end{solution}
+
+\begin{exercise}
+4.Suppose $V$ is finite-dimensional with $\dim V > 1$. Show that if $\varphi:\mathcal{L}(V)\to \FF$ is a linear map such that $\varphi(ST) = \varphi(S)\varphi(T)$ for all $S,T \in \mathcal{L}(V)$, then $\varphi =0$.\\
+
+Hint: The description of the two-sided ideals of $\mathcal{L}(V)$\\
+\end{exercise}
+
+\begin{solution}
+let $S = T = I$, then $\varphi(I) = \varphi(I) \cdots \varphi(I)$, namely $\varphi(I) = 1\quad or\quad 0$\\
+
+Suppose $\varphi(I) = 1$, and $v_1,\ldots,v_n$ is a basis of $V$, suppose $S_i \in \mathcal{L}(V)$ that satisfy
+\[S_i v_j = (2\delta_{ij} - 1) v_j \]
+
+Since $S_i^2 = S_i$, $\varphi(S_1) = 0\quad or\quad 1$.
+
+$\sum_{i = 1}^n S_i= (2 - n)I$, and since $\varphi$ should be linear,
+\[\varphi(\sum_{i = 1}^n S_i) = 2- n \leq 0\]
+
+That is not possible, then $\varphi(I) = 0$,$\forall T \in \mathcal{L}(V) , \varphi(T) = \varphi(TI) = \varphi(T) \varphi(I) = 0$\\
+\end{solution}
+
+\subsection{Matrices}
+In the next two section, the content will become much harder and require a thorough understanding of the linear transformation and the matrices, and some definitions are slightly different from want we learn in class.\\
+
+\subsubsection{Representing a Linear Map by a Matrix}
+
+\begin{definition}
+    definition: matrix, $A_{j,k}$
+
+    Suppose $m$ and $n$ are nonnegative integers. An $m$-by-$n$ matrix $A$ is are a tangular array of elements of $\FF$ with $m$ rows and $n$ columns:
+    \[\begin{pmatrix}
+        A_{1,1}&\cdots&A_{1,n}\\
+        \vdots&&\vdots\\
+        A_{m,1}&\cdots&A_{m,n}\\
+    \end{pmatrix}\]
+    The notation $A_{j,k}$ denotes the entry in row $j$, column $k$ of $A$.
+\end{definition}
+
+\begin{definition}matrix of a linear map, $\mathcal{M}(T)$\\
+    
+    Suppose $T \in \mathcal{L}(V,W)$ and $v_1,\ldots,v_n$ is a basis of $V$ and $w_1,\ldots,w_m$ is a basis of $W$. The matrix of $T$ with respect to these bases is the $m-by-n$ matrix $\mathcal{M}(T)$, whose entries $A{j,k}$ are defined by
+    \[Tv_k = A_{1,k}w_1 +\cdots+A_{m,k}w_m\]
+    If the bases $v_1,\ldots,v_n$ and $w_1,\ldots,w_m$ are not \textbf{clear from the context}, then the notation $\mathcal{M}(T,(v_1,\ldots,v_n),(w1,\ldots,w_m))$ is used.
+ 
+\end{definition}
+
+Try to understand what this mean, in the notation of matrix$\mathcal{M}$, you can find a transformation $T$ and the two bases, the one in the left side represent the basis of the ``start'' vector space, and the right side represents the basis of the ``end'' vector space, the $k$-th column in the matrix is the $Tv_k$'s coefficients in each $w_i$\\
+
+
+\subsubsection{Addition and Scalar Multiplication of Matrices}
+
+After the definition of the adddition and scalar multiplication of the matrix, we can figure out the properties of $\mathcal{M}$ \\
+
+\begin{theorem}
+    matrix of the sum of linear maps\\
+
+    Suppose $S,T \in \mathcal{L}(V,W)$. Then $\mathcal{M}(S+T) = \mathcal{M}(S)+\mathcal{M}(T)$.
+    
+    the matrix of a scalar times a linear map\\
+
+    Suppose $\lambda  \in \FF$ and $T \in \mathcal{L}(V,W)$. Then $\mathcal{M}(\lambda T) = \lambda \mathcal{M}(T)$
+    
+\end{theorem}
+
+And of course, with these to properties, the concept of \textbf{linear map} will come again.\\
+
+notation: $\FF^{m,n}$\\
+
+For $m$ and $n$ positive integers, the set of all $m-by-n$ matrices with entries in $\FF$ is denoted by $\FF^{m,n}$.
+
+\[\dim\FF^{m,n} = mn\]
+
+Suppose $m$ and $n$ are positive integers. With addition and scalar multiplication defined as above, $\FF^{m,n}$ is a vector space of dimension $mn$.\\
+
+\subsubsection{Matrix Multiplication}
+\begin{definition}
+    matrix multiplication\\
+    
+    Suppose $A$ is an $m-by-n$ matrix and $B$ is an $n-by-p $ matrix.Then $AB$ is defined to be the $m-by-p$ matrix whose entry in row $j$, column $k$, is given by the equation
+    \[(AB)_{j,k} = \sum_{i = 1}^n A_{j,i}\cdots B_{i,k}\]
+    Thus the entry in row $j$, column $k$,of $AB$ is computed by taking row $j$ of $A$ and column $k$ of $B$, multiplying together corresponding entries, and then summing.
+\end{definition}
+    
+With this definition, we can have the desirable properties.
+\begin{theorem}
+    matrix of product of linear maps\\
+
+    If $T \in \mathcal{L}(U,V)$ and $S \in \mathcal{L}(V,W)$,then $\mathcal{M}(ST) = \mathcal{M}(S)\mathcal{M}(T)$
+\end{theorem}
+
+Then we would like to introduce the notation of the columns and rows of the matrix\\
+
+\begin{definition}
+    notation: $A_{j,\cdots}$, $A{\cdots,k}$\\
+
+    Suppose $A$ is an $m-by-n$ matrix.\\
+
+    • If $1 \leq j \leq m$,then $A_{j,\cdot}$ denotes the $1-by-n$ matrix consisting of row $j$ of $A$.
+
+    • If $1 \leq k \leq n$,then $A_{\cdot,k}$ denotes the $m-by-1$ matrix consisting of column $k$ of A
+\end{definition}
+
+After that, we will introduce the $4$ different ways of understanding matrices multiplications, which we have already learned, so we just skip that part.\\
+
+\subsubsection{Column-Row Factorization and Rank of a Matrix}
+
+Now we'd like to introduce the concept of rank, but the definition is slightly different from what we have learned, so some basic proves might be different, but the actual properties are exactly the same.\\
+
+\begin{definition}
+    column rank, row rank\\
+
+    Suppose $A$ is an $m-by-n$ matrix with entries in $\FF$.\\
+
+    • The column rank of $A$ is \textbf{the dimension of the span of the columns} of $A$ in $\FF^{m,1}$.
+
+    • The row rank of A is the dimension of the span of the rows of $A$ in $\FF^{1,n}$
+
+\end{definition}
+
+
+\begin{definition}
+    transpose, $A^t$\\
+
+    The transpose of a matrix $A$, denoted by $A^t$, is the matrix obtained from $A$ by interchanging rows and columns. Specifically, if $A$ is an $m-by-n$ matrix, then $A^t$ is the $n-by-m$ matrix whose entries are given by the equation
+    \[(A^t)_{k,j} = A_{j,k}\]
+\end{definition}
+
+Use the column-row factorization
+
+\begin{theorem}
+    
+    Suppose $A$ is an $m-by-n$ matrix with entries in $\FF$ and column rank $c \geq 1$. Then there exist an $m-by-c$ matrix $C$ and a $c-by-n$ matrix $R$, both with entries in $\FF$, such that $A = CR$.
+    
+\end{theorem}
+
+we can now prove that the column rank is equal to the row rank, thus we can define the concept of rank
+
+\begin{definition}
+
+    The rank of a matrix $A\in \FF^{m,n}$is the column rank of $A$.
+\end{definition}
+
+\paragraph{Some interesting facts in Exercises\\}
+
+\begin{exercise}
+    
+1.Suppose $V$ and $W$ are finite-dimensional and $T \in \mathcal{L}(V,W)$. Prove that $\dim \text{range} T = 1$ if and only if there exist a basis of $V$ and a basis of $W$ such that with respect to these bases, all entries of $\mathcal{L}(T)$ equal $1$.\\
+\end{exercise}
+
+\begin{solution}
+$\Leftarrow$ is obvious.\\
+
+$\Rightarrow$, suppose $u_1,\ldots,u_n$ is a basis of $V$, and from the exercise, we know $\dim \text{null} T = n - 1$, so assume that $Tu_1 \neq 0, Tu_i = 0, i = 2,\cdots n$\\ 
+
+$v_1 = u_1 ,v_i = v_1 + u_i, i = 2,\ldots, n$\\
+
+So $v_1,\ldots, v_n$ are linearly-independent, thus forming a base of $V$\\
+
+Besides, $Tv_1$ spans $span T$, so we can extend it to a basis of $W$, i.e. $Tv_1,\ldots, w_2,\ldots, w_n$\\
+
+Let $w_1 = Tv_1 - w_2 - \cdots - w_n$, and also $w_1,\ldots,w_n$ are linearly-independent, and is a basis of $W$.
+
+\end{solution}
+
+\subsection{Invertibility and Isomorphisms}
+
+\subsubsection{Invertible Linear Maps}
+
+\begin{definition}
+    invertible, inverse\\
+    
+    • A linear map $T \in \mathcal{L}(V,W)$is called invertible if there exists a linear map $S \in\mathcal{L}(W,V) $ such that $ST$ equals the identity operator on $V$ and $TS$ equals the identity operator on $W$.
+
+    • A linear map $S \in \mathcal{L}(W,V)$ satisfying $ST = I$ and $TS = I$ is called an inverse of $T$ (note that the first $I$ is the identity operator on $V$ and the second
+    $I$ is the identity operator on $W$)\\
+    
+\end{definition}
+
+\begin{theorem}
+    An invertible linear map has a \textbf{unique inverse}.
+\end{theorem}
+
+\begin{definition}
+    notation: $T^{-1}$\\
+
+    If $T$ is invertible, then its inverse is denoted by $T^{-1}$. In other words, if $T \in \mathcal{L}(V,W)$ is invertible, then $T^{-1}$ is the unique element of $\mathcal{L}(W,V)$ such that $T^{-1}T = I$ and $TT^{-1} = I$.\\
+\end{definition}
+
+Attention: The definition of inverse of linear map is different from the inverse of the matrix, since the inverse of linear map \textbf{does't require} the dimension of $V$ and $W$ to be the same, while the invertible matrix in $\FF^{m,n}$ must have $ m = n$\\  
+
+\begin{theorem}
+    invertibility $\Leftrightarrow$ injectivity and surjectivity\\
+
+    A linear map is invertible \textbf{if and only if} it is injective and surjective\\
+\end{theorem}
+
+\begin{theorem}
+    injectivity is equivalent to surjectivity (if $\dim V = \dim W < \infty$)\\
+
+    Suppose that $V$ and $W$ are finite-dimensional vector spaces, $\dim V = \dim W$, and $T \in \mathcal{L}(V,W)$. Then $T$ is invertible $\Leftrightarrow T$ is injective $\Leftrightarrow T$ is surjective.\\
+\end{theorem}
+
+Attention: the condition that $\dim V , \dim W < \infty$ is important, or we can find a counterexample:\\
+
+\begin{example}
+    
+    The backward shift linear map from $\FF^\infty$ to $\FF^\infty$ is surjective (See 3A) but it is not invertible because it is not injective [the vector $(1,0,0,0,\cdots)$ is in the null space].\\
+    
+\end{example}
+
+
+\subsubsection{Isomorphic Vector Spaces}
+\begin{definition}
+    isomorphism, isomorphic\\
+
+    • An \textbf{isomorphism} is an \textbf{invertible linear map}.
+
+    • Two vector spaces are called \textbf{isomorphic} if there is an isomorphism from one vector space onto the other one\\
+\end{definition}
+
+\begin{theorem}
+    dimension shows whether vector spaces are isomorphic\\
+
+    Two \textbf{finite-dimensional} vector spaces over $\FF$ are isomorphic if and only if they have the same dimension.\\
+\end{theorem}
+
+\begin{theorem}
+    $\mathcal{L}(V,W)$ and $\FF^{m,n}$ are isomorphic\\
+
+    Suppose $v_1,\ldots,v_n$ is a basis of $V$ and $w_1,\ldots,w_m$ is a basis of $W$. Then $\mathcal{M}$ is
+    an isomorphism between $\mathcal{L}(V,W)$ and $\FF^{m,n}$\\
+\end{theorem}
+
+Attention: Note that the notion $\mathcal{M}$ stands for the transformation from $\mathcal{L}(V,W)$ to $\FF^{m,n}$, rather than a matrix!\\
+
+\begin{theorem}
+    $\dim\mathcal{L}(V,W) = (\dim V)(\dim W)$\\
+
+    Suppose $V$ and $W$ are finite-dimensional. Then $\mathcal{L}(V,W)$ is finite-dimensional and
+    \[\dim\mathcal{L}(V,W) = (\dim V)(\dim W)\]  
+\end{theorem}
+
+\subsubsection{Linear Maps Thought of as Matrix Multiplication}
+We have already define the matrix of the linear maps, now we can define the matrix of a vector\\
+
+\begin{definition}
+    \textbf{matrix of a vector},$\mathcal{M}(v)$\\
+
+ Suppose $v_1,\ldots,v_n$is a basis of $V$.The matrix of $v$ \textbf{with respect to this basis} is the $n-by-1$ matrix
+    \[\mathcal{M}(v) = \begin{pmatrix}
+        b_1\\
+        \vdots\\
+        b_n\\
+    \end{pmatrix}\]
+ where $b_1,\ldots,b_n$ are the scalars such that
+ \[v=b_1v_1+\cdots+b_n v_n\]
+\end{definition}
+The matrix $\mathcal{M}(v)$ of a vector $v \in V$ depends on the basis $v_1,\ldots,v_n$ of $V$, as well as on $v$. However, the basis should be clear from the context and thus it is not included in the notation.\\
+
+This operation is like \textbf{relabling}. Occasionally,we want to think of elements of V as relabeled to be $n-by-1$ matrices[for example we want to make a change in basis]. Once a basis $v_1,\ldots,v_n$ is chosen, the function $\mathcal{M}$ that takes $v\in V$ to $\mathcal{M}(v)$ is an isomorphism of $V$ onto $\FF^{n,1}$ that implements this relabeling.\\
+
+\begin{theorem}
+    $\mathcal{M}(T)_{\cdot,k} = \mathcal{M}(Tv_k)$\\
+
+    Suppose $T \in \mathcal{L}(V,W)$ and $v_1,\ldots,v_n$ is a basis of $V$ and $w_1,\ldots,w_m$ is a basis of $W$. Let $1 \leq k \leq n$. Then the $k$th column of $\mathcal{M}(T)$, which is denoted by $\mathcal{M}(T)_{\cdot,k} $, equals $\mathcal{M}(Tv_k)$.\\
+\end{theorem}
+
+\begin{theorem}
+    linear maps act like matrix multiplication\\
+
+    Suppose $T \in \mathcal{L}(V,W)$ and $v \in V$. Suppose $v_1,\ldots,v_n$ is a basis of $V$ and $w_1,\ldots,w_m$ is a basis of $W$. Then $\mathcal{M}(Tv) = \mathcal{M}(T)\mathcal{M}(v)$.\\
+\end{theorem}
+
+\begin{theorem}
+    dimension of $\text{range~} T$ equals column rank of $\mathcal{M}(T)$
+
+ Suppose $V$ and $W$ are finite-dimensional and $T \in \mathcal{L}(V,W)$. Then $\dim \text{range~}T$ equals the column rank of $\mathcal{M}(T)$.
+\end{theorem}
+
+\subsubsection{Change of Basis}
+
+\begin{definition}
+    If $T \in \mathcal{L}(V)$ and $v_1,\ldots,v_n$ is a basis of $V$, then the notation $\mathcal{M}(T,(v_1,\ldots,v_n))$ is defined by the equation
+    \[\mathcal{M}(T,(v_1,\ldots,v_n)) = \mathcal{M}(T,(v_1,\ldots,v_n),(v_1,\ldots,v_n))\]
+    
+\end{definition}
+
+\begin{definition}
+    invertible, inverse, $A^{-1}$\\
+
+    A \textbf{square} matrix $A$ is called invertible if there is a square matrix B of the same size such that $AB = BA = I$; we call $B$ the inverse of $A$ and denote it by $A^{-1}$\\
+\end{definition}
+
+\begin{theorem}
+    matrix of \textbf{product of linear maps}\\
+
+    Suppose $T \in \mathcal{L}(U,V)$ and $S \in \mathcal{L}(V,W)$. If $u_1,\ldots,u_m$ is a basis of $U$, $v_1,\ldots,v_n$ is a basis of $V$, and $w_1,\ldots,w_p$ is a basis of $W$, then 
+    \[\begin{aligned}
+        \mathcal{M}(ST,(u_1,\ldots,u_m) , (w_1,\ldots,w_p)) =    \mathcal{M}(S , &(v_1,\ldots,v_n) , (w_1,\ldots,w_p))\\
+        \cdot&\mathcal{M}(T,(u_1,\ldots,u_m) , (v_1,\ldots,v_n))\\
+    \end{aligned}
+        \]
+
+\end{theorem}
+
+\begin{theorem}
+    matrix of identity operator with respect to two bases\\
+
+    Suppose that $u_1,\ldots,u_n$ and $v_1,\ldots,v_n$ are bases of $V$. Then the matrices $\mathcal{M}(I,(u_1,\ldots,u_n),(v_1,\ldots,v_n))$ and $\mathcal{M}(I,(v_1,\ldots,v_n),(u_1,\ldots,u_n))$ are invertible,and each is the inverse of the other.\\
+\end{theorem}
+
+\begin{theorem}
+    change-of-basis formula\\
+    
+    Suppose $T \in \mathcal{L}(V)$. Suppose $u_1,\ldots,u_n$ and $v_1,\ldots,v_n $ are bases of $V$. Let $A = \mathcal{M}(T,(u_1,\ldots,u_n))$ and $B = \mathcal{M}(T,(v_1,\ldots,v_n))$ and $C = \mathcal{M}(I,(u_1,\ldots,u_n),(v_1,\ldots,v_n))$. Then
+    \[A =C^{-1}BC\]
+    
+\end{theorem}
+
+\begin{theorem}
+    matrix of inverse equals inverse of matrix\\
+
+    Suppose that $v_1,\ldots,v_n$ is a basis of $V$ and $T \in \mathcal{L}(V)$ is invertible. Then $\mathcal{M}(T^{-1}) = ( \mathcal{M} (T) )^{-1}$, where both matrices are with respect to the basis $v_1,\ldots,v_n$\\
+\end{theorem}
+
+Notice the condition is in the same vector space and with the same basis.\\
+
+\begin{lemma}
+    Suppose $V$ is finite-dimensional and $S,T \in \mathcal{L}(V)$.
+ \[ST \text{~is invertible~} \Leftrightarrow S \text{~and~} T \text{~are invertible.~}\]
+\end{lemma}
+
+\begin{exercise}
+1. Suppose $V$ is finite-dimensional and $S \in \mathcal{L}(V)$. Define $\mathcal{A} \in \mathcal{L}(\mathcal{L}(V))$ by $\mathcal{A}(T) = ST$, for $T \in \mathcal{L}(V)$.\\
+
+(a) Show that $\dim \text{null}\mathcal{A} = (\dim V)(\dim \text{null}S)$.
+
+(b) Show that $\dim \text{range}\mathcal{A} = (\dim V)(\dim \text{range} S)$.\\
+\end{exercise}
+
+\begin{solution}
+(a)\\
+
+Suppose $v_1,\ldots , v_n$ is a basis of $V$ and $Sv_i = 0, i = 1, \cdots k$\\
+
+$\n \mathcal{A}$ is part of $\mathcal{A}$'s domain $\mathcal{L}(V,V)$, and the $T$ in it has the property that
+\[ST = 0, 0 \in \mathcal{L}(V)\]
+i.e.
+\[ST v_i = 0, i = 1,\ldots,n\]
+Therefore $T$ must have
+\[Tv_i = c_1 v_1 + \cdots + c_k v_k\]
+
+Let $U = \spans(v_1,\ldots,v_k)$,so $\dim U = \dim \n S$
+
+\[\text{every~}T \in \mathcal{L}(V,U)\text{~satisfy the property above}\]
+
+So \[\dim \n \mathcal{A} = \dim \mathcal{L}(V,U) = \dim V \dim U = \dim V \cdot \dim \n S\]
+
+(b)\\
+
+Use the formula
+\[\begin{aligned}
+    \dim \mathcal{L}(V) &= \dim V \cdot \dim V \\
+    &= \dim \n A + \dim \range A\\ 
+\end{aligned}\]
+\end{solution}
+
+\begin{exercise}
+2.Suppose $V$ is finite-dimensional and $T \in \mathcal{L}(V)$. Prove that $T$ has the same matrix with respect to every basis of $V$ if and only if $T$ is a scalar multiple of the identity operator.\\
+\end{exercise}
+
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+3. Suppose $q \in \mathcal{P}(\RR)$. Prove that there exists a polynomial $p \in \mathcal{P}(\RR)$ such
+that
+
+\[q(x) = (x^2 +x)p''(x) + 2xp'(x) + p(3)\]
+for all $x \in \RR$\\
+\end{exercise}
+
+\begin{solution}
+suppose $p\in \mathcal{P}_m$, then $q(x)$ also has degree $m$, so, let $T : \mathcal{P}_m\to \mathcal{P}_m$ have the property that $q = T p$\\
+
+$T(p) = 0 \Rightarrow p = 0$ so $T$ is injective.\\
+
+Since $\mathcal{P}_m$ is a finite-dimensional vector space, $T$ is surjective, thus $\forall q\in \mathcal{P}_m, \exists p \in \mathcal{P}_m , s.t. q(x) = (x^2 +x)p''(x) + 2xp'(x) + p(3)$ \\
+\end{solution}
+
+\begin{exercise}
+    4. Suppose $V$ is finite-dimensional and $S,T,U \in \mathcal{L}(V)$ and $STU = I$. Show that $T$ is invertible and that $T^{-1} = US$.\\
+
+    Show that the result in Exercise can fail without the hypothesis that $V$ is finite-dimensional.
+\end{exercise}
+
+\begin{solution}
+    With the lemma we just mentioned, since $(ST)U$ is inversible, then $ST, U$ are both invertible, and also $S,T$ are inversible.\\
+
+    Therefore, $T^{-1} = US$\\
+
+    If $V$ is infinite-dimensional, then there are some special linear map that do not exists with the finite-dimensional space.\\
+    
+    Suppose $U$ is the forward shift and add $0$ at the first entry, $T$ is the backward shift, $S$ is the identity map.\\
+
+    Obviously, $T$, as a backward shift, is not invertible.
+\end{solution}
+
+\subsection{Products and Quotients of Vector Spaces}
+
+\subsubsection{Products of Vector Spaces}
+
+\begin{definition}
+    definition: product of vector spaces\\
+
+    Suppose $V_1,\ldots,V_m$ are vector spaces over $\FF$.
+
+    • The product $V_1 \times\cdots\times V_m$ is defined by
+    \[V_1 \times\cdots\times V_m ={(v_1,\ldots,v_m) : v_1 \in V_1,\ldots,v_m \in V_m}\]
+
+    • Addition on $V_1 \times\cdots\times V_m$ is defined by
+    \[(u_1, \ldots,u_m) + (v_1,\ldots,v_m) = (u_1 +v_1,\ldots,u_m +v_m)\]
+
+    • Scalar multiplication on $V_1 \times \cdots \times V_m$ is defined by
+    \[\lambda(v_1,\ldots,v_m) = (\lambda v_1,\ldots, \lambda v_m).\]
+
+\end{definition}
+
+\begin{theorem}
+    product of vector spaces is \textbf{a vector space}\\
+
+    Suppose $V_1,\ldots,V_m$ are vector spaces over $\FF$. Then $V_1 \times \cdots \times V_m$ is a vector
+    space over $\FF$.\\
+\end{theorem}
+
+\begin{theorem}
+    dimension of a product is the sum of dimensions\\
+
+    Suppose $V_1,\ldots,V_m$ are finite-dimensional vector spaces. Then $V_1 \times \cdots \times V_m$ is finite-dimensional and
+    \[\dim(V_1 \times \cdots\times V_m) = \dim V_1 +\cdots+ \dim V_m\]
+\end{theorem}
+
+\begin{theorem}
+    products and direct sums\\
+
+    Suppose that $V_1,\ldots,V_m$ are subspaces of $V$. Define a linear map $ \Gamma : V_1 \times\cdots\times V_m \to V_1+\cdots+V_m $ by
+    \[\Gamma (v_1, \ldots,v_m) = v_1 +\cdots+v_m\]
+    Obviously, $\Gamma$ is surjective.\\
+
+    Then $V_1 +\cdots+V_m$ is a direct sum if and only if $\Gamma$  is injective.
+\end{theorem}
+
+\begin{theorem}
+    a sum is a direct sum if and only if dimensions add up\\
+
+    Suppose $V$ is finite-dimensional and $V_1,\ldots,V_m$ are subspaces of $V$. Then $V_1 +\cdots+V_m $ is a direct sum if and only if $\dim(V_1 + \cdots+V_m) = \dim V_1 +\cdots+\dim V_m$.\\
+\end{theorem}
+
+\subsubsection{Quotient Spaces}
+\begin{definition}
+    notation: $v + U$\\
+
+    Suppose $v \in V$ and $U \subset V$. Then $v + U$ is the subset of $V$ defined by
+    \[v + U =\{v + u : u\in U\}\]
+   
+\end{definition}
+
+\begin{definition}
+    translate (affine subset)\\
+
+    For $v \in V$ and $U$ a subset of $V$, the set $v + U$ is said to be a translate of $U$.\\
+\end{definition}
+
+\begin{definition}
+    quotient space, $V/U$\\
+
+    Suppose $U$ is a subspace of $V$. Then the quotient space $V/U$ is the set of all translates of $U$. Thus $V/U =\{v+ U : v\in V\}$\\
+\end{definition}
+
+\begin{theorem}
+    two translates of a subspace are equal or disjoint\\
+
+    Suppose $U$ is a subspace of $V$ and $v,w \in V$. Then
+    \[v - w \in U \Leftrightarrow v + U = w + U \Leftrightarrow (v + U ) \bigcap( w + U) \neq \varnothing\]
+\end{theorem}
+
+\begin{definition}
+    addition and scalar multiplication on $V/U$
+
+    Suppose $U$ is a subspace of $V$. Then addition and scalar multiplication are defined on $V/U$ by 
+    \[(v +U)+(w+U)=(v+w)+U\]
+    \[\lambda(v +U) = (\lambda v)+U\]
+    for all $v,w \in V$ and all $\lambda \in \FF$.\\
+    
+\end{definition}
+
+This kind of definition is different form what we have seen, since the vectors in the space can have different expressions, so the definition make sense only when the different expression of the same vector have the same result under operation\\
+
+\begin{cproof}
+    Let's take addition as an example.\\
+
+    % suppose $v_1 + U = v_1' + U$, then $v_1 - v_1' \in U$. By the definition of addition, $(v_1 + U) + (v_2 + U) = (v_1  + v_2) + U$, $(v_1' + U) + (v_2 + U) = (v_1' + v_2) + U $ and since $(v_1 + v_2) - (v_1' + v_2 ) = v_1 - v_1' \in U$
+    % \[(v_1' + v_2) + U = (v_1' + v_2 + v_1 - v_1') + U = (v_1 + v_2) + U\]
+    suppose $v_1,v_2,w_1,w_2 \in V$ are such that
+    \[v_1 +U =v_2+U \text{and} w_1+U=w_2+U\]
+
+    we have $v_1 -v_2 \in U$ and $w_1-w_2 \in U$. Because $U$ is a subspace of $V$ and thus is closed under addition, this implies that $(v_1 -v_2)+(w_1-w_2) \in U$. Thus $(v_1+w_1)-(v_2+w_2) \in U$.we see that
+    \[(v_1 + w_1)+U = (v_2 +w_2)+U\]
+    
+\end{cproof}
+
+\begin{theorem}
+    quotient space is a vector space
+
+    Suppose $U$ is a subspace of $V$. Then $V/U$, with the operations of addition and
+ scalar multiplication as defined above, is a vector space.
+\end{theorem}
+
+\begin{definition}
+    quotient map, $\pi$\\
+
+    Suppose $U$ is a subspace of $V$. The quotient map $\pi: V \to  V/U$ is the linear map defined by
+
+    \[\pi(v) = v+ U\]
+    for each $v \in V$\\
+\end{definition}
+
+\begin{theorem}
+    dimension of quotient space\\
+
+    Suppose $V$ is finite-dimensional and $U$ is a subspace of $V$. Then
+    \[\dim V/U = \dim V - \dim U\]
+\end{theorem}
+
+\begin{definition}
+    notation: $\tilde{T}$\\
+
+    Suppose $T \in \mathcal{L}(V,W)$. Define $\tilde{T}: V/(\n T) \to  W$ by
+    \[\tilde{T}(v + \n T) =  Tv\]
+\end{definition}
+
+\begin{theorem}
+    null space and range of $\tilde{T}$\\
+
+    Suppose $T \in \mathcal{L}(V,W)$. Then
+
+    (a) $\tilde{T} \circ \pi = T$, where $\pi$ is the quotient map of $V$ onto $V/(\n T)$;
+    
+    (b) $\tilde{T}$ is injective;
+
+    (c) $\range \tilde{T} = \range T$;
+
+    (d) $V/(\n T)$ and $\range T$ are isomorphic vector spaces\\
+\end{theorem}
+
+\begin{exercise}
+    Suppose $V_1,\ldots,V_m$ are vector spaces. Prove that $\mathcal{L}(V_1 \times  \cdots \times  V_m,W)$ and$\mathcal{L}(V_1,W)\times \cdots\times \mathcal{L}(V_m,W)$are isomorphic vector spaces.\\
+\end{exercise}
+
+\begin{solution}
+    The exercises is easy \textbf{if we are told that the vector space is finite-dimensional}. \\
+
+    Since we don't know this kind of condition, so we can only return to the definition of \textbf{isomorphic}, i.e.finding a invertible linear map connecting the two vector space.\\
+
+    for any $f \in \mathcal{L}(V_1 \times  \cdots \times  V_m,W)$ and $i = 1,\ldots, m$, define $f_i : V_i \to W$ by
+    \[f_i(v_i) = f(0,\ldots,0,v_i,0,\ldots,0)\]
+    Then is obvious that $f_i \in \mathcal{L}(V_i,W)$\\
+
+    Define $\varphi:\mathcal{L}(V_1 \times  \cdots \times  V_m,W) \to \mathcal{L}(V_1,W)\times \cdots\times \mathcal{L}(V_m,W)$ by
+    \[\varphi(f) = (f_1\times \cdots\times f_m)\]
+
+    Now we can check that $\varphi$ is a isomorphism between the two space by constructing its inverse map.\\
+
+    Define $\psi : \mathcal{L}(V_1,W)\times \cdots\times \mathcal{L}(V_m,W) \to \mathcal{L}(V_1 \times  \cdots \times  V_m,W)$ by
+    \[\psi(f_1\times \cdots\times f_m) = f\]
+    It's not hard to check that the $\varphi,\psi$ are linear and the have the property that $\varphi \circ \psi = I , \psi \circ \varphi = I$\\
+\end{solution}
+
+\begin{exercise}
+    Suppose that $v,x$ are vectors in $V$ and that $U,W$ are subspaces of $V$ such that $v + U = x + W$. Provethat $U = W$.\\
+\end{exercise}
+
+\begin{solution}
+    Since the theorem in the section mostly focues on the case that we have already known that $U = W$, so this exercise may be tricky at first.\\
+
+    But we should be familiar with the way of proving two spaces are the same, i.e.to prove $U \subset W, W \subset U$\\
+
+    Since $v + U = x + W$, therefore $\forall p \in v + U, p \in x+ W$. $0 \in U$ so $\forall v \in V, v \in v + U$ and must obey that $v \in x + W$, therefore $v = x + w_1$ for some $w_1 \in W$, therefore $v - x \in W$\\
+
+    For any $u \in U$, $\exists w_2 \in W$, s.t. $v + u = x + w_2$, so $u = x - v + w_2 \in W$\\
+
+    Thus $U \subset W$, the same is true for $W \subset U$
+\end{solution}
+
+\begin{exercise}
+    Prove that a nonempty subset $A$ of $V$ is a translate of some subspace of $V$ if and only if $\lambda v + (1 - \lambda )w \in A ,\forall V,w \in A$ and $\forall \lambda  \in \FF$.
+\end{exercise}
+
+\begin{solution}
+    This exercises actually connect to two definition of translate of subspace (also affinie set as well).\\
+
+    $\Rightarrow$, If $A$ is a translate of some vector space $U$, then $A = p + U, p \in V$, $\forall v,w \in A $ take $u_1 = v - p, u_2 = w -p \in U$. Therefore, $\lambda v + (1 - \lambda) w = p + \lambda(u_1 - u_2) \in v + U = A$\\
+
+    $\Leftarrow$, Let $a \in A$, we will show that $A - a = \{x - a: x \in A\}$ is a subspace of $V$\\
+
+    For $x - a \in A - a$, 
+    \[\lambda x + (1 - \lambda) a \in A \Rightarrow \lambda x + (1 - \lambda) a - a = \lambda(x - a) \in A - a\]
+    Which shows that $A - a$ is closed under scalar multiplication.\\
+
+    For $x - a, y - a \in A - a$, let $\lambda = \frac{1}{2}$,
+    \[\dfrac{1}{2}x + \dfrac{1}{2}y - a\in A - a \]
+
+    We have already proved that $A - a$ is closed under scalar multiplication, so
+    \[(x - a) + (y - a) \in A - a\]
+    Which shows that $A - a$ is closed under addition.\\
+    
+    Obviously, $0 = a - a \in A - a$, so $A - a$ is a subspace of $V$\\
+
+    Thus $A = a + (A - a)$ is a affine set (translate from a subspace).
+\end{solution}
+
+\begin{exercise}
+    Suppose $A_1 = v + U_1$ and $A_2 = w + U_2$ for some $v,w \in V$ and some subspaces $U_1,U_2$ of $V$. Prove that the intersection $A_1 \bigcap A_2$ is either a translate of some subspace of $V$ or is the empty set.
+\end{exercise}
+
+\begin{solution}
+    Of course it can be empty\\
+
+    Suppose $A_1\bigcap A_2 \neq \varnothing$, then $\forall x, y \in A_1\bigcap A_2$, for the conclusion in last exercise, we know
+    \[x + (1 - \lambda) y \in A_1\]
+    \[x + (1 - \lambda) y \in A_2\]
+    which implies that 
+    \[x + (1 - \lambda) y \in A_1\bigcap A_2\]
+    And also for the conclusion of last exercise, $A_1 \bigcap A_2$ is a affine set, i.e.the translate of some vector space.
+\end{solution}
+
+\begin{exercise}
+    Suppose $v_1,\ldots,v_m \in V$. Let 
+    \[A =\{\lambda_1v_1 +\cdots+ \lambda_m v_m : \lambda_1,\ldots,\lambda_m \in \FF and \lambda_1+\cdots+ \lambda_m =1\}\]
+    (a) Prove that $A$ is a translate of some subspace of $V$.
+    
+    (b) Prove that if $B$ is a translate of some subspace of $V$ and $\{v_1,\ldots,v_m\} \subset B$, then $A \subset B$.
+
+    (c) Prove that $A$ is a translate of some subspace of $V$ of dimension less than $m$\\
+\end{exercise}
+
+\begin{solution}
+    https://linearalgebras.com/3e.html\\
+\end{solution}
+\begin{exercise}
+    Suppose $U = \{(x_1,x_2,\cdots) \in \FF^\infty : x_k \neq 0\text{~for only finitely many~} k\}$.
+
+    (a) Show that $U$ is a subspace of $\FF^\infty$.
+    
+    (b) Prove that $\FF^\infty/U$ is infinite-dimensional.
+\end{exercise}
+
+\begin{solution}
+    The description of the set is a little confusing for my poor English.\\
+
+    But the exercises itself need very tricky construction and is very hard.\\j
+
+    (a) Since $0$ itself only have finite $x_k \neq 0$, and multiplication by a scalar won't increase the number of $0$ and adding two vectors with $m_1,m_2$ $0$ respectively will get a vector with at most $m_1 + m_2$ $0$\\
+    
+    (b) Throughout this exercise, given a vector $v \in \FF^\infty$, we'll denote by $v(p)$ the $p$ th entry of $v$ Consider the list of vectors $e_m$ for the $m = 1,2,\cdots$ in $\FF^\infty$ defined by the rule:
+    \[e_m(p) = 
+    \begin{cases}
+        1, (p-1)\equiv 0(\text{mod} m)\\
+        0, \text{otherwise}\\
+    \end{cases}\] 
+    For example
+    \[e_1 = (1,1,1,1,1,1,\cdots)\]
+    \[e_2 = (1,0,1,0,1,0,\cdots)\]
+    \[e_3 = (1,0,0,1,0,0,\cdots)\]
+
+    We want to show this give us a linearly-independent list on $\FF^\infty/U$. Let $k_1,\ldots,k_m \in \FF$ such that:
+    \[k_1(e_1 + U) + \cdots + k_m(e_m + U) = 0 + U\]
+
+    Note that $k_1(e_1 + U) + \cdots + k_m(e_m + U) = k_1e_1 + \cdots + k_m e_m + U$, so the equation above implies that $k_1 e_1 + \cdots k_m e_m = u$ for some $u \in U$\\
+
+    $u$ only have finite nonzero entry, so it must only contain $0$ from some position onward. Let $L$ denote the last position that contain a nonzero entry, that mean $u(i) = 0$ for $i > L$.\\
+
+    Now let $ p =t m ! + 1$, where we choose $p \geq L$, and our choice tells that $e_1(p) = \cdots = e_m(p) = 1$, and $u(q) = 0$ for any $q > p$\\
+
+    Note that $e_1(p + 1) = 1, e_2(p + 1) = \cdots = e_m(p + 1)= 0$, so $k_1e_1(p + 1) + \cdots + k_m e_m(p + 1) = k_1 $, and $u(p + 1) = 0$. So $k_1 = 0$. Then we can show that $k_1e_1(p + 2) + \cdots + k_m e_m(p + 2) = k_2 = 0$. Following the induction, we can show that $k_1 = \cdots = k_m = 0$\\
+
+    Since $\forall m $, the list we construct is linearly-independent, which means that no finite list can span the $\FF^\infty/U$\\
+
+    \textbf{Here is another construct.\\}
+
+    Suppose $\FF^\infty/U$ has only finite dimension $n$, then we construct $e_m(m = 1,2,\cdots n + 1)$ as follows
+    \[e_m = (1^{m - 1},2^{m -1},3^{m-1},\cdots)\]
+    % where the first nonzero entries is in the $m$ th position. \\
+
+    Then $e_1 + U,\cdots e_{n + 1} + U$ must be linearly-dependent. So there exists $k_1,\ldots , k_{n + 1}$ which are not all zero, s.t. $k_1 e_1 + \cdots + k_{n + 1} e_{n + 1} \in U$ which means only have finite nonzero entry.\\
+
+    So $\exists \alpha \in \ZZ , \forall r > \alpha$
+    \[k_1 r^0 + k_2 r^1 + \cdots + k_{n + 1} r^n = 0\]
+
+    So the polynomial
+    \[f(x) = k_{n + 1}x^n + \cdots + k_2 x + k_1\]
+    has infinitely many zeros, which implies that $k_1 = k_2 = \cdots = k_{n + 1} = 0$ and lead to a contradiction\\
+
+\end{solution}
+\subsection{Duality}
+
+\subsubsection{Dual Space and Dual Map}
+
+\begin{definition}
+    linear functional\\
+
+    A linear functional on $V$ is a linear map from $V to \FF$. In other words, a linear functional is an element of $\mathcal{L}(V,\FF)$\\
+\end{definition}
+
+\begin{definition}
+    dual space, $V'$\\
+
+    The dual space of $V$, denoted by $V'$, is the vector space of all linear functionals on $V$. In other words, $V' = \mathcal{L}(V,\FF)$\\
+\end{definition}
+
+\begin{theorem}
+    $\dim V' = \dim V$\\
+
+    Suppose $V$ is finite-dimensional. Then $V'$ is also finite-dimensional and
+    \[\dim V' = \dim V\]
+\end{theorem}
+
+\begin{definition}
+    dual basis\\
+
+    If $v_1, \ldots,v_n$ is a basis of $V$, then the dual basis of $v_1,\ldots,v_n$ is the list $\varphi_1,\ldots,\varphi_n$ of elements of $V'$, where each $\varphi_j$ is the linear functional on $V$ such that
+    \[\varphi_j(v_k) = 
+    \begin{cases}
+        1, j = k\\
+        0, j \neq k\\
+    \end{cases}\]
+
+\end{definition}
+
+\begin{theorem}
+    dual basis gives coefficients for linear combination\\
+
+    Suppose $v_1,\ldots,v_n$ is a basis of $V$ and $\varphi_1,\ldots,\varphi_n$ is the dual basis. Then for each $v \in V$\\
+\end{theorem}
+
+\begin{theorem}
+    dual basis is a basis of the dual space\\
+
+    Suppose $V$ is finite-dimensional. Then the dual basis of a basis of $V$ is a basis of $V'$.\\
+\end{theorem}
+
+\begin{definition}
+    dual map, $T'$\\
+
+    Suppose $T \in \mathcal{L}(V,W)$. The dual map of $T$ is the linear map $T' \in \mathcal{L}(W',V')$ defined for each $\varphi \in W'$ by
+    \[T'(\varphi) = \varphi\circ T\]
+\end{definition}
+
+\begin{theorem}
+    algebraic properties of dual maps\\
+
+    Suppose $T \in \mathcal{L}(V,W)$. Then
+
+    (a) $(S +T)' = S' +T'$ for all $S \in \mathcal{L}(V,W)$;
+
+    (b) $(\lambda T)' = \lambda T'$ for all $\lambda  \in \FF$;
+
+    (c) $(ST)' = T'S'$ for all $S \in \mathcal{L}(W, U)$.\\
+\end{theorem}
+
+\subsubsection{Null Space and Range of Dual of Linear Map}
+
+\begin{definition}
+    annihilator,  $U^0$\\
+
+    For $U \subset V$, the annihilator of $U$, denoted by  $U^0$, is defined by
+    \[U^0 =\{\varphi \in V' :\varphi(u) = 0 ,\forall u \in  U\}\]
+\end{definition}
+
+\begin{theorem}
+    the annihilator is a subspace\\
+
+    Suppose $U \subset V$. Then  $U^0$ is a subspace of $V'$.
+\end{theorem}
+
+\begin{theorem}
+    dimension of the annihilator\\
+
+    Suppose $V$ is finite-dimensional and $U$ is a subspace of $V$. Then
+    \[\dim U^0 = \dim V - \dim U\]
+\end{theorem}
+
+\begin{theorem}
+    condition for the annihilator to equal $\{0\}$ or the whole space\\
+
+    Suppose $V$ is finite-dimensional and $U$ is a subspace of $V$. Then
+
+    (a)  $U^0 = \{0\} \Leftrightarrow  U =V$;
+
+    (b)  $U^0 = V' \Leftrightarrow  U=\{0\}$
+\end{theorem}
+
+\begin{theorem}
+    the null space of $T'$\\
+
+ Suppose $V$ and $W$ are finite-dimensional and $T \in \mathcal{L}(V,W)$. Then
+
+ (a) $\n T' = (\range T)^0$;
+
+ (b) $\dim \n T' = \dim \n T + \dim W - \dim V$.
+\end{theorem}
+
+\begin{theorem}
+    $T$ surjective is equivalent to $T'$ injective\\
+
+    Suppose $V$ and $W$ are finite-dimensional and $T \in \mathcal{L}(V,W)$. Then
+
+    \[T ~\text{is surjective}~ \Leftrightarrow T' \text{is injective}\]
+\end{theorem}
+
+\begin{theorem}
+    the range of $T'$\\
+
+    Suppose $V$ and $W$ are finite-dimensional and $T \in \mathcal{L}(V,W)$. Then
+
+    (a) $\dim \range T' = \dim range T$;
+    
+    (b) $\range T' = (\n T)^0$.\\
+\end{theorem}
+
+\begin{theorem}
+    $T$ injective is equivalent to $T'$ surjective\\
+
+    Suppose $V$ and $W$ are finite-dimensional and $T \in \mathcal{L}(V,W)$. Then
+    \[T \text{~is injective~} \Leftrightarrow T' \text{~is surjective~}\]
+\end{theorem}
+\subsubsection{Matrix of Dual of Linear Map}
+\begin{theorem}
+    matrix of $T'$ is transpose of matrix of $T$\\
+
+    Suppose $V$ and $W$ are finite-dimensional and $T \in \mathcal{L}(V,W)$. Then
+    \[\mathcal{M}(T') = (\mathcal{M}(T))^t\] 
+\end{theorem}
+
+\begin{exercise}
+    Suppose that $V_1,\ldots,V_m$ are vector spaces. Prove that $(V_1 \times  \cdots \times  V_m)'$ and $V_1' \times  \cdots\times V_m'$ are isomorphic vector spaces.
+\end{exercise}
+
+\begin{solution}
+    This exercise is similar to one in 3E, but we still take down the detailed solution.\\
+
+    Define $P_i \in \mathcal{L}(V_i,V_1\times \cdots \times V_m)$ by 
+    \[P_i(x) = (0,\ldots,0,x,0,\ldots,0)\]
+    with $x$ as the $i$th component.
+
+    Define $\varphi \in \mathcal{L}((V_1\times \cdots \times V_m)',V_1'\times \cdots\times V_m')$ by
+    \[\varphi(f) = (P_1'f,\ldots,P_m'f)\]
+
+    Then we can check $\varphi$ is a isomorphism.\\
+
+    injectivity:
+
+    suppose $\varphi(f) = (P_1'f,\ldots,P_m'f) = (0,\ldots,0)$, then $P_i'f = 0\,(i = 1,\ldots, m)$, assume $f = (x_1,\ldots,x_m)$, then $x_i = 0 \,(i = 1,\cdots m)$, which means $f = 0$\\
+
+    surjectivity:
+
+    for any $(f_1,\ldots,f_m) \in V_1'\times \cdots \times V_m'$, define $f \in (V_1\times \cdots\times V_m)'$ by
+    \[f(x_1,\ldots,x_m) = \sum_{i = 1}^m f_i(x_i) \]
+    then $\exists\, f \,s.t.\, \varphi f = (f_1,\ldots,f_m)$
+\end{solution}
+
+\begin{exercise}
+    Suppose $V$ and $W$ are finite-dimensional and $T \in \mathcal{L}(V,W)$. Prove that $T$ is invertible if and only if $T' \in \mathcal{L}(W',V')$ is invertible.
+\end{exercise}
+
+\begin{solution}
+    \[
+    \begin{aligned}
+        T \text{is surjective} &\Leftrightarrow \range T = W\\
+        &\Leftrightarrow (\range T)^0 = \{0\}\\
+        &\Leftrightarrow \n T' = \{0\}\\
+        &\Leftrightarrow T' \text{is injective}\\  
+    \end{aligned}
+    \]
+    \[
+        \begin{aligned}
+            T \text{is injective} &\Leftrightarrow \n T = \{0\}\\
+            &\Leftrightarrow (\n T)^0 = V'\\
+            &\Leftrightarrow \range T' = V'\\
+            &\Leftrightarrow T' \text{is surjective}\\  
+        \end{aligned}
+        \]
+\end{solution}
+
+\begin{exercise}
+    Suppose $V$ is finite-dimensional and $U$ and $W$ are subspaces of $V$.
+
+    (a) Prove that $W^0 \subset U^0$ if and only if $U \subset W$.
+
+    (b) Prove that $W^0 = U^0$ if and only if $U = W$.
+   
+    (c) Show that $(U +W)^0 = U^0 \cap W^0$.
+
+    (d) Show that $(U \cap W)^0 = U^0 +W^0$
+\end{exercise}
+
+\begin{solution}
+    This part is easy, you can look up the answer online or in OneNote
+\end{solution}
+
+\begin{exercise}
+    Suppose $V$ is finite-dimensional and $\varphi_1,\ldots,\varphi_n$ is a basis of $V'$. Show that
+    there exists a basis of $V$ whose dual basis is $\varphi_1,\ldots,\varphi_n$.
+\end{exercise}
+
+\begin{solution}
+    Recall that with a basis $v_1,\ldots,v_n$ in $V$, we can construct the dual basis $\varphi_1,\ldots,\varphi_n$ in $V'$. By linear map lemma, there exists a linear map $T : V\to V'$ defined by
+    \[T(c_1v_1 + \cdots + c_n v_n) = c_1 \varphi_1 + \cdots + c_n \varphi_n\]
+    Since $\varphi_1,\ldots,\varphi_n$ is a basis, thus, $T$ is surjective. And since $\dim V = \dim V'$, $T$ is inversible. Thus given a dual basis, we can get the basis in $V$.\\
+
+\end{solution}
+
+\begin{exercise}
+    Suppose $V$ is finite-dimensional and $\varphi_1,\ldots,\varphi_m$ is a linearly independent list in $V'$. Prove that
+    \[\dim ((\n\varphi_1) \cap  \cdots \cap (\n\varphi_m)) = (\dim V)-m\]
+\end{exercise}
+
+\begin{solution}
+    Back to this exercise, first extend the $\varphi_1,\ldots,\varphi_m$ into a basis of $V'$,$\varphi_1,\ldots,\varphi_m,\ldots,\varphi_n$, with which we can get a basis in $V$, namely $v_1,\ldots,v_n$ which also has the ideal property.\\
+
+    Therefore for $ j = 1,\ldots, m$
+    \[\n \varphi_j = \{v \in V: v = c_1 v_1 + \cdots + c_{j - 1}v_{j -1 } + \cdots + c_{j + 1}v_{j + 1} + \cdots + c_n v_n \}\,\]
+    \[((\n\varphi_1) \cap  \cdots \cap (\n\varphi_m)) =\{v\in V : v =  c_{m + 1} v_{m + 1} + \cdots + c_n v_n\}\]
+    \[\dim((\n\varphi_1) \cap  \cdots \cap (\n\varphi_m)) = n - m = \dim V - m\]
+\end{solution}
+
+\begin{exercise}
+    The double dual space of $V$, denoted by $V''$, is defined to be the dual space of $V'$. In other words, $V'' = (V')'$. Define $\Lambda : V \to V''$ by
+    \[(\Lambda v)(\varphi) = \varphi(v)\]
+    for each $v \in V$ and each $\varphi \in V'$.
+
+    (a) Show that $\Lambda$ is a linear map from $V$ to $V''$.
+
+    (b) Show that if $T \in \mathcal{L}(V)$, then $T'' \circ \Lambda  = \Lambda \circ T$, where $T'' = (T')'$.
+
+    (c) Show that if $V$ is finite-dimensional, then $\Lambda$ is an isomorphism from $V$
+    onto V''.
+\end{exercise}
+
+\begin{solution}
+    (a) verify it by yourself.\\
+
+    (b) $\forall v \in V$, $(T''\circ \Lambda)v = T''(\Lambda v) $ and $(\Lambda \circ T) v = \Lambda(T v)$, the two are both the element of $V''$, to show they are equal, we just need to prove that $\forall f\in V'$,
+    \[T''(\Lambda v) f = \Lambda(T v) f\]
+    We can simplify the left side
+    \[
+    \begin{aligned}
+        (T''(\Lambda v)) f &= (\Lambda v) (T' f)\\
+        &= (T' f) v\\
+        &= f (T v)\\
+    \end{aligned}    
+    \]
+    And the right side 
+    \[
+    \begin{aligned}
+        \Lambda(T v) f&= f(Tv)\\
+    \end{aligned}    
+    \]
+
+    (c) Since $\dim V = \dim V' = \dim V''$, thus it suffices to show that $\Lambda$ is injective, which is not hard to prove
+\end{solution}
+
+\section{Polynomials}
+This section is short and only have limited content so we will just skip most part and keep the most important stuffs.\\
+
+\begin{theorem}
+    fundamental theorem of algebra, first version\\
+
+    Every nonconstant polynomial with complex coefficients has a zero in $\CC$.
+\end{theorem}
+
+\begin{theorem}
+    fundamental theorem of algebra, second version\\
+
+    If $p \in \mathcal{L}(\CC)$ is a nonconstant polynomial, then $p$ has a unique factorization (except for the order of the factors) of the form
+    \[p(z) = c(z - \lambda_1)\cdots(z- \lambda_m)\]
+    where $c, \lambda_1,\ldots, \lambda_m \in \CC$
+\end{theorem}
+
+\section{Eigenvalues and Eigenvectors}
+
+\subsection{Invariant Subspaces}
+\subsubsection{Eigenvalues}
+
+\begin{definition}
+    definition: operator\\
+
+    A linear map from a vector space \textbf{to itself} is called an operator.
+\end{definition}
+
+\begin{definition}
+    definition: invariant subspace\\
+
+    Suppose $T \in \mathcal{L}(V)$. A subspace $U$ of $V$ is called \textbf{invariant} under $T$ if $Tu \in U$ for every $u \in U$.
+\end{definition}
+
+\begin{example}
+    If $T \in \mathcal{L}(V)$, then the following subspaces of $V$ are all invariant under $T$.
+
+    
+    $\textbf{\{0\}}$ The subspace $\{0\}$ is invariant under $T$ because if $u \in \{0\}$, then $u = 0$ and hence $Tu = 0 \in \{0\}$.
+
+    $V$ The subspace $V$ is invariant under $T$ because if $u \in V$, then $Tu \in V$.
+
+    $\n T$ The subspace $\n T$ is invariant under $T$ because if $u \in \n T$, then $Tu = 0$, and hence $Tu \in \n T$.
+
+    $\range T$ The subspace $\range T$ is invariant under $T$ because if $u \in \range T$, then $Tu \in \range T$.
+   
+\end{example}
+
+\begin{definition}
+    definition: eigenvalue\\
+
+    Suppose $T \in \mathcal{L}(V)$. A number $\lambda  \in \FF$ is called an eigenvalue of $T$ if there exists $v \in V$ such that $v \neq 0$ and $Tv = \lambda v$
+\end{definition}
+
+\begin{theorem}
+    equivalent conditions to be an eigenvalue\\
+
+    Suppose $V$ is \textbf{finite-dimensional}, $T \in \mathcal{L}(V)$, and $\lambda  \in \FF$. Then the following are equivalent.
+
+    (a) $\lambda$  is an eigenvalue of $T$.
+
+    (b) $T - \lambda I$ is not injective.
+
+    (c) $T - \lambda I$ is not surjective.
+
+    (d) $T - \lambda I$ is not invertible.
+\end{theorem}
+
+\begin{definition}
+    definition: eigenvector\\
+    
+    Suppose $T \in \mathcal{L}(V)$ and $\lambda  \in \FF$ is an eigenvalue of $T$. A vector $v \in V$ is called an eigenvector of T corresponding to $\lambda$ if $v \neq 0$ and $Tv = \lambda v$.
+\end{definition}
+
+\begin{theorem}
+    linearly independent eigenvectors\\
+
+    Suppose $T \in \mathcal{L}(V)$. Then every list of eigenvectors of $T$ corresponding to distinct eigenvalues of $T$ is linearly independent
+\end{theorem}
+
+\begin{theorem}
+    operator cannot have more eigenvalues than dimension of vector space\\
+
+    Suppose $V$ is finite-dimensional. Then each operator on $V$ has \textbf{at most} $\dim V$ \textbf{distinct} eigenvalues.
+\end{theorem}
+\subsubsection{Polynomials Applied to Operators}
+
+\begin{definition}
+    notation: $T^m$\\
+
+    Suppose $T \in \mathcal{L}(V)$ and $m$ is a positive integer.
+
+    • $T^m \in\mathcal{L}(V)$ is defined by $Tm = \underset{m \text{times}}{\underbrace{T\cdots T}}$
+
+    • $T^0$ is defined to be the identity operator $I$ on $V$.
+
+    • If $T$ is invertible with inverse $T^{-1}$, then $T^{-m} \in \mathcal{L}(V)$ is defined by
+    \[T^{-m} = (T^{-1})^{m}\]
+\end{definition}
+
+\begin{definition}
+    notation: $p(T)$\\
+
+    Suppose $T \in \mathcal{L}(V)$ and $p \in \mathcal{P}(\FF)$ is a polynomial given by
+    \[p(z) = a_0 +a_1 z + a_2 z^2 +\cdots +a_m z^m\]
+    for all $z \in \FF$. Then $p(T)$ is the operator on $V$ defined by
+    \[p(T) = a_0 I +a_1 T+a_2 T^2 +\cdots +a_m T^m\]
+\end{definition}
+
+\begin{definition}
+    definition: product of polynomials\\
+
+    If $p, q \in \mathcal{P}(\FF)$, then $pq \in \mathcal{P}(\FF)$ is the polynomial defined by for all $z \in \FF$.
+    \[(pq)(z) = p(z)q(z)\]
+\end{definition}
+
+\begin{theorem}
+    multiplicative properties\\
+
+    Suppose $p,q \in \mathcal{P}(\FF)$ and $T \in \mathcal{L}(V)$. Then
+
+    (a) $(pq)(T) = p(T)q(T)$
+    
+    (b) $p(T)q(T) = q(T)p(T)$.
+\end{theorem}
+
+\begin{theorem}
+    null space and range of $p(T)$ are invariant under $T$\\
+
+    Suppose $T \in \mathcal{L}(V)$ and $p \in \mathcal{P}(\FF)$. Then $\n p(T)$ and $\range ~p(T)$ are invariant under $T$.
+\end{theorem}
+
+\begin{exercise}
+    Suppose $V$ is finite-dimensional, $T \in \mathcal{L}(V)$, and $\alpha \in \FF$. Prove that there exists $\delta > 0$ such that $T - \lambda I$ is invertible forall $\lambda \in \FF$ such that $0 < |\alpha - \lambda| < \delta$.
+\end{exercise}
+
+\begin{solution}
+    Since $V$ is finite-dimensional, the number of eigenvalues of $T$ is at most $\dim V$, no matther whether $\alpha$ is the eigenvalue or not, let $\delta = \min_{1 \leq j \leq \dim V}{|\lambda_j - \alpha|}$ and this $\delta$ satisfy the condition.
+\end{solution}
+
+\begin{exercise}
+    Suppose $V$ is finite-dimensional, $T \in \mathcal{L}(V)$, and $\lambda \in \FF$. Show that $\lambda$ is an eigenvalue of $T$ if and only if $\lambda$ is an eigenvalue of the dual operator $T' \in \mathcal{L}(V')$
+\end{exercise}
+
+\begin{solution}
+    $\Rightarrow$
+
+    suppose the eigonvector corresponding to $\lambda$ is $v$.
+
+    Therefore $T v = \lambda v$, and $\forall \varphi \in V'$, $(T'- \lambda I)(\varphi)v =  \varphi(T - \lambda I)v = 0$. Since $\forall v \in V$, $\exists \varphi \in V'$, s.t.$\varphi (v) \neq 0 $, $\range (T - \lambda I) \neq V'$, which implies $T'- \lambda I$ is not surjective thus $\lambda$ is a eigenvalue of $T'$
+
+    $\Leftarrow$
+
+    suppose the eigonvector corresponding to $\lambda$ is $\varphi$.
+
+    Therefore $T' \varphi = \lambda \varphi$, and $\forall v \in V$ we have, $T' \varphi v = \lambda \varphi v$ i.e.$\varphi(T - \lambda I)v = 0 $. Since $forall \varphi \in V', \exists v \in V, s.t. \varphi v \neq 0$, so $\range(T - \lambda I) \neq V$ which implies that $\lambda$ is also an eigenvalue of $T$
+\end{solution}
+
+\begin{exercise}
+    Suppose $v_1,\ldots,v_n$  is a basis of $V$ and $T \in \mathcal{L}(V)$. Prove that if $\lambda$ is an eigenvalue of $T$, then
+    \[|\lambda| \leq n \max{|\mathcal{M} (T)_{j,k}| : 1 \leq j,k \leq n },\]
+    where $\mathcal{M}(T)_{j,k}$ denotes the entry in row $j$, column $k$ of the matrix of $T$ with respect to the basis $v_1,\ldots,v_n$.
+\end{exercise}
+
+\begin{solution}
+    Look up the OneNote for solution.
+\end{solution}
+
+\begin{exercise}
+    Suppose $\FF = \RR$, $T \in \mathcal{L}(V)$,and $\lambda \in \CC$. Prove that $\lambda$ is an eigenvalue of the complexification $T_C$ if and only if $\lambda$ is an eigenvalue of $T_C$.
+\end{exercise}
+
+\begin{solution}
+    Assume that $\lambda = a + bi $ and therefore $\bar{\lambda} = a - b i$
+    \[T_c(u,v) = Tu + i Tv = (a + b i)(u,v) = (a + b i) u + i (a + b i) v\]
+    from which we can get
+    \[\begin{cases}
+        Tu = au - bv\\
+        Tv = bu + av\\
+    \end{cases}\]
+    \[T_c(-u,v) = -Tu + i Tv = -au + bv + i (bu + av) = (a-bi)(-u) + i(a - bi) v = (a- bi) (-u,v)\]
+    it shows that $\bar{\lambda}$ is a eigenvalue of $T_c$\\
+    vice versa.
+\end{solution}
+
+\begin{exercise}
+    Suppose $V$ is finite-dimensional and $S,T \in \mathcal{L}(V)$. Prove that $ST$ and $TS$
+    have the same eigenvalues.
+\end{exercise}
+
+\begin{solution}
+    One solution we are familiar with is use matrix. But we really want to figure out other way to solve the problem.\\
+
+    Assume $\lambda$ is an eigenvalue of $ST$. Then there exists a non-zero vector $x$ such that $STx$ = $\lambda x$. And therefore $TST x = \lambda T x$. Let $y = Tx$. Then $TSy$ = $\lambda y$. Therefore, $\lambda$ is an eigenvalue of $TS$. Do not forget to also show this from the other angle!\\
+    
+    Now, let's assume $0$ is an eigenvalue of $ST$. This implies that $ST$ is not invertible. Hence, $S$ and $T$ cannot both be invertible. Therefore, at least in the finite-dimensional case, $TS$ is not invertible, so $0$ is an eigenvalue of $TS$.
+\end{solution}
+
+\begin{exercise}
+    Suppose $T \in \mathcal{L}(V)$ has no eigenvalues and $T^4 = I$. Prove that $T^2 = -I$.
+\end{exercise}
+
+\begin{solution}
+    $T^4 - I =(T^2 + I)(T^2 - I)= 0$ which implies either $T^2 + I$ or $T^2 - I$ is not invertible (otherwise $T^4 - I$ will be invertible), and the $T^2 - I$ case can't be true since from which we can implies that $T - I$ of $T + I$ is not invertible and respectively indicate the eigenvalues to be $1 $ or $-1$. Therefore, $T^2 - I$ is inversible and $T^2 + I = 0$
+\end{solution}
+
+\begin{exercise}
+    Suppose that $\lambda_1,\ldots, \lambda_n$ is a list of distinct real numbers. Prove that the list $e^{\lambda_1x}, \ldots,e^{\lambda_n x}$ is linearly independent in the vector space of real-valued functions on $\RR$.
+\end{exercise}
+
+\begin{solution}
+    This exercise is really interesting, define $D : \RR^{\RR} \to \RR^{\RR}$ by $D p = p'$\\
+    Since that 
+    \[D e^{\lambda_1x} = \lambda_1 e^{\lambda_1x},\ldots, D e^{\lambda_nx} = \lambda_n e^{\lambda_nx} \]
+    $\lambda_1,\ldots,\lambda_n$ are the distinct eigenvalues of $D$ and therefore $e^{\lambda_1x}, \ldots,e^{\lambda_n x}$ are linearly independent.
+    
+    The similar method can be applied to the $\sin$ and $\cos $ functions, despite the difference that let $D$ represent by $Dp = p''$
+\end{solution}
+
+\begin{exercise}
+    Suppose $V$ is finite-dimensional and $T \in \mathcal{L}(V)$. Prove that $T$ has an eigenvalue if and only if there exists a subspace of $V$ of dimension $\dim V - 1$ that is invariant under $T$.\\
+\end{exercise}
+
+\begin{solution}
+    $\Rightarrow$, suppose $v_1, \ldots, v_n$ is a basis of $V$, let the eigenvalue be $\lambda$. $T - \lambda I$ is not surjective, so $\exists v_j , $s.t.\\
+    \[Tv_i = c_{i1} v_1 + \cdots c_{i, j - 1} v_{j - 1} + c_{i,j + 1} v_{j + 1} + \cdots + c_{in} v_n , i \neq j\]
+    which implies that $T$ is invariant in $\spans (v_1,\ldots,v_{j - 1}, v_{j + 1},\ldots,v_n)$, which has dimension $\dim V - 1$\\
+
+    $\Leftarrow$, let $\dim V = n$, denote the subspace with $U$, let $v_1,\ldots,v_{n - 1}$ be a basis of $U$, and then extend it to a basis of $V$, $v_1,\ldots , v_n$, then we have 
+    \[Tv_i = c_{i1} v_1 + \cdots + c_{i,n -1} v_{n - 1}, i = 1,\ldots, n - 1\]
+    \[Tv_n = c_{n1} v_1 + \cdots + c_{nn} v_n\]
+    Therefore
+    \[(T - c_{nn} I) v_i = p_{i1} v_1 + \cdots + p_{i,n - 1} v_{n - 1}\]
+    which implies that $T - c_{nn} I$ is not injective, and $c_{nn}$ is an eigenvalue of $T$
+\end{solution}
+
+\subsection{The Minimal Polynomial}
+\subsubsection{Existence of Eigenvalues on Complex Vector Spaces}
+
+\begin{theorem}
+    existence of eigenvalues\\
+
+    Every operator on a \textbf{finite-dimensional} nonzero \textbf{complex} vector space has an eigenvalue
+\end{theorem}
+
+the finite-dimensional hypothesis in the result above also cannot be deleted.
+\begin{example}
+    
+    Define $T \in \mathcal{L}(\mathcal{P}(\CC))$ by $(Tp)(z) = zp(z)$. If $p \in \mathcal{P}(\CC)$ is a nonzero polynomial, then the degree of $Tp$ is one more than the degree of $p$, and thus $Tp$ canno equal a scalar multiple of $p$. Hence $T$ has no eigenvalues. Because $\mathcal{P}(\CC)$ is infinite-dimensional, this example does not contradict the result above.
+ 
+\end{example}
+
+\subsubsection{Eigenvalues and the Minimal Polynomial}
+
+\begin{definition}
+    monic polynomial\\
+
+    A monic polynomial is a polynomial whose highest-degree \textbf{coefficient} equals $1$.
+\end{definition}
+
+\begin{theorem}
+    existence, uniqueness, and degree of minimal polynomial\\
+
+    Suppose $V$ is finite-dimensional and $T \in \mathcal{L}(V)$. Then there is a \textbf{unique} monic polynomial $p \in \mathcal{P}(\FF)$ of \textbf{smallest degree} such that $p(T) = 0$. Furthermore, $\deg p \leq \dim V$
+\end{theorem}
+
+\begin{definition}
+    minimal polynomial\\
+
+    Suppose $V$ isfinite-dimensional and $T \in \mathcal{L}(V)$. Then the minimal polynomial of $T$ is the \textbf{unique} monic polynomial $p \in \mathcal{P}(\FF)$ of smallest degree such that
+    \[ p(T) = 0\]
+\end{definition}
+
+\begin{theorem}
+    eigenvalues are the zeros of the minimal polynomial\\
+
+    Suppose $V$ is finite-dimensional and $T\in\mathcal{L}(V)$.
+
+ (a) The zeros of the minimal polynomial of $T$ are the eigenvalues of $T$.
+ 
+ (b) If $V$ is a complex vectorspace,then the minimal polynomial of $T$ has the form $(z-\lambda_1)\cdots(z-\lambda_m )$,where $\lambda_1,\ldots,\lambda_m$ is a list of all eigenvalues of $T$, possibly with repetitions.
+\end{theorem}
+
+\begin{theorem}
+    $q (T) = 0 \Leftrightarrow q$ is a \textbf{polynomial multiple} of the minimal polynomial\\
+
+    Suppose $V$ is finite-dimensional, $T \in \mathcal{L}(V)$, and $q \in \mathcal{P}(\FF)$. Then $q (T) = 0$ if and only if $q$ is a polynomial multiple of the minimal polynomial of $T$.
+\end{theorem}
+
+\begin{theorem}
+    minimal polynomial of a restriction operator\\
+
+ Suppose $V$ is finite-dimensional, $T \in \mathcal{L}(V)$, and $U$ is a subspace of $V$ that is invariant under $T$. Then the minimal polynomial of $T$ is a polynomial multiple of the minimal polynomial of $T|_U$.
+\end{theorem}
+
+\begin{theorem}
+    $T$ not invertible $\Leftrightarrow$ \textbf{constant term} of minimal polynomial of $T$ is $0$\\
+
+    Suppose $V$ is finite-dimensional and $T \in \mathcal{L}(V)$. Then $T$ is not invertible if and only if the constant term of the minimal polynomial of $T$ is $0$.
+\end{theorem}
+
+\subsubsection{Eigenvalues on Odd-Dimensional Real Vector Spaces}
+
+\begin{theorem}
+    even-dimensional null space\\
+
+    Suppose $\FF = \RR$ and $V$ is finite-dimensional. Suppose also that $T \in \mathcal{L}(V)$ and $b,c \in \RR$ with $b^2 < 4c$. Then $\dim \n (T^2 +bT+cI)$ is an \textbf{even number}.
+\end{theorem}
+
+\begin{theorem}
+    operators on odd-dimensional vector spaces have eigenvalues\\
+
+    \textbf{Every operator} on an \textbf{odd-dimensional} vector space has an eigenvalue.\\
+\end{theorem}
+
+
+\begin{exercise}
+    Suppose $\FF = \CC, T \in \mathcal{L}(V), p \in \mathcal{P}(\CC)$, and $\alpha \in \CC$. Prove that $\alpha$ is an eigenvalue of $p(T)$ if and only if $\alpha = p(\lambda)$ for some eigenvalue $\lambda$ of $T$.
+\end{exercise}
+
+\begin{solution}
+
+    if we assume $p$ as
+    \[p(z) = a_0 + a_1 z + \cdots +a_{m - 1} z^{m - 1}  + z^m\]
+    we denote the eigenvalues of $T$ with $\lambda_1,\ldots,\lambda_m$. Then $p(\lambda_i)$ is the eigenvalues of the $p(T)$
+
+    This shows $\Leftarrow$ is correct.\\
+
+    $\Rightarrow$ is little tricky:
+
+    Suppose $\alpha$ is an eigenvalue of $p(T)$ with eigenvector $v$. Then indeed $(p(T)-\alpha I)v = 0$
+
+    Note that you can always factor polynomials over their complex roots. So for the polynomial $p(x) - \alpha$, there is a number $c \neq 0$ and roots $r_1,r_2,\ldots,r_n$ such that:
+    \[p(x)-\alpha=c(x-r_1)(x-r_2)\cdots(x-r_n)\]
+
+    In particular, $p(r_i)-\alpha=0$ for all roots $r_i$. Applying this polynomial form to the equation $(p(T)-\alpha I)v=0$ gives:
+    \[(p(T) - \alpha I) v = c(T- r_1 I )(T - r_2 I)\cdots(T - r_n I) v = 0\]
+
+    Now you just need to show that one of the roots $r_i$ is an eigenvalue for $T$
+
+\end{solution}
+
+\begin{exercise}
+    Suppose $V$ is finite-dimensional and $S,T \in \mathcal{L}(V)$. Prove that if at least one of $S,T$ is invertible, then the minimal polynomial of $ST$ equals the minimal polynomial of $TS$.
+
+    Hint: Show that if $S$ is invertible and $p \in \mathcal{P}(\FF)$, then $p(TS) = S^{-1}p(ST)S$.
+    
+\end{exercise}
+
+\begin{solution}
+    Follow the Hint or look up for the answer in OneNote
+\end{solution}
+
+
+\begin{exercise}
+    Suppose $T \in \mathcal{L}(V)$ is such that with respect to some basis of $V$, all entries of the matrix of $T$ are rational numbers. Explain why all coefficients of the minimal polynomial of $T$ are rational numbers
+\end{exercise}
+
+\begin{solution}
+    let $v_1,\ldots,v_n$ be a basis of $V$ and we can use induction to prove this fact\\
+
+    For the base case,
+    \[Tv_j = A_{1,j} v_1 + \cdots + A_{n,j} v_n\, (j = 1, 2,\cdots n)\]
+    where $A_{i,k}$ are all rational numbers.
+
+    Suppose for $p = k$
+    \[T^k v_j = c_{1,j} v_1 + \cdots + c_{n,j} v_n\, (j = 1, 2,\cdots n)\] 
+    then for $p = k + 1$
+    \[
+    \begin{aligned} 
+        T^{k + 1} v_j &= c_{1,j} (c_{1,1} v_1 + \cdots + c_{n,1} v_n) + \cdots + c_{n,j} (c_{1,n} v_1 + \cdots + c_{n,n} v_n) \\
+        &=(\sum_{i = 1}^n c_{i,j}c_{1,i}) v_1 + \cdots + (\sum_{i = 1}^n c_{i,j}c_{n,i})v_n \, (j = 1, 2,\cdots n)\\
+    \end{aligned}    
+    \] 
+    and have all coefficients belongs to rational numbers.
+
+    The steps afterwards are obvious and we stop now.
+\end{solution}
+
+\begin{exercise}
+    Suppose $a_0,\ldots,a_{n-1}\in\FF$.Let $T$ be the operator on $\FF^n$ whose matrix (with respect to the standard basis) is
+    \[\begin{pmatrix}
+        0&&&&-a_0\\
+        1&0&&&-a_1\\
+        &1&\ddots&&-a_2\\
+        &&\ddots&&\vdots\\
+        &&&0&-a_{n - 2}\\
+        &&&1&-a_{n - 1}\\
+    \end{pmatrix}\]
+    Here all entries of the matrix are $0$ except for all $1$' s on the line under the diagonal and the entries in the last column (some of which might also be $0$).
+
+    Show that the minimal polynomial of $T$ is the polynomial
+    \[a_0+a_1z+\cdots+a_{n-1}z^{n-1}+z^n\]
+\end{exercise}
+
+\begin{solution}
+    Let $e_1,e_2,\ldots,e_n$ be the standard basis of $\CC^n$. Note that 
+    \[Te_1=e_2,Te_2=e_3,\ldots,Te_{n - 1}=e_n\]
+    Now note that
+    \[T^n e_1 = T e_n = -a_0 e_1 - a_1 e_2 - \cdots - a_{n-1}e_n = -a_0 e_1 - a_1 T e_1 - \cdots - a_{n-1} T^{n-1}e_1\]
+    which means
+    \[p(T)e_1 = 0\]
+    \[p(T)e_{i + 1} = p(T)T^{i}e_1 = 0 (i = 1,2,\ldots, n - 1)\]
+    And then we get the solution we want.
+\end{solution}
+
+% By the way, the exercises 25 - 28 in 4th edition is really interesting!\\
+
+\begin{exercise}
+    25 Suppose $V$ is finite-dimensional, $T \in \mathcal{L}(V)$, and $U$ is a subspace of $V$ that is invariant under $T$.
+
+    (a) Prove that the minimal polynomial of $T$ is a polynomial multiple of the minimal polynomial of the quotient operator $T/U$.
+
+    (b) Prove that \[(\text{minimal polynomial of}~ T|_U) \times (~\text{minimal polynomial of}~ T/U)\] is a polynomial multiple of the minimal polynomial of $T$.
+
+\end{exercise}
+
+\begin{solution}
+    (a) is easy since in $5A$ we proved that every eigenvalue of $T/U$ is one of that of $T$
+
+    (b) $\forall \lambda$ of $T$, if the eigenvector $v$ corresponding to it $\in U$, then it is also the eigenvalue of $T|_U$ and if it $\notin U$, [look up OneNote of 5D 19 if find it hard to figure out] then it is the eigenvalue of $T/U$, which means that the we finish the proof.
+    
+\end{solution}
+
+\begin{exercise}
+    26 Suppose $V$ is finite-dimensional, $T \in \mathcal{L}(V)$, and $U$ is a subspace of $V$ that is invariant under $T$. Prove that the set of eigenvalues of $T$ equals the union of the set of eigenvalues of $T|U$ and the set of eigenvalues of $T/U$.
+\end{exercise}
+
+\begin{solution}
+    let $v_1,\ldots,v_k$ be a basis of $U$ and extend it to $v_1,\ldots,v_n$, a basis of $V$, let $\lambda$ be an eigenvalue $T|_U$, then it must be an eigenvalue of $T$, let $\lambda$ be an eigenvalue of $T/U$, then we have for some $v + U \neq 0+ U$ (which implies that $v \notin U$), $(T/U)(v + U) = Tv + U = \lambda v + U$, which means that $Tv - \lambda v = (T - \lambda I) v \in U$, thus $T - \lambda I$ is not surjective, and $\lambda$ is an eigenvalue of $T$.\\
+    
+    Also for the conclusion of last exercise, we can get to our conclusion.
+\end{solution}
+
+\begin{exercise}
+    27 Suppose $\FF = \RR$, $V$  is finite-dimensional, and $T \in \mathcal{L}(V)$. Prove that the minimal polynomial of $T_C$ equals the minimal polynomial of $T$.
+
+\end{exercise}
+
+\begin{solution}
+    Actually $T$ and $T_C$ have the same eigonvalues, but the proof of this is exceedingly trival and you can refer to the OneNote of $5A$
+\end{solution}
+
+\begin{exercise}
+    28 Suppose $V$ is finite-dimensional and $T \in \mathcal{L}(V)$. Prove that the minimal polynomial of $T' \in \mathcal{L}(V ')$ equals the minimal polynomial of $T$.
+\end{exercise}
+
+\begin{solution}
+    Just look at the solution in $5A$ and you will find the answer easily.
+\end{solution}
+
+
+
+\subsection{Upper-Triangular Matrices}
+
+\begin{definition}
+    matrix of an operator,$\mathcal{M}(T)$\\
+
+ Suppose $T \in\mathcal{L}(V)$. The matrix of $T$ with respect to a basis $v_1,\ldots,v_n$ of $V$ is the $n-by-n$ matrix
+    \[\mathcal{M}(T) = \begin{pmatrix}
+        A_{1,1}&\cdots&A_{1,n}\\
+        \vdots&&\vdots\\
+        A_{n,1}&\cdots&A_{n,n}\\
+    \end{pmatrix}\]
+    whose entries $A_{j,k}$ are defined by
+    \[Tv_k=A_{1,k}v_1+\cdots+A_{n,k}v_n\]
+    The notation $\mathcal{M}(T,(v_1,\ldots,v_n))$ is used if the basis is not clear from the context
+\end{definition}
+Notice the coefficients is read in \textbf{column}!
+
+\begin{definition}
+    diagonal of a matrix\\
+
+    The diagonal of a square matrix consists of the entries on the line from the upper left corner to the bottom right corner.
+\end{definition}
+
+\begin{definition}
+    upper-triangularmatrix\\
+
+    A square matrix is called upper triangular if all entries below the diagonal are $0$
+\end{definition}
+
+\begin{theorem}
+    conditions for upper-triangular matrix\\
+
+    Suppose $T \in \mathcal{L}(V)$ and $v_1,\ldots,v_n$ is a basis of $V$. Then the following are equivalent.
+
+    (a) The matrix of $T$ with respect to $v_1,\ldots,v_n$ is upper triangular.
+
+    (b) $\spans(v_1,\ldots,v_k)$ is invariant under $T$ for each $k = 1,\ldots,n$.
+
+    (c) $Tv_k \in \spans(v_1,\ldots,v_k)$ for each $k = 1,\ldots,n$
+\end{theorem}
+
+\begin{theorem}
+    equation satisfied by operator with upper-triangular matrix\\
+
+    Suppose $T \in \mathcal{L}(V)$ and $V$ has a basis with respect to which $T$ has an upper triangular matrix with diagonal entries $\lambda_1,\ldots, \lambda_n$. Then
+    \[(T - \lambda_1I)\cdots(T - \lambda_nI) = 0\]
+
+\end{theorem}
+
+\begin{theorem}
+    determination of eigenvalues from upper-triangular matrix\\
+
+    Suppose $T \in \mathcal{L}(V)$ has an upper-triangular matrix with respect to some basis of $V$. Then the eigenvalues of $T$ are precisely the entries on the diagonal of that upper-triangular matrix.
+\end{theorem}
+
+\begin{theorem}
+    necessary and sufficient condition to have an upper-triangular matrix\\
+
+    Suppose $V$ is finite-dimensional and $T \in \mathcal{L}(V)$. Then $T$ has an upper triangular matrix with respect to some basis of $V$ if and only if the minimal polynomial of $T$ equals $(z - \lambda_1)\cdots(z - \lambda_m)$ for some $\lambda_1,\ldots, \lambda_m \in \FF$.
+\end{theorem}
+
+\begin{theorem}
+    if $\FF = \CC$,then every operator on $V$ has an upper-triangular matrix\\
+
+    Suppose $V$ is a finite-dimensional complex vector space and $T \in \mathcal{L}(V)$. Then
+    $T$ has an upper-triangular matrix with respect to some basis of $V$.
+\end{theorem}
+
+The exercises in the section mostly have a strong connection with the former sections, so you can just review them and find the connection with exercises here.
+
+\subsection{Diagonalizable Operators}
+
+\subsubsection{Diagonal Matrices}
+
+\begin{definition}
+    diagonal matrix\\
+
+    A diagonal matrix is a square matrix that is $0$ everywhere except possibly on the diagonal
+\end{definition}
+
+\begin{definition}
+    diagonalizable\\
+
+    An operator on $V$ is called diagonalizable if the operator has a diagonal matrix \textbf{with respect to some basis} of $V$.
+\end{definition}
+
+\begin{definition}
+    eigenspace, $E (\lambda,T)$\\
+
+    Suppose $T \in \mathcal{L}(V)$ and $\lambda \in \FF$. The eigenspace of $T$ corresponding to $\lambda$ is the subspace $E (\lambda,T)$ of $V$ defined by
+    \[E (\lambda,T) = \n(T - \lambda_I) = \{v \in V : Tv = \lambda v\}\]
+    Hence $E (\lambda,T)$ is the set of \textbf{all eigenvectors} of $T$ corresponding to $\lambda$, along with the $0$ vector.
+\end{definition}
+
+\begin{theorem}
+    sum of eigenspaces is a direct sum\\
+
+    Suppose $T \in \mathcal{L}(V)$ and $\lambda_1,\ldots, \lambda_m$ are distinct eigenvalues of $T$. Then \[E (\lambda_1,T) + \cdots+E (\lambda_m,T)\] is a direct sum. Furthermore, if $V$ is finite-dimensional, then
+    \[\dim E (\lambda_1,T) + \cdots+\dim E (\lambda_m,T) \leq \dim V\]
+\end{theorem}
+
+\subsubsection{Conditions for Diagonalizability}
+
+\begin{theorem}
+    conditions equivalent to diagonalizability\\
+
+    Suppose $V$ is finite-dimensional and $T \in \mathcal{L}(V)$. Let $\lambda_1,\ldots, \lambda_m$ denote the distinct eigenvalues of $T$. Then the following are equivalent.
+
+    (a) $T$ is diagonalizable.
+
+    (b) $V$ has a \textbf{basis} consisting of eigenvectors of $T$.
+
+    (c) $V = E (\lambda_1,T)\oplus\cdots\oplus E (\lambda_m,T)$.
+
+    (d) $\dim V = \dim E (\lambda_1,T)+ \cdots + \dim E (\lambda_m,T)$
+\end{theorem}
+
+\begin{theorem}
+    enough eigenvalues implies diagonalizability\\
+    
+    Suppose $V$ is finite-dimensional and $T\in\mathcal{L}(V)$ has $\dim V$ \textbf{distinct} eigenvalues. Then $T$ is diagonalizable.
+\end{theorem}
+
+\begin{theorem}
+    \textbf{necessary and sufficient} condition for diagonalizability\\
+
+    Suppose $V$ is finite-dimensional and $T \in \mathcal{L}(V)$. Then $T$ is diagonalizable if and only if the minimal polynomial of $T$ equals $(z - \lambda_1)\cdots(z - \lambda_m)$ for some list of \textbf{distinct} numbers $\lambda_1,\ldots, \lambda_m \in \FF$.
+\end{theorem}
+
+\subsubsection{Gershgorin Disk Theorem}
+
+\begin{definition}
+    Gershgorin disks\\
+
+    Suppose $T \in \mathcal{L}(V)$ and $v_1,\ldots,v_n$ is a basis of $V$. Let $A$ denote the matrix of $T$ with respect to this basis. A Gershgorin disk of $T$ \textbf{with respect to the basis} $v_1, \ldots,v_n$ is a \textbf{set} of the form
+    \[\{z \in \FF : |z - A_{j,j}| \leq \sum_{k = 1, k \neq j}^n |A_{j,k}|\}\]
+    where $j \in \{1,\ldots,n\}$
+\end{definition}
+
+\begin{theorem}
+    Gershgorin disk theorem\\
+
+    Suppose $T \in \mathcal{L}(V)$ and $v_1,\ldots,v_n$ is a basis of $V$. Then each eigenvalue of $T$ is contained in some Gershgorin disk of $T$ with respect to the basis $v_1,\ldots,v_n$
+\end{theorem}
+
+This theorem tells us that if the nondiagonal entries of $A$ are small, then each eigenvalue of $T$ is \textbf{near} a diagonal entry of $A$.
+
+\begin{exercise}
+    Suppose $V$ is a finite-dimensional complex vector space and $T \in \mathcal{L}(V)$. Prove that $T$ is diagonalizable if and only if
+    \[V =null(T - \lambda I)\oplus range(T - \lambda I)~\text{for every}~ \lambda  \in \CC\]
+\end{exercise}
+
+\begin{solution}
+    First you can show that $T$ is diagonalizable $\Leftrightarrow$ $T - \lambda I$ is diagonalizable.
+
+    Assume that $(z-\lambda_1)\cdots(z-\lambda_n)$ is the minimal polynomial of $T$ and $\lambda_1,\ldots,\lambda_n$ are distinct eigenvalues.
+
+    Therefore $(T - \lambda_1 I)\cdots(T - \lambda_n I) = 0$, $(T - \lambda I - (\lambda_1 - \lambda) I) \cdots (T - \lambda I - (\lambda_n - \lambda) I)= 0$ which implies that $T - \lambda I$ is diagonalizable $\forall \lambda \in \CC$\\
+
+    If $\n T = \{0\}$ then the proof has done.
+
+    So you can assume $v_1,\ldots,v_k$ is corresponding to eigenvalue $0$, and the $v_{k+1},\ldots,v_n$ corresponding to the non-zero eigenvalues $\lambda_1,\ldots,\lambda_m$, notice that
+    \[
+    \begin{aligned}
+        \range T &= \spans(Tv_{k+1},\ldots,Tv_n) =\spans( \lambda_{i_{k + 1}} v_{k+1},\ldots,\lambda_{i_{n}} v_n )\\
+        &= \spans(v_{k+1},\ldots,v_n)\\
+    \end{aligned}    
+    \]
+    so
+    \[
+    \begin{aligned}
+    V &= \spans(v_1,\ldots,v_k) \oplus \spans(v_{k + 1},\ldots,v_n) = \n T \oplus \range T\\
+    &= \n(T - \lambda I) \oplus \range (T - \lambda I)  \\
+    \end{aligned}  
+    \]
+\end{solution}
+
+\begin{exercise}
+    Find $R ,T \in \mathcal{L}(\FF^4)$ such that $R$ and $T$ each have $2, 6, 7$ as eigenvalues, $R$ and $T$ have no other eigenvalues, and there does not exist an invertible operator $S \in\mathcal{L}(\FF^4)$ such that $R = S^{-1}TS$.
+   
+\end{exercise}
+
+\begin{solution}
+    Refer to https://linearalgebras.com/5c.html 
+    
+    (13)
+\end{solution}
+
+\begin{exercise}
+    Suppose $T \in \mathcal{L}(\CC^3)$ is such that $6$ and $7$ are eigenvalues of $T$. Furthermore, suppose $T$ does not have a diagonal matrix with respect to any basis of $\CC^3$. Prove that there exists $(z_1,z_2,z_3) \in \CC^3$ such that
+    \[T(z_1,z_2,z_3) = (6 + 8z_1,7 + 8z_2,13 + 8z_3)\]
+\end{exercise}
+
+\begin{solution}
+    This exercise is quite hard to solve, since $T$ does not have a diagonal matrix with respect to any basis of $\CC^3$, so $8$ is not an eigenvalue of $T$, which means $T - 8 I$ is surjective. So there exists $v \in \CC^3, s.t.$
+    \[(T - 8I)(z_1z_2,z_3) = (6,7,13)\]
+    i.e.
+    \[T(z_1,z_2,z_3) = (6 + 8z_1,7 + 8z_2,13 + 8z_3)\]
+\end{solution}
+
+\begin{exercise}
+    Suppose $\FF = \CC$, $k$ is a positive integer, and $T \in \mathcal{L}(V)$ is invertible. Prove that $T$ is diagonalizable if and only if $T^k$ is diagonalizable
+\end{exercise}
+
+\begin{solution}
+    Remained unsolved.
+\end{solution}
+
+\begin{exercise}
+    Suppose that $T \in \mathcal{L}(V)$ is diagonalizable. Let $\lambda_1,\ldots, \lambda_m$ denote the distinct eigenvalues of $T$. Prove that a subspace $U$ of $V$ is invariant under $T$ if and only if there exist subspaces $U_1,\ldots,U_m$ of $V$ such that $U_k \subset E(\lambda_k,T)$ for each $k$ and $U  = U_1 \oplus \cdots\oplus U_m$.
+\end{exercise}
+
+\begin{solution}
+    $\Leftarrow$ is quite obvious.
+
+    $\Rightarrow$: let $U_k = U \cap E(\lambda_k,T)$, this make sense because the intersection of two subspaces is still a subspace.
+
+    Since $T$ is diagonalizable, then 
+    \[V = E (\lambda_1,T)\oplus\cdots\oplus E (\lambda_m,T)\]
+    So $\forall u \in U, \exists E(\lambda_k,T), s.t. u \in E(\lambda_k,T)$ therefore $u \in U_k$, which indicate that $U \subset (U_1 + \cdots + U_m)$
+
+    On the other hand, for all $u \in (U_1 + \cdots + U_m)$, $u = u_1 + \cdots + u_m$, and $u_1,\ldots,u_m \in U$, which means that $u \in U$ and thus $(U_1 + \cdots + U_m) \subset U$
+    Therefore
+    \[U = U_1+\cdots + U_m\]
+    Since the eigenvectors corresponding to different eigenvalues are linearly-independent, so $u_1,\ldots,u_m$ are linearly-independent, which also shows 
+    \[U = U_1\oplus \cdots \oplus  U_m\]
+\end{solution}
+
+\begin{exercise}
+    Prove or give a counter example: If $T\in\mathcal{L}(V)$ and there exists a subspace $U$ of $V$ that is invariant under $T$ such that $T|_U$ and $T/U$ are both diagonalizable, then $T$ is diagonalizable.
+\end{exercise}
+
+\begin{solution}
+    Counter example:\\
+
+    Suppose $\dim V = 2$, and let $v_1,v_2$ be a basis of $V$, $U = \spans(v_1)$. Define $T$ by 
+    \[Tv_i = \begin{cases}
+        v_1,i = 1\\
+        v_1 + v_2, i = 2\\
+    \end{cases}\]
+    Therefore, by definition,
+    \[\forall v \in U, T|_U v = v \]
+    and $\forall v \in V, v = c_1 v_1 + c_2 v_2$, therefore 
+    \[T/U (v + U) = c_2 T/U (v_2 + U) = c_2 (Tv_2 + U) = c_2 (v_1 + v_2 + U) = c_1 v_1 + c_2 v_2 + U = v + U\]
+    Which implies that $T|_U$ and $T/U$ are both diagonalizable.\\
+
+    However, let $v = c_1 v_1 + c_2 v_2$,
+    \[v = c_1 v_1 + c_2 v_2\]
+    \[Tv = (c_1 + c_2) v_1 + c_2 v_2\]
+    \[T^2 v = (c_1 + 2c_2) v_1 + c_2 v_2\]
+    Therefore
+    \[T^2 - 2T + I = 0\]
+    So the minimal polynomial of $T$ is $p = (z - 1)^2$, which means $T$ is not diagonalizable.\\
+
+    Why that? Think about the property of eigenvalues once again, we know that
+    \[(\text{minimal polynomial of}~ T|_U) \times (\text{minimal polynomial of}~ T/U)\]
+    is a polynomial multiple of the minimal polynomial of $T$, but what if $T|_U$ and $T/U$ have common eigenvalues? That might lead to that the minimal polynomial of $T$ have some $(z - \lambda_i)$ with power greater than $1$
+\end{solution}
+
+\subsection{Commuting Operators}
+\begin{definition}
+    commute\\
+
+    • Two operators $S$ and $T$ on the same vector space commute if $ST = TS$.
+
+    • Two square matrices $A$ and $B$ of the same size commute if $AB = BA$.
+\end{definition}
+
+\begin{theorem}
+    commuting operators correspond to commuting matrices\\
+
+    Suppose $S,T \in \mathcal{L}(V)$ and $v_1,\ldots,v_n$ is a basis of $V$. Then $S$ and $ T$ commute if and only if $\mathcal{M}(S,(v_1,\ldots,v_n))$ and $\mathcal{M}(T,(v_1,\ldots,v_n))$ commute.
+
+\end{theorem}
+
+\begin{theorem}
+    eigenspace is invariant under commuting operator\\
+    
+    Suppose $S,T \in \mathcal{L}(V)$ commute and $\lambda \in \FF$. Then $E (\lambda,S)$ is invariant under $T$
+\end{theorem}
+
+\begin{theorem}
+    simultaneous diagonalizablity $\Leftrightarrow$ commutativity\\
+
+    Two diagonalizable operators on the same vector space \textbf{have diagonal matrices} with respect to \textbf{the same basis} if and only if the two operators commute.
+\end{theorem}
+
+\begin{theorem}
+    common eigenvector for commuting operators\\
+
+    \textbf{Every pair} of commuting operators on a finite-dimensional nonzero complex
+    vector space has \textbf{a common eigenvector}
+\end{theorem}
+
+\begin{theorem}
+    commuting operators are simultaneously upper triangularizable\\
+
+    Suppose $V$ is a finite-dimensional \textbf{complex} vector space and $S,T$ are commuting operators on $V$. Then there is a basis of $V$ with respect to which both $S$ and $T$ have \textbf{upper-triangular} matrices.
+\end{theorem}
+
+\begin{theorem}
+    eigenvalues of sum and product of commuting operators\\
+
+    Suppose $V$ is a finite-dimensional \textbf{complex} vector space and $S,T$ are commuting operators on $V$. Then
+
+    • every eigenvalue of $S + T$ is an eigenvalue of $S$ plus an eigenvalue of $T$,
+
+    • every eigenvalue of $ST$ is an eigenvalue of $S$ times an eigenvalue of $T$.
+\end{theorem}
+
+notice that if $V$ is over real numbers, then $S,T$ can have no eigenvalue but $ST,S + T $ have eigenvalues.
+
+\begin{exercise}
+    Suppose $D_x,D_y$ are the commuting partial differentiation operators on $\mathcal{P}_3(\RR^2)$ from that example. Find a basis of
+    $\mathcal{P}_3(\RR^2)$ with respect to which $D_x$ and $D_y$ each have an upper-triangular matrix.
+
+\end{exercise}
+
+\begin{solution}
+    Since $D_x,D_y$ are commute, so we just need to find one basis with respect to which has upper-triangle matrix.
+
+    Let $1,x,y,xy,x^2,y^2,x^2y,xy^2,x^3,y^3$ be a basis, not hard to verify that this basis is what we want.    
+\end{solution}
+
+\begin{exercise}
+    Suppose $V$ isafinite-dimensional nonzero complex vector space. Suppose that $\mathcal{E} \subset \mathcal{L}(V)$ is such that $S$ and $T$ commute for all $S,T \in \mathcal{E}$.
+
+    (a) Prove that there is a vector in $V$ that is an eigenvector for every element of $\mathcal{E}$.
+
+    (b) Prove that there is a basis of $V$ with respect to which every element of $\mathcal{E}$ has an upper-triangular matrix.
+
+    This exercise extends 5.78 and 5.80, which consider the case in which $\mathcal{E}$ contains only two elements. For this exercise, $\mathcal{E}$ may contain any number of elements, and $\mathcal{E}$ may even be an infinite set.
+\end{exercise}
+
+\begin{solution}
+    (a) let $\lambda$ be an eigenvalue of $S$, and for any $T \in \mathcal{E}, E(\lambda,S)$ is invariant under $T$, let $v$ be an eigenvector in $E(\lambda,S)$, this is also an eigenvector for all the $T \in \mathcal{E}$
+
+    (b)Suppose with respect to $\mathcal{B}$, the matrix of $S$ is upper-triangle, than all $T \in \mathcal{E}$, the matrix of $T$ is upper-triangle with respect to $\mathcal{B}$ 
+\end{solution}
+
+
+\section{Inner Product Spaces}
+
+\subsection{Inner Products and Norms}
+
+\subsubsection{Inner Products}
+
+\begin{definition}
+    dot product\\
+
+    For $x,y \in \RR^n$, the dot product of $x$ and $y$, denoted by $x \cdot y$, is defined by
+    \[x \cdot y = x_1y_1 +\cdots+x_n y_n\]
+    where $x = (x_1,\ldots,x_n)$ and $y = (y_1,\ldots,y_n)$.
+\end{definition}
+
+\begin{definition}
+    inner product\\
+
+    An inner product on $V$ is a function that takes each \textbf{ordered pair} $(u,v)$ of elements of $V$ to a number $\left<u,v\right> \in \FF$ and has the following properties.
+
+    \textbf{positivity}
+
+    $\left<v, v\right> \geq 0 ~\text{for all}~ v \in V$.
+
+    \textbf{definiteness}
+
+    $\left<v, v\right> = 0 ~\text{if and only if}~ v = 0$.
+
+    \textbf{additivity in first slot}(Notice it's the first slot)
+
+    $\left<u +v,w\right> = \left<u,w\right>+\left<v,w\right> ~\text{for all}~ u,v,w \in V$.
+
+    \textbf{homogeneity in first slot}
+
+    $\left<\lambda u,v\right> = \lambda\left<u,v\right> ~\text{for all}~ \lambda \in \FF ~\text{and all}~ u,v \in V$.
+    
+    \textbf{conjugate symmetry}
+    
+    $\left<u, v\right> = \overline{\left<v,u\right>} ~\text{for all}~ u,v \in V$
+\end{definition}
+
+\begin{definition}
+    inner product space\\
+
+    An inner product space is a vector space $V$ along with an inner product on $V$
+\end{definition}
+
+\begin{definition}
+    notation: V, W\\
+
+    For the rest of this chapter and the next chapter, $V$ and $W$ denote inner product spaces over $\FF$.
+\end{definition}
+
+\begin{theorem}
+    basic properties of an inner product\\
+
+    (a) For each fixed $v \in V$, the function that takes $u \in V$ to $\left<u,v\right>$ is a linear map from $V$ to $\FF$.
+
+    (b) $\left<0,v\right> = 0$ for every $v \in V$.
+
+    (c) $\left<v,0\right> = 0$ for every $v \in V$.
+
+    (d) $\left<u,v + w\right> = \left<u,v\right>+\left<u,w\right>$ for all $u,v,w \in V$.
+
+    (e) $\left<u, \lambda v\right> = \bar{\lambda}\left<u,v\right>$ for all $\lambda \in \FF$ and all $u,v \in V$.
+    
+\end{theorem}
+\subsubsection{Norms}
+
+\begin{definition}
+    norm, $\|v\|$\\
+
+    For $v \in V$, the norm of $v$, denoted by $\|v\|$, is defined by
+    \[\|v\| = \sqrt{\left<v,v\right>}\]
+\end{definition}
+
+\begin{theorem}
+    basic properties of the norm\\
+
+    Suppose $v \in V$.
+
+    (a) $\|v\| = 0$ if and only if $v = 0$.
+
+    (b) $\|\lambda v\| = |\lambda|\|v\|$ for all $\lambda \in \FF$.
+\end{theorem}
+
+\begin{definition}
+    orthogonal\\
+
+    Two vectors $u,v \in V$ are called orthogonal if $\left<u,v\right> = 0$.
+\end{definition}
+
+\begin{theorem}
+    orthogonality and $0$\\
+
+    (a) $0$ is orthogonal to every vector in $V$.
+
+    (b) $0$ is the \textbf{only} vector in $V$ that is orthogonal to itself
+\end{theorem}
+
+\begin{theorem}
+    Pythagorean theorem\\
+
+    Suppose $u,v \in V$. If $u$ and $v$ are orthogonal, then $\|u +v\|^2 = \|u\|^2 +\|v\|^2$.
+\end{theorem}
+
+\begin{theorem}
+    an orthogonal decomposition\\
+
+    Suppose $u,v \in V$, with $v \neq 0$. Set $c = \dfrac{\left<u,v\right>}{\|v\|^2}$and $w = u -  \dfrac{\left<u,v\right>}{\|v\|^2}$ Then $u =cv+w$ and $\left<w,v\right>=0$.
+\end{theorem}
+
+\begin{theorem}
+    Cauchy-Schwarz inequality\\
+
+    Suppose $u,v \in V$. Then
+    \[|\left<u, v\right>| \leq \|u\|\|v\|\]
+    This inequality is an equality if and only if one of $u,v$ is a scalar multiple of the other.
+\end{theorem}
+
+With this inequality and the vector space of functions, we can prove some integral inequalities easily.
+
+
+If $f,g$ are continuous real-valued functions on $[-1,1]$, then
+\[\left|\int_{-1}^{1}fg\right| \leq {\int_{-1}^{1}f^2}{\int_{-1}^{1}g^2}\]
+
+as follows from applying the Cauchy-Schwarz inequality to Example 6.3(c).
+
+\begin{theorem}
+    triangle inequality\\
+
+    Suppose $u,v \in V$. Then in this triangle, the length of $u +v$ is less than the length of $u$ plus the length of $v$.
+    \[\|u +v\| \leq \|u\|+\|v\|\]
+    This inequality is an equality if and only if one of $u,v$ is a \textbf{nonnegative real} multiple of the other.
+\end{theorem}
+
+\begin{theorem}
+    parallelogram equality\\
+
+    Suppose $u,v \in V$. Then the diagonals of this parallelogram are $u +v$ and $u-v$.
+    \[\|u +v\|^2 +\|u-v\|^2 = 2(\|u\|^2 +\|v\|^2)\].
+\end{theorem}
+
+\begin{exercise}
+    Suppose $u,v \in V$. Prove that $\left<u,v\right> = 0 \Leftrightarrow \|u\| \leq \|u+av\|$ for all $a \in \FF$.  
+\end{exercise}
+
+\begin{solution}
+    As you have calculated, the inequality $\|u\|^2\leq \|u+av\|^2$ constrains the real part of $Re(\bar{a}\left<u,v\right>)$, because
+   \[\|u\|^2\leq \|u+av\|^2=\left<u+av,u+av\right>=\|u\|^2+2Re(\bar{a}\left<u,v\right>)+|a|^2 \|v\|^2\]
+   gives us
+   
+   \[0\leq 2Re(\bar{a}\left<u,v\right>)+|a|^2\|v\|^2\]
+   
+    We can use the freedom in choosing a to compute both the real and imaginary parts of $\left<u,v\right>$. We accomplish this by choosing real a in the first case and imaginary a in the second.
+   
+    Specifically, let $\dfrac{\left<u,v\right>}{\|v\|}=x+iy$, for $x,y\in \RR$ and consider two cases $a=-\dfrac{x}{\|v\|}$ and $a = \dfrac{-iy}{\|v\|}$. Substituting, we get  
+   \[0\leq -2Re(x(x+iy))+x^2=-2x^2+x^2=-x^2\]
+   \[0\leq 2Re(iy(x+iy))+y^2=-2y^2+y^2=-y^2\]
+    which means that $x^2=y^2=0$ and hence $\left<u,v\right>=0$.
+\end{solution}
+
+\begin{exercise}
+    Suppose $v_1,\ldots,v_n$ is a basis of $V$ and $T \in \mathcal{L}(V)$. Prove that if $\lambda$ is an eigenvalue of $T$, then
+    \[|\lambda|^2 \leq \sum_{h = 1}^{n}\sum_{k = 1}^{n}|\mathcal{M}(T)_{h,k}|^2\]
+    where $\mathcal{M}(T)_{h,k}$ denotes the entry in row $j$, column $k$ of the matrix of $T$ with respect to the basis $v_1,\ldots,v_n$.
+\end{exercise}
+
+\begin{solution}
+    Let $v_1,\ldots,v_n$ be a basis of $V$, which have $\|v_i\| = 1$and $T \in \mathcal{L}(V)$. Suppose $\lambda$ is an eigenvalue of $T$ with eigenvector $v$. Then, we have $T(v) = \lambda v$. Taking the norm of both sides, we get $|\lambda|^2 \|v\|^2 = \|\lambda v\|^2 = \|T(v)\|^2$. Since $v_1,\ldots,v_n$ is a basis of $V$, we can write $v$ as a linear combination of $v_1,\ldots,v_n$, say $v = a_1v_1 + \cdots + a_nv_n$. Then, we have $\|v\|^2 = |a_1|^2 + \cdots + |a_n|^2$. Now, we have
+\begin{align*}
+\|Tv\|^2 &= \|T(a_1v_1 + \cdots + a_nv_n)\|^2 \\
+&= \|a_1T(v_1) + \cdots + a_nT(v_n)\|^2 \\
+&=\left\| \sum_{k = 1}^{n} a_k \sum_{h = 1}^{n}\mathcal{M}(T)_{h,k} v_h\right\|^2 \\
+&=\left\| \sum_{h = 1}^{n}  v_h\sum_{k = 1}^{n} \mathcal{M}(T)_{h,k}a_k \right\|^2 \\
+&\leq\left\| \sum_{h = 1}^{n}  v_h\sqrt{\parameter{\sum_{k = 1}^{n} |\mathcal{M}(T)_{h,k}|^2}\parameter{\sum_{k = 1}^{n} | a_k|^2}} \right\|^2 \\
+&\leq \sum_{h = 1}^{n}\parameter{\sum_{k = 1}^{n} |\mathcal{M}(T)_{h,k}|^2}\parameter{\sum_{k = 1}^{n} | a_k|^2}  \|v_h\|^2  \\
+&= \|v\|^2 \sum_{h = 1}^{n}\sum_{k = 1}^{n}|\mathcal{M}(T)_{h,k}|^2\\
+\end{align*}
+Since
+\[\|\lambda v\|^2 = |\lambda|^2 \|v\|^2 = \|Tv\|^2 \leq  \|v\|^2 \sum_{h = 1}^{n}\sum_{k = 1}^{n}|\mathcal{M}(T)_{h,k}|^2\]
+we finished our proof.
+\end{solution}
+
+\begin{exercise}
+    Suppose $v_1,\ldots,v_m \in V$ are such that $\|v_k\| \leq 1$ for each $k = 1,\ldots,m$. Show that there exist $a_1,\ldots,a_m \in \{1,-1\}$ such that $\|a_1v_1 + \cdots+a_mv_m\| \leq \sqrt{m}$.   
+\end{exercise}
+
+\begin{solution}
+    Use induction.
+
+    $k = 1$ is obvious.\\
+
+    suppose $k = p$ satisfy this inequality, then when $k = p + 1$,
+    \[
+    \begin{aligned}
+        &\left<a_1v_1 + \cdots+a_{p + 1}v_{p + 1},a_1v_1 + \cdots+a_{p +1}v_{p + 1}\right>\\
+        &=\left<a_1v_1 + \cdots+a_{p}v_{p},a_1v_1 + \cdots+a_{p}v_{p}\right> \\
+        &+ \left<a_{p + 1}v_{p + 1},a_{p +1}v_{p + 1}\right> + 2a_{p +1} Re(\left<a_1v_1 + \cdots+a_{p}v_{p},v_{p + 1}\right>) \\
+        &\leq m + 1 + 2a_{p +1} Re(\left<a_1v_1 + \cdots+a_{p}v_{p},v_{p + 1}\right>)
+    \end{aligned} 
+    \]
+
+    if $Re(\left<a_1v_1 + \cdots+a_{p}v_{p},v_{p + 1}\right>) \geq 0$, then let $a_{p + 1} = -1$,\\
+    
+    if $Re(\left<a_1v_1 + \cdots+a_{p}v_{p},v_{p + 1}\right>) < 0$, then let $a_{p + 1} = 1$
+\end{solution}
+
+\begin{exercise}
+    Suppose $p > 0$. Prove that there is an inner product on $\RR^2$ such that the associated norm is given by
+    \[\|(x, y)\| = (|x|^p + |y|^p)^\frac{1}{p}\]
+    for all $(x,y) \in \RR^2$ if and only if $p = 2$.
+\end{exercise}
+
+\begin{solution}
+    $\Leftarrow$ is obvious
+
+    $\Rightarrow$, due to the positivity, $p$ must be a even number, and norm associated with the inner product must obey the parallelogram equality, so $2(\|(1,0)\|^2 + \|(0,1)\|^2) = \|(1,1)\|^2 + \|(1,-1)\|^2 = 2 \cdot 2^\frac{2}{p}$
+\end{solution}
+
+\begin{exercise}
+    Suppose $V$ is a real inner product space. Prove that
+    \[\left<u, v\right> = \dfrac{\|u+v\|^2 -\|u-v\|^2}{4}\]
+    for all $u,v \in V$.
+
+    Suppose Vis a complex inner product space. Prove that
+    \[\left<u, v\right> = \dfrac{\|u+v\|^2 -\|u-v\|^2 +\|u+iv\|^2i -\|u-iv\|^2i}{4}\]
+    for all $u,v \in V$.
+\end{exercise}
+
+\begin{solution}
+    let $v = cu + w$
+\end{solution}
+
+\begin{exercise}
+    A norm on a vector space $U$ is a function
+    \[\|\cdot\|: U \rightarrow [0,\infty)\]
+    such that $\|u\| = 0$ if and only if $u = 0$, $\|\alpha u\| = |\alpha |\|u\|$ for all $\alpha \in \FF$ and all $u \in U$,and $\|u+v\| \leq \|u\|+\|v\|$ forall $u,v \in U$. Prove that a norm satisfying the parallelogram equality comes from an inner product (in other words, show that if $\|\cdot\|$ is a norm on $U$ satisfying the parallelogram equality, then there is an inner product $\left<\cdot,\cdot\right>$ on $U$ such that $\|u\| = \left<u,u\right>^\frac{1}{2}$ for all $u \in U$).
+\end{exercise}
+
+\begin{solution}
+    This part is hard, go to 
+    
+    https://zhuanlan.zhihu.com/p/597194291
+\end{solution}
+
+\begin{exercise}
+    Fix a positive integer $n$. The Laplacian $\Delta p$ of a twice differentiable real valued function $p$ on $\RR^n$ is the function on $\RR^n$ defined by
+    \[\Delta p = \dfrac{\partial^2 p}{\partial x_1^2} + \cdots + \dfrac{\partial^2 p}{\partial x_n^2}\]
+    The function $p$ is called harmonic if $\Delta p = 0$.
+
+    A polynomial on $\RR^n$ is a linear combination (with coefficients in $\RR$) of functions of the form $x_1^{m_1}\cdots x_n^{m_n}$, where $m_1,\ldots,m_n$ are nonnegative integers.
+
+    Suppose $q$ is a polynomial on $\RR^n$. Prove that there exists a harmonic polynomial $p$ on $\RR^n$ such that $p(x) = q(x)$ for every $x \in \RR^n$ with $\|x\| = 1$.
+
+    The only fact about harmonic functions that you need for this exercise is that if $p$ is a harmonic function on $\RR^n$ and $p(x) = 0$ for all $x \in \RR^n$ with $\|x\| = 1$, then $p = 0$.
+
+    Hint: A reasonable guess is that the desired harmonic polynomial $p$ is of the form $q+(1-\|x\|^2)r$ for some polynomial $r$. Prove that there is a polynomial $r on \RR^n$ such that $q +(1-\|x\|^2)r$ is harmonic by defining an operator $T$ on a suitable vector space by $Tr = \Delta ((1-\|x\|^2)r)$ and then showing that $T$ is injective and hence surjective.
+\end{exercise}
+
+\begin{solution}
+    You can just follow the hint.
+\end{solution}
+
+\subsection{Orthonormal Bases}
+\subsubsection{Orthonormal Lists and the Gram-Schmidt Procedure}
+\begin{definition}
+    orthonormal\\
+
+    • A list of vectors is called \textbf{orthonormal} if each vector in the list has \text{norm} $1$ and is orthogonal to all the other vectors in the list.
+
+    • In other words, a list $e_1,\ldots,e_m$ of vectors in $V$ is orthonormal if
+    \[\left<e_j,e_k\right> = \begin{cases}
+        1 , if j = k\\
+        0 , if j \leq k\\
+    \end{cases}\]
+
+    for all $j, k \in \{1,\ldots,m\}$
+\end{definition}
+
+\begin{theorem}
+    norm of an orthonormal linear combination\\
+
+    Suppose $e_1,\ldots,e_m$ is an orthonormal list of vectors in $V$. Then
+    \[\|a_1e_1 + \cdots+a_me_m\|^2 = |a_1|^2 + \cdots+|a_m|^2\]
+    for all $a_1, \ldots,a_m \in \FF$
+\end{theorem}
+
+\begin{theorem}
+    orthonormal lists are linearly independent\\
+
+    Every orthonormal list of vectors is linearly independent.
+\end{theorem}
+
+\begin{theorem}
+    Bessel's inequality\\
+
+    Suppose $e_1,\ldots,e_m$ is an orthonormal list of vectors in $V$. If $v \in V$ then
+    \[|\left<v, e_1\right>|^2 + \cdots + |\left<v,e_m\right>|^2 \leq \|v\|^2\]
+\end{theorem}
+
+\begin{definition}
+    orthonormal basis\\
+
+    An orthonormal basis of $V$ is an orthonormal list of vectors in $V$ that is also a basis of $V$.
+\end{definition}
+
+\begin{theorem}
+    orthonormal lists of the right length are orthonormal bases\\
+
+    Suppose $V$ is finite-dimensional. Then every orthonormal list of vectors in $V$ of length $\dim V$ is an orthonormal basis of $V$
+\end{theorem}
+
+\begin{theorem}
+    writing a vector as a linear combination of an orthonormal basis\\
+
+    Suppose $e_1,\ldots,e_n$ is an orthonormal basis of $V$ and $u,v \in V$. Then
+
+    (a) $v = \left<v,e_1\right>e_1 + \cdots+\left<v,e_n\right>e_n$,
+
+    (b) $\|v\|^2 = |\left<v,e_1\right>|^2 + \cdots + |\left<v,e_n\right>|^2$,
+
+    (c) $\left<u,v\right> = \left<u,e_1\right>\overline{\left<v,e_1\right>} + \cdots + \left<u,e_n\right>\overline{\left<v,e_n\right>}$
+\end{theorem}
+
+\begin{theorem}
+    Gram-Schmidt procedure\\
+
+    Suppose $v_1,\ldots,v_m$ is a linearly independent list of vectors in $V$. Let $f_1 = v_1$.
+
+    For $k = 2,\ldots,m$, define $f_k$ inductively by
+    \[f_k = v_k - \dfrac{\left<v_k, f_1\right>}{ \| f_1\|^2 } - \cdots - \dfrac{\left<v_{k}, f_{k-1}\right>}{\| f_{k - 1}\|^2}\]
+
+    For each $k = 1,\ldots,m$, let $e_k = \dfrac{f_k}{\| f_k\|}$. Then $e_1,\ldots,e_m$ is an orthonormal list of vectors in $V$ such that
+    \[span(v1,\ldots,vk) = span(e_1,\ldots,e_k)\]
+    for each $k = 1,\ldots,m$.
+\end{theorem}
+
+\begin{theorem}
+    existence of orthonormal basis\\
+
+    Every \textbf{finite-dimensional} inner product space has an orthonormal basis.
+\end{theorem}
+
+\begin{theorem}
+    every orthonormal list extends to an orthonormal basis\\
+
+    Suppose $V$ is finite-dimensional. Then every orthonormal list of vectors in $V$ can be extended to an orthonormal basis of $V$.
+\end{theorem}
+
+\begin{theorem}
+    upper-triangular matrix with respect to some orthonormal basis\\
+
+    Suppose $V$ is finite-dimensional and $T \in \mathcal{L}(V)$. Then $T$ has an upper triangular matrix with respect to \textbf{some orthonormal basis} of $V$ \textbf{if and only if} the minimal polynomial of $T$ equals $(z - \lambda_1)\cdots(z - \lambda_m)$ for some $\lambda_1,\ldots, \lambda_m \in \FF$.
+\end{theorem}
+
+\begin{theorem}
+    Schur's theorem\\
+
+    Every operator on a finite-dimensional \textbf{complex} inner product space has an upper-triangular matrix with respect to some orthonormal basis
+\end{theorem}
+
+
+\subsubsection{Linear Functionals on Inner Product Spaces}
+
+\begin{definition}
+    linear functional, dual space, $V'$\\
+
+    • Alinear functional on $V$ is a linear map from $V$ to $\FF$.
+
+    • The dual space of $V$, denoted by $V'$, is the vector space of all linear functionals on $V$. In other words, $V' = \mathcal{L}(V,\FF)$.
+\end{definition}
+
+\begin{example}
+    example: linear functional on $\mathcal{P}_5(\RR)$\\
+
+    The function $\varphi: \mathcal{P}_5(\RR) \rightarrow \RR$ defined by
+    \[\varphi(p) = \int_{-1}^{1}p(t) \cos(\pi t) \, dt\]
+    is a linear functional on $\mathcal{P}_5(\RR)$.
+\end{example}
+
+\begin{theorem}
+    Riesz representation theorem\\
+
+    Suppose $V$ is finite-dimensional and $\varphi$ is a linear functional on $V$. Then there is a \textbf{unique} vector $v \in V$ such that
+    \[\varphi(u) = \left<u,v\right>\]
+    for every $u \in V$.
+
+    In it 
+    \[ v =\overline{\varphi(e_1)}e_1 +\cdots+\overline{\varphi(e_n)}e_n,\]
+\end{theorem}
+
+    The right side of the equation above \textbf{seems to} depend on the orthonormal basis $e_1, \ldots,e_n$ as well as on $\varphi$. However, $v$ is uniquely determined by $\varphi$. Thus the right side of the equation above is the same regardless of which orthonormal basis $e_1,\ldots,e_n$ of $V$ is chosen.
+
+\begin{exercise}
+    (a) Suppose $\theta \in \RR$. Show that both
+    \[(\cos\theta,\sin\theta),(-\sin\theta,\cos\theta) and (\cos\theta,\sin\theta),(\sin\theta,-\cos\theta)\]
+    are orthonormal bases of $\RR^2$.
+
+    (b) Show that each orthonormal basis of $\RR^2$ is of the form given by one of the two possibilities in (a)
+\end{exercise}
+
+\begin{solution}
+    (a) is trivial, we skip this.
+
+    (b) suppose $u = (\cos \theta, \sin \theta)$, then $v = (\cos (\theta + \frac{\pi}{2}, \sin (\theta + \frac{\pi}{2}))) ~\text{or}~ (\cos (\theta - \frac{\pi}{2}, \sin (\theta - \frac{\pi}{2})))$, then just simplify.
+
+    So this exercise is easy but quite hard to think.
+\end{solution}
+    
+\begin{exercise}
+    Suppose $f: [-\pi,\pi] \to \RR$ is continuous. For each nonnegative integer $k$, define
+    \[a_k = \dfrac{1}{\sqrt{\pi}} \int_{-\pi}^{\pi}f(x)\cos(kx)\, dx ~\text{and}~ b_k = \dfrac{1}{\sqrt{\pi}} \int_{-\pi}^{\pi}f(x)\sin(kx)\, dx\]
+    Prove that
+    \[\dfrac{a_0^2}{2} + \sum_{k = 1}^\infty (a_k^2 + b_k^2) \leq  \int_{-\pi}^{\pi}f^2\]
+
+    The inequality above is actually an equality for all continuous functions $f : [-\pi,\pi] \to \RR$. However, proving that this inequality is an equality involves Fourier series techniques beyond the scope of this book
+\end{exercise}
+
+\begin{solution}
+    Sorry to skip this exercise.
+\end{solution}
+
+\begin{exercise}
+    Suppose $e_1,\ldots,e_n$ is an orthonormal basis of $V$.
+
+    (a) Prove that if $v_1,\ldots,v_n$ are vectors in $V$ such that
+    \[\|e_k - v_k\| < \dfrac{1}{\sqrt{n}}\]
+    for each $k$, then $v_1,\ldots,v_n$ is a basis of $V$.
+
+    (b) Show that there exist $v_1,\ldots,v_n \in V$ such that
+    \[\|e_k - v_k\| \leq  \dfrac{1}{\sqrt{n}}\]
+    for each $k$, but $v_1,\ldots,v_n$ is not linearly independent.
+
+    This exercise states in (a) that an appropriately small perturbation of an orthonormal basis is a basis. Then (b) shows that the number $\frac{1}{\sqrt{n}}$ on the right side of the inequality in (a) cannot be improved upon.
+\end{exercise}
+
+\begin{solution}
+    (a)Suppose there are non-zero $a_1,\ldots,a_n$ s.t. $a_1 v_1 + \cdots + a_n v_n = 0$, therefore
+    \begin{align*}
+    \|a_1e_1 + \cdots + a_ne_n\| &= \|a_1e_1 + \cdots + a_ne_n - a_1v_1 - \cdots - a_nv_n + a_1v_1 + \cdots + a_nv_n\| \\
+    &\leq \|a_1(e_1 - v_1)\| + \cdots + \|a_n(e_n - v_n)\| + \|a_1v_1 + \cdots + a_nv_n\| \\
+    &< \dfrac{1}{\sqrt{n}}|a_1| + \cdots + \dfrac{1}{\sqrt{n}}|a_n| + |a_1v_1 + \cdots + a_nv_n| \\
+    &\leq \sqrt{\parameter{\dfrac{1}{n} + \cdots + \dfrac{1}{n}}(a_1^2 + \cdots + a_n^2)}+ |a_1v_1 + \cdots + a_nv_n| \\
+    &= \sqrt{a_1^2 + \cdots + a_n^2} + |a_1v_1 + \cdots + a_nv_n|\\
+    &= \|a_1e_1 + \cdots + a_ne_n\|\\
+    \end{align*}
+    which resulted in contradiction.
+
+    (b)let $v_k = e_k - \dfrac{1}{n}(e_1 + \cdots + e_n)$, we can verify that $\|v_k - e_k\| = \dfrac{1}{\sqrt{n}}$, but
+    \[v_1 + \cdots + v_n = (e_1 + \cdots + e_n) - n \cdot \dfrac{1}{n}  (e_1 + \cdots + e_n) = 0\]
+    which shows that $v_1,\ldots,v_n$ are linearly-dependent.
+\end{solution}
+
+
+\begin{exercise}
+    Suppose $v_1,\ldots,v_m$ is a linearly independent list in $V$. Explain why the orthonormal list produced by the formulas of the Gram-Schmidt procedure is the only orthonormal list $e_1,\ldots,e_m$ in $V$ such that $\left<v_k,e_k\right> > 0$ and $span(v_1,\ldots,v_k) = span(e_1,\ldots,e_k)$ for each $k = 1,\ldots,m$.
+\end{exercise}
+
+\begin{solution}
+    Hint: suppose there is a basis that is diffierent, then exists $j \in \{1,\ldots,m\}$ that is the first vector that is different. Then prove that in order to suffice the condition $\left<v_k,e_k\right> > 0$ and $span(v_1,\ldots,v_k) = span(e_1,\ldots,e_k)$, these two vectors must be identical. 
+\end{solution}
+
+\begin{exercise}
+    Suppose $\FF = \CC$, $V$ is finite-dimensional, $T \in \mathcal{L}(V)$, and all eigenvalues of $T$ have absolute value less than $1$. Let $\varepsilon > 0$. Prove that there exists a positive integer $m$ such that $\|T^m v\| \leq \varepsilon\|v\|$ for every $v \in V$.   
+\end{exercise} 
+    
+\begin{solution}
+    [The solution written by the author!]\\
+
+    Here is what I had in mind when I added that exercise to the third edition of Linear Algebra Done Right:\\
+
+    By Schur's Theorem (which is in the same section as this exercise), there is an orthonormal basis of $V$ such that $T$ has an upper-triangular matrix $A$ with respect to that basis. Orthonormality is important so that we can compute norms. We will work with $A$ instead of $T$ and $z\in \CC^n$ instead of $v$.\\
+    
+    The entries on the diagonal of $A$ are the eigenvalues of $T$. Thus all the diagonal entries of $A$ have absolute value less than $1$.\\
+    
+    If we replace each entry in $A$ \textbf{with its absolute value} and each coordinate of $z$ with its absolute value, then $\|A^m z\|$ gets larger or remains the same for each positive integer m, and $\|z\|$ remains the same. Thus we can assume without loss of generality that each entry of $A$ is nonnegative.\\
+    
+    If we now replace each entry on the diagonal of $A$ with the \textbf{largest element} on the diagonal of $A$, then $\|A^m z\|$ gets larger or remains the same for each positive integer $m$. Thus we can assume without loss of generality that there exists a nonnegative number $\lambda <1$ such that every entry of the diagonal $A$ equals $\lambda$.\\
+    
+    We can write
+    \[A=\lambda I+N\]
+    where $N$ is an upper-triangular matrix whose diagonal entries all equal $0$. Thus $N^n=0$.\\
+    
+    Let $m$ be a positive integer with $m > n$. Then
+    
+    \[\begin{aligned}
+        A^m =(\lambda& I+N)^m\\
+        =\lambda^m& I+m\lambda^{m-1}N + \dfrac{m(m-1)}{2} \lambda^{m-2} N^2 \\
+        &+ \dfrac{m(m-1)(m-2)}{2\cdot 3}\lambda^{m-3} N^3 +\cdots+ \dfrac{m(m-1)\cdots(m-n+1)}{(n-1)!}\lambda^{m-n+1}N^{n-1}\\
+    \end{aligned}\]
+    where the other terms in the binomial expansion do not appear because $N^k=0$ for $k\geq n$. In the expression above, the coefficients of the $n$ matrices $I, N, N^2, N^3, \ldots, N^{n-1}$ are all bounded by \[\dfrac{m^n\lambda^m}{\lambda^{n-1}}\]
+
+    Think of $n$ and $\lambda$ as fixed. Then the limit of the expression above as $m\to \infty$ equals $0$ (because $0\leq \lambda <1$).\\
+    
+    Because the sum above has only a fixed number $n$ of terms, we thus see that by taking $m$ sufficiently large, we can make all the entries of the matrix $A^m$ have absolute value as small as we wish. In particular, there exists a positive integer $m$ such every entry of $A^m$ has absolute value less than $\varepsilon/n$.\\
+    
+    The definition of matrix multiplication and the Cauchy-Schwarz Inequality imply that for each $j$, the entry in row $j$, column $1$ of $A^m z$  has absolute value at most $\varepsilon\|z\|/\sqrt{n}$. Thus $\|A^m z\|\leq \varepsilon\|z\|$, as desired.\\
+    
+    This exercise is, in my opinion, one of the harder exercises in the third edition of Linear Algebra Done Right if one uses only the tools available at that stage of the book. The proof becomes much clearer and cleaner if one uses the tools associated with the spectral radius in a Banach algebra, which shows the power of those tools.
+\end{solution}
+
+\begin{exercise}
+    Suppose $C[-1,1]$ is the vector space of continuous real-valued functions on the interval $[-1,1]$ with inner product given by
+    \[\left< f, g\right> = \int_{-1}^{1}fg\]
+    for all $f,g \in C[-1,1]$. Let $\varphi$ be the linear functional on $C[-1,1]$ defined by $\varphi(f) = f(0)$. Show that there does not exist $g \in C[-1,1]$ such that
+    \[\varphi(f) = \left<f,g\right>\]
+    for every $f \in C[-1,1]$.
+
+    This exercise shows that the Riesz representation theorem (6.42) does not hold on infinite-dimensional vector spaces without additional hypotheses on $V$ and $\varphi$.
+\end{exercise}
+
+\begin{solution}
+    I think it's more about the knowledge of the constructing functions, so I didn't copy the answer.
+
+    https://linearalgebras.com/6b.html
+\end{solution}
+
+Then there is an exercise about the metric space in the function analysis which is beyond our knowledge now.
+
+\begin{exercise}
+    Forall $u,v \in V$, define $d(u,v) = \|u-v\|$.
+
+    (a) Show that $d$ is a metric on $V$.
+
+    (b) Show that if $V$ is finite-dimensional, then $d$ is a complete metric on $V$
+    (meaning that every Cauchy sequence converges).
+
+    (c) Show that every finite-dimensional subspace of $V$ is a closed subset of $V$ (with respect to the metric $d$).
+\end{exercise}
+
+
+\subsection{Orthogonal Complements and Minimization Problems}
+
+\subsubsection{Orthogonal Complements}
+
+\begin{definition}
+    orthogonal complement, $U^\bot$\\
+
+    If $U$ is a subset of $V$, then the orthogonal complement of $U$, denoted by $U^\bot$, is the set of all vectors in $V$ that are orthogonal to \textbf{every vector} in $U$: 
+    \[U^\bot = \{v \in V : \left<u,v\right> = 0 ~\text{for every}~ u \in U\}\]
+\end{definition}
+
+\begin{theorem}
+    properties of orthogonal complement\\
+
+    (a) If $U$ is a subset of $V$, then $U^\bot$ is a subspace of $V$.
+
+    (b) $\{0\}^\bot = V$.
+
+    (c) $V^\bot = \{0\}$.
+
+    (d) If $U$ is a subset of $V$, then $U \cap U^\bot \subset {0}$.
+
+    (e) If $G$ and $H$ are subsets of $V$ and $G \subset H$, then $H^\bot \subset G^\bot$
+\end{theorem}
+
+\begin{theorem}
+    direct sum of a subspace and its orthogonal complement\\
+
+    Suppose $U$ is a finite-dimensional subspace of $V$. Then
+    \[V =U\oplus U^\bot\]
+\end{theorem}
+
+\begin{theorem}
+    dimension of orthogonal complement\\
+
+    Suppose $V$ is finite-dimensional and $U$ is a subspace of $V$. Then
+    \[\dim U^\bot = \dim V - \dim U\]
+\end{theorem}
+
+\begin{theorem}
+    orthogonal complement of the orthogonal complement\\
+    Suppose $U$ is a finite-dimensional subspace of $V$. Then
+    \[U =(U^\bot)^\bot\]
+\end{theorem}
+the result below can fail without the hypothesis that the subspace $U$ is finite dimensional.
+
+\begin{theorem}
+    $U^\bot =\{0\} \Leftrightarrow U = V$ (for $U$ a finite-dimensional subspace of $V$)\\
+
+    Suppose $U$ is a finite-dimensional subspace of $V$. Then
+    \[U^\bot =\{0\} \Leftrightarrow U=V\]
+\end{theorem}
+
+\begin{definition}
+    orthogonal projection, $P_U$\\
+
+    Suppose $U$ is a finite-dimensional subspace of $V$. The orthogonal projection of $V$ onto $U$ is the operator $P_U \in \mathcal{L}(V)$ defined as follows: For each $v \in V$,
+    write $v = u+w$, where $u \in U$ and $w \in U^\bot$. Then let $P_U v = u$.
+\end{definition}
+
+\begin{theorem}
+    properties of orthogonal projection $P_U$\\
+
+    Suppose $U$ is a finite-dimensional subspace of $V$. Then
+
+    (a) $P_U \in \mathcal{L}(V)$;
+
+    (b) $P_U u = u$ for every $u \in U$;
+
+    (c) $P_Uw = 0$ for every $w \in U^\bot$;
+
+    (d) $\range P_U = U$;
+
+    (e) $\n P_U = U^\bot$;
+
+    (f) $v - P_U v  \in U^\bot$ for every $v \in V$;
+
+    (g) $P_U^2 = P_U$;
+
+    (h) $\|P_Uv\| \leq \|v\|$ for every $v \in V$;
+
+    (i) if $e_1,\ldots,e_m$ is an orthonormal basis of $U$ and $v \in V$, then
+    \[P_Uv = \left<v,e_1\right>e_1 + \cdots+\left<v,e_m\right>e_m\]
+\end{theorem}
+
+\begin{theorem}
+    Riesz representation theorem, revisited\\
+
+    Suppose $V$ is finite-dimensional. For each $v \in V$, define $\varphi v \in V'$ by
+    \[\varphi v(u) = \left<u,v\right>\]
+    for each $u \in V$. Then $v \to \varphi v$ is a one-to-one function from $V$ onto $V'$.
+\end{theorem}
+
+Caution: The function $v \to \varphi_v$ is a \textbf{linear mapping} from $V$ to $V'$ if $\FF = \RR$. However, this function is \textbf{not linear} if $\FF = \CC$ because $\varphi_{\lambda v} = \bar{\lambda} \varphi_v ~if~ \lambda  \in \CC$.
+
+\subsubsection{Minimization Problems}
+
+\begin{theorem}
+    minimizing distance to a subspace\\
+
+    Suppose $U$ is a finite-dimensional subspace of $V$, $v \in V$, and $u \in U$. Then
+    \[\|v - P_U v \| \leq \|v- u\|\]
+    Furthermore, the inequality above is an equality if and only if $u = P_Uv$
+\end{theorem}
+
+We can use this to find the polynomial approximation of the function $\sin x$ on the interval $[-\pi,\pi]$, with better approximation than the Taylor series!
+
+\subsubsection{Pseudoinverse}
+
+\begin{theorem}
+    restriction of a linear map to obtain a one-to-one and onto map\\
+
+    Suppose $V$ is finite-dimensional and $T \in \mathcal{L}(V,W)$. Then $T|_{(\n T)^\bot}$ is a one to-one map of $(\n T)^\bot$ onto $\range T$.
+\end{theorem}
+
+\begin{definition}
+    pseudoinverse, $T^\dagger$ \\
+
+    Suppose that $V$ is finite-dimensional and $T \in \mathcal{L}(V,W)$. The pseudoinverse $T^\dagger  \in\mathcal{L}(W,V)$ of $T$ is the linear map from $W$ to $V$ defined by
+    \[T^\dagger w =(T|_{(\n T)^\bot})^{-1} P_{\range T} w\]
+    for each $w \in W$.
+\end{definition}
+
+\begin{theorem}
+    algebraic properties of the pseudoinverse\\
+
+    Suppose $V$ is finite-dimensional and $T \in \mathcal{L}(V,W)$.
+
+    (a) If $T$ is invertible, then $T^\dagger = T^{-1}$.
+
+    (b) $T T^\dagger  = P_{rangeT} =$ the orthogonal projection of $W$ onto $\range T$.
+
+    (c) $T^\dagger T = P_{(\n T)^\bot} =$ the orthogonal projection of $V$ onto $(\n T)^\bot$\\
+\end{theorem}
+
+\begin{theorem}
+    pseudoinverse provides best approximate solution or best solution\\
+
+    Suppose $V$ is finite-dimensional, $T \in \mathcal{L}(V,W), ~and~ b \in W$.
+
+    (a) If $x \in V$, then
+    \[\|T(T^\dagger b) -  b\|  \leq \|Tx - b\| \]
+    with equality if and only if $x \in T^\dagger b + \n T$.
+
+    (b) If $x \in T^\dagger b+ \n T$, then
+    \[\|T^\dagger b\| \leq \|x\|\]
+    with equality if and only if $x = T^\dagger b$.
+\end{theorem}
+
+\begin{exercise}
+    Suppose $e_1,\ldots,e_n$ is a list of vectors in $V$ with $\|e_k\| = 1$ for each $k = 1,\ldots,n$
+    and
+    \[\|v\|^2 = |\left<v,e_1\right>|^2 + \cdots + |\left<v,e_n\right>|^2\]
+    for all $v \in V$. Prove that $e_1,\ldots,e_n$ is an orthonormal basis of $V$.
+\end{exercise}
+
+\begin{solution}
+    let $v = e_i$ then
+    \[1 = 1 + |\left<e_i,e_1\right>|^2 +\cdots +  |\left<e_i,e_{i - 1}\right>|^2 + |\left<e_i,e_{i + 1}\right>|^2 +\cdots + |\left<e_i,e_n\right>|^2 \]
+    which implies that $\left<e_i,e_j\right> = 0$ for $i \neq j$, so $e_1,\ldots,e_n$ is an orthonormal list.\\
+
+    Then we show that $e_1,\ldots,e_n$ spans $V$.
+
+    let $U = \spans(e_1,\ldots,e_n)$, $V = U \oplus U^\bot$. So 
+    \[\forall v \in V, v = c_1 e_1 + \cdots + c_n e_n + w\] 
+    such that $u = c_1 e_1 + \cdots + c_n e_n \in U, w \in U^\bot$.
+
+    \[
+    \begin{aligned}
+        \|v\|^2 &= \left<u + w,u + w\right> \\
+        &= \left<u,u\right>+\left<u,w\right> + \left< w, u\right> + \left< w, w\right> \\
+        &= \left<u,u\right> + \left< w, w\right>\\
+        &= |c_1|^2 + \cdots + |c_n|^2 + \left< w, w\right>\\
+        &= |\left<v,e_1\right>|^2 + \cdots + |\left<v,e_n\right>|^2 + \left< w, w\right>\\
+    \end{aligned}    
+    \]
+    which implies that $w = 0$, thus we finished our proof.
+
+\end{solution}
+
+\begin{exercise}
+    Suppose $V$ is finite-dimensional and $P \in \mathcal(V)$ is such that $P^2 = P$ and
+    \[\|Pv\| \leq \|v\|\]
+    for every $v \in V$. Prove that there exists a subspace $U$ of $V$ such that $P = P_U$.
+\end{exercise}
+
+\begin{solution}
+    % This exercise give us a extremely strong condition $P^2 = P$, from which we can get the minimal polynomial $ p = z(z - 1)$ and even that $P$ is diagonalizable. And therefore we can get two eigenspace with eigenvalue $0$ and $1$. And then the proof is trivial.\\
+
+    % But it shouldn't be the true idea of this exercise.
+    Let $U = \range P$, so for $u \in U$, $\exists u = Pv$
+    \[u = Pv = P^2 v = P(Pv) = Pu \]
+
+    We have $V = \range P \oplus \n P$, for any $u \in \range P$ and $w \in \n P$ \[\|w\| = \|Pw\| = \|P(\lambda u + w)\| \leq \|\lambda u + w\|\]
+    which implies that $\left<u,w\right> = 0$. Since $u,w$ are arbitrarily chosen, $\range P \bot \n P$, the following is easy.
+
+    But actually this method still implicitly use the property of the eigenvalues.
+\end{solution}
+
+\begin{exercise}
+    Suppose $C[-1,1]$ is the vector space of continuous real-valued functions on the interval $[-1,1]$ with inner product given by
+    \[\left< f, g\right> = \int_{-1}^{1}fg\]
+    for all $f, g \in C[-1,1]$. Let $U$ be the subspace of $C[-1,1]$ defined by
+    \[U =\{f \in C[-1,1] : f(0) = 0\}\]
+
+    (a) Show that $U^\bot = \{0\}$.
+
+    (b) Show that 6.49 and 6.52 do not hold without the finite-dimensional hypothesis
+
+    [6.49 and 6.52 is ``direct sum of a subspace and its orthogonal complement and'' and `` orthogonal complement of the orthogonal complement'']
+\end{exercise}
+
+\begin{solution}
+    This exercise need to construct function and use the method in analysis.
+
+    (a)suppose $g \in U^\bot$ and $\exists x_0 \in (-1,0)\cup (0,1)$ s.t. $g(x_0) = c \neq 0$. Then $\exists U(x_0,\delta) \subset (-1,0)\cup (0,1) $ s.t. $x \in U(x_0,\delta), g(x) > \frac{c}{2}$ (we can assume that $c > 0$), we can construct $f \in U$ as follows:
+    \[f(x) = \begin{cases}
+        \dfrac{|x - x_0|}{\delta} , x \in U(x_0,\delta)\\
+        0, x \in (-1,0)\cup (0,1) \setminus U(x_0,\delta)\\
+    \end{cases}\]
+
+    Therefore we get \[\left<f,g\right> > \dfrac{c\delta}{2} > 0\]
+    Which means $\forall x \in (-1,0)\cup (0,1), g(x) = 0$, and then for the continuity of $g$, $g = 0$
+
+    (b) you can use the conclusion of (a).
+\end{solution}
+\section{Operators on Inner Product Spaces}
+
+\subsection{Self-Adjoint and Normal Operators}
+
+\subsubsection{Adjoints}
+
+\begin{definition}
+    adjoint, $T^\ast$\\
+
+    Suppose $T \in \mathcal{L}(V,W)$. The adjoint of $T$ is the function $T^\ast: W \to V$ such that
+    \[\left<Tv,w\right> = \left<v,T^\ast w\right>\]
+    for every $v \in V$ and every $w \in W$.
+\end{definition}
+
+a common technique for computing $T^\ast$: start with a formula for $\left<Tv,w\right>$ then manipulate it to get just $v$ in the first slot; the entry in the second slot will then be $T^\ast w$.\\
+
+\begin{theorem}
+    adjoint of a linear map is a linear map\\
+
+    If $T \in \mathcal{L}(V,W)$, then $T^\ast \in \mathcal{L}(W,V)$
+\end{theorem}
+
+\begin{theorem}
+    properties of the adjoint\\
+
+    Suppose $T \in \mathcal{L}(V,W)$. Then
+
+    (a) $(S +T)^\ast = S^\ast +T^\ast for all S \in \mathcal{L}(V,W)$;
+
+    (b) $(\lambda T)^\ast = \overline{\lambda} T^\ast for all \lambda  \in \FF$;
+
+    (c) $(T^\ast)^\ast = T$;
+
+    (d) $(ST)^\ast = T^\ast S^\ast ~\text{for all}~ S \in \mathcal{L}(W,U)$ (here $U$ is a finite-dimensional inner product space over $\FF$);
+
+    (e) $I^\ast = I$, where $I$ is the identity operator on $V$;
+
+    (f) if $T$ is invertible, then $T^\ast$ is invertible and $(T^\ast)^{-1} = (T^{-1})^\ast$.
+\end{theorem}
+
+Notice: If $\FF = \RR$, then the map $T \to T^\ast$ is a linear map from $\mathcal{L}(V,W)$ to $\mathcal{L}(W,V)$, as follows from (a) and (b) of the result above. However, if $\FF = \CC$, then this map
+is not linear because of the complex conjugate that appears in (b).
+
+[It's like the map $v \to \varphi_v$, which let $\varphi_v(u) = \left<u,v\right>$ is not a linear map]
+
+\begin{theorem}
+    nullspace and range of $T^\ast$\\
+
+    Suppose $T\in\mathcal{L}(V,W)$.Then
+
+    (a)$ \n T^\ast=(\range T)^\bot$;
+
+    (b) $\range T^\ast=(\n T)^\bot$;
+
+    (c) $\n T=(\range T^\ast)^\bot$;
+
+    (d) $\range T=(\n T^\ast)^\bot$.
+\end{theorem}
+
+\begin{definition}
+    conjugate transpose, $A^\ast$\\
+
+    The conjugate transpose of an $m -by- n$ matrix $A$ is the $n-by-m$ matrix $A^\ast$ obtained by interchanging the rows and columns and then taking the complex conjugate of each entry. In other words, if $j\in{1,\ldots, n}$ and $k\in{1,\ldots,m }$, then
+    \[( A^\ast)_{j,k}= \overline{A_{k,j}}\]
+\end{definition}
+
+The adjoint of a linear map \textbf{does not depend on a choice of basis}. Thus we frequently emphasize adjoints of linear maps instead of transposes or conjugate transposes of matrices.\\
+
+\textbf{Caution}: With respect to nonorthonormal bases, the matrix of $T^\ast$ does not necessarily equal the conjugate transpose of the matrix of $T$.\\
+
+\begin{theorem}
+    matrix of $T^\ast$ equals conjugate transpose of matrix of $T$\\
+
+    Let $T \in \mathcal{L}(V,W)$. Suppose $e_1,\ldots,e_n$ is an orthonormal basis of $V$ and $f_1, \ldots, f_m$ is an orthonormal basis of $W$. Then $\mathcal{M}(T^\ast,(f_1,\ldots, f_m ),(e_1,\ldots,e_n))$ is the conjugate transpose of $\mathcal{M}(T,(e_1,\ldots,e_n),(f_1,\ldots, f_m ))$. In other words,
+    \[\mathcal{M}(T^\ast) = (\mathcal{M}(T))^\ast\]
+\end{theorem}
+
+The Riesz representation theorem as stated in 6.58 provides an identification of $V$ with its \textbf{dual space} $V'$ defined in 3.110. Under this identification, the orthogonal complement $U^\bot$ of a subset $U \subset V$ corresponds to the annihilator $U^0$ of $U$. If $U$ is a subspace of $V$, then the formulas for the dimensions of $U^\bot$ and $U^0$ become identical under this identification —see 3.125 and 6.51\\
+
+Suppose $T: V \to W$ is a linear map. Under the identification of $V$ with $V'$ and the identification of $W$ with $W'$, the adjoint map $T^\ast: W \to V$ corresponds to the dual map $T': W' \to V'$ defined in 3.118, as Exercise 32 asks you to verify.\\
+
+Under this identification, the formulas for $\n T^\ast$ and $\range T^\ast$ [7.6(a) and (b)] then become identical to the formulas for $\n  T'$ and $\range T'$ [3.128(a) and 3.130(b)]. Furthermore, the theorem about the matrix of $T^\ast$ (7.9) is \textbf{analogous} to the theorem about the matrix of $T'$ (3.132).\\
+
+Because orthogonal complements and adjoints are easier to deal with than annihilators and dual maps, there is no need to work with annihilators and dual maps in the context of \textbf{inner product spaces}.\\
+
+\subsubsection{Self-Adjoint Operators}
+
+\begin{definition}
+    self-adjoint\\
+    
+    An operator $T \in \mathcal{L}(V)$ is called self-adjoint if $T = T^\ast$
+\end{definition}
+
+A good analogy to keep in mind is that the adjoint on $\mathcal{L}(V)$ plays a role similar to that of the \textbf{complex conjugate} on $\CC$\\
+
+An operator $T \in \mathcal{L}(V)$ is self-adjoint if and only if $\left<Tv,w\right> = \left<v,Tw\right>$ for all $v,w \in V$.\\
+
+\begin{theorem}
+    eigenvalues of self-adjoint operators\\
+
+    Every \textbf{eigenvalue} of a \textbf{self-adjoint} operator is \textbf{real}.
+\end{theorem}
+
+This theorem has no value when $\FF = \RR$
+
+\begin{theorem}
+    $Tv$ is orthogonal to $v$ for all $v \Leftrightarrow T = 0$ (\textbf{assuming} $\FF = \CC$)\\
+
+    Suppose $V$ is a complex inner product space and $T \in \mathcal{L}(V)$. Then $\left<Tv,v\right> = 0$ for every $v \in V \Leftrightarrow T = 0$.
+\end{theorem}
+
+The next result provides another good example of how self-adjoint operators behave like real numbers\\
+
+\begin{theorem}
+    $\left<Tv,v\right> ~\text{is real for all}~ v \Leftrightarrow T$ is self-adjoint (\textbf{assuming} $\FF = \CC$)\\
+
+    Suppose $V$ is a \textbf{complex} inner product space and $T \in \mathcal{L}(V)$. Then $T$ is self-adjoint $\Leftrightarrow \left<Tv,v\right> \in \RR$ for every $v \in V$
+\end{theorem}
+
+\begin{theorem}
+    $T$ \textbf{self-adjoint} and $\left<Tv,v\right> = 0$ for all $v \Leftrightarrow T = 0$\\
+
+    Suppose $T$ is a self-adjoint operator on $V$. Then
+    \[\left<Tv,v\right> = 0 ~\text{for every}~ v \in V \Leftrightarrow T = 0\]
+\end{theorem}
+
+\subsubsection{Normal Operators}
+
+\begin{definition}
+    normal
+
+    • An operator on an inner product space is called normal if it commutes with its adjoint.
+
+    • In other words, $T \in \mathcal{L}(V)$ is normal if $TT^\ast = T^\ast T$
+\end{definition}
+
+\begin{theorem}
+    $T$ is normal \textbf{if and only if} $Tv$ and $T^\ast v$ have the same norm\\
+
+    Suppose $T \in \mathcal{L}(V)$. Then
+    \[T ~\text{is normal}~ \Leftrightarrow \|Tv\| = \|T^\ast v\| ~\text{for every}~ v \in V\]
+\end{theorem}
+
+\begin{theorem}
+    range, null space, and eigenvectors of a normal operator\\
+
+    Suppose $T \in \mathcal{L}(V)$ is normal. Then
+
+    (a) $\n T = \n T^\ast$;
+
+    (b) $\range T = \range T^\ast$;
+
+    (c) $V = nullT \oplus rangeT$;
+
+    (d) $T - \lambda I$ is normal for every $\lambda \in \FF$;
+
+    (e) if $v \in V$ and $\lambda \in \FF$, then $Tv = \lambda v$ if and only if $T^\ast v = \overline{\lambda }v$.
+\end{theorem}
+
+\begin{theorem}
+    orthogonal eigenvectors for normal operators\\
+
+    Suppose $T \in \mathcal{L}(V)$ is normal. Then eigenvectors of $T$ corresponding to distinct eigenvalues are orthogonal.
+\end{theorem}
+
+\begin{theorem}
+    $T$ is normal $\Leftrightarrow$ the real and imaginary parts of $T$ commute\\
+
+    Suppose $\FF = \CC$ and $T \in \mathcal{L}(V)$. Then $T$ is normal if and only if there exist commuting self-adjoint operators $A$ and $B$ such that $T =  A + iB$
+\end{theorem}
+
+\[A = \dfrac{T + T^\ast}{2}, B = \dfrac{T - T^\ast}{2i}\]
+
+\begin{exercise}
+    Suppose $\FF = \RR$.
+
+    (a) Show that the set of self-adjoint operators on $V$ is a subspace of $\mathcal{L}(V)$.
+
+    (b) What is the dimension of the subspace of $\mathcal{L}(V)$ in(a) [in terms of $\dim V$]?
+\end{exercise}
+
+\begin{solution}
+    (a) just verify it.
+
+    (b) We can use the perspective of the matrix.
+
+    suppose $\dim V= n$, then $\mathcal{M}(T)$ would be a $n-by-n$ matrix. Since the self-adjoint operator satisfies that 
+    \[\mathcal{M}(T)_{j,k} = \overline{\mathcal{M}(T^\ast)_{k,j}}\]
+    In this context, it just need 
+    \[\mathcal{M}(T)_{j,k} = \mathcal{M}(T^\ast)_{k,j}\]
+    which means you can choose $\dfrac{n^2 + n}{2}$ entries of the matrix arbitrarily. So the dimension should be $\dfrac{(\dim V + 1)\dim V}{2}$
+\end{solution}
+
+\begin{exercise}
+    Suppose $T \in \mathcal{L}(V)$ and $\|T^\ast v\| \leq \|Tv\|$ for every $v \in  V$. Prove that $T$ is normal.
+
+    This exercise fails on infinite-dimensional inner product spaces, leading to what are called \textbf{hyponormal operators}, which have a well-developed theory.
+\end{exercise}
+
+\begin{solution}
+    Remained to be solved.
+    % From the exercise,
+    % \[
+    % \begin{aligned}
+    %     \left<T^\ast v,T^\ast v\right> - \left<T v,T v\right> &\leq 0\\
+    %     \left<v,(TT^\ast - T^\ast T) v\right> &\leq 0\\
+    % \end{aligned}    
+    % \]
+    % denote $TT^\ast - T^\ast T$ by $B$, which is self-adjoint. So $\left<v,Bv\right> \leq 0$
+    % \[\begin{aligned}
+    %     \|(B + cI)v\|^2 &= \left<(B + cI)v,(B + cI)v\right>\\
+    %     &= \left<v,v\right> c^2+ 2\left<v,Bv\right>c + \left<Bv,Bv\right>\\
+    % \end{aligned} \]
+    % \[\Delta = 4|\left<v,Bv\right>|^2 - 4 \left<v,v\right> \left<Bv,Bv\right> \leq 0\]
+\end{solution}
+
+\begin{exercise}
+    Suppose $P \in \mathcal{L}(V)$ is such that $P^2 = P$. Prove that the following are equivalent.
+
+    (a) $P$ is self-adjoint.
+
+    (b) $P$ is normal.
+
+    (c) There is a subspace $U$ of $V$ such that $P$ = $P_U$.\\
+
+    This exercise deserves your attention since it connects many interesting things.
+\end{exercise}
+
+\begin{solution}
+    Since $P^2 = P$, we can learn that 
+    \begin{equation}
+        V = \range P \oplus \n P
+    \end{equation}
+
+    ($1 \Rightarrow 2$):
+    If $P$ is self-adjoint, then $P$ is normal because $PP^* = P^*P$.\\
+
+    ($2 \Rightarrow 1$):
+
+    From the property of normal operator, we have $\range P = \range P^\ast, \n P = \n P^\ast$, so let $u \in \range P$, $\exists v,w \in V$ s.t. $u = Pv , u = P^\ast w$, 
+    \[Pu = P^2 v = Pv = u, P^\ast u = (P^\ast)^2 w = P^\ast w = u\]
+    for $\forall v_0 \in V$, $v_0 = u_0 + w_0, u_0 \in \range P , w_0 \in \n P$ 
+    \[Pv_0 = P(u_0 + w_0) = Pu_0 = P^\ast u_0 = P^\ast(u_0 + w_0) = P^\ast v_0\] 
+    Therefore $P = P^\ast$ and $P$ is self-adjoint\\ 
+
+    ($2 \Rightarrow 3$):
+    By the property of adjoint operator and that of normal operator,
+    \begin{equation}
+        \n T = \n T^\ast = (\range T)^\bot
+    \end{equation}
+    so there exists $U = \range T$, s.t. $P = P_U$ (by equation (1) and (2))
+
+    ($3 \Rightarrow 1/2$):
+    You can use the language of the orthogonormal basis and the proof is not hard.
+
+Therefore, we've established the equivalence of the three statements.
+
+\end{solution}
+
+\begin{exercise}
+    Suppose $D: \mathcal{P}_8(\RR) \to \mathcal{P}_8(\RR)$ is the differentiation operator defined by $Dp = p'$. Prove that there does not exist an inner product on $\mathcal{P}_8(\RR)$ that makes $D$ a normal operator.
+\end{exercise}
+
+\begin{solution}
+    the condition $\mathcal{P}_8(\RR) = \n D \oplus \range D$ can't be satisfied.
+\end{solution}
+
+\begin{exercise}
+    Suppose $T$ is a normal operator on $V$. Suppose also that $v,w \in  V$ satisfy the
+    equations
+    \[\|v\| = \|w\| = 2, Tv =3v, Tw=4w\]
+    Show that$\|T(v + w)\| = 10$.   
+\end{exercise}
+
+\begin{solution}
+    Since $T$ is normal, and from the conditions above we learned that $w,v$ are the eigenvectors of $T$ corresponding to different eigenvalues, thus $w \bot v$, therefore $T w \bot T v$
+    \[\|T(v + w)\|^2 = \|Tv\|^2 + \|Tw\|^2 = 100 \]
+\end{solution}
+
+\begin{exercise}
+    Fix $u,x \in  V$. Define $T \in \mathcal{L}(V)$ by $Tv = \left<v,u\right>x$ for every $v \in  V$.
+    
+    (a) Prove that if $V$ is a real vector space, then $T$ is self-adjoint if and only if the list $u$, $x$ is linearly dependent.
+
+    (b) Prove that $T$ is normal if and only if the list $u,x$ is linearly dependent.
+\end{exercise}
+
+\begin{solution}
+    Let $w_1, w_2 \in V$, then we have
+    \[
+    \begin{aligned}
+        \left<w_1,T^\ast w_2\right> &= \left<Tw_1, w_2\right>\\
+        &= \left<\left<w_1,u\right> x, w_2\right>\\
+        &= \left<w_1,u\right>\left< x, w_2\right>\\
+        &= \left<w_1,\overline{\left< x, w_2\right>}u\right>\\
+        &= \left<w_1,\left<w_2,x\right>u\right>\\
+    \end{aligned}    
+    \]
+    Therefore, $T^\ast v = \left<v,x\right>u$\\
+
+    (a) Suppose $T$ is self-ajoint. Then 
+    \[\left<v,u\right>x - \left<v,x\right>u = Tv - T^\ast v\]
+    for $\forall v \in V$.
+
+    We can assume that $u \neq 0$ (or the proof is trivial), and let $v = u$ thus $\left<v,u\right> \neq 0$, which implies that $u,x$ are linearly dependent.
+
+    Conversely, we can also assume that $x,u$ are non-zero, and $x = cu$, the proof afterward is easy.\\
+
+    (b) Again we can assume that $u,x$ are non-zero.
+
+    We have
+    \[\begin{aligned}
+        \left<\left<v,u\right> x,x\right> u &= T^\ast \parameter{\left<v,u\right> x}\\
+        &= T^\ast T v\\
+        &= T T^\ast v\\
+        &= T \parameter{\left<v,x\right> u}\\
+        &= \left<\left<v,x\right> u,u\right> x\\
+    \end{aligned}
+        \]
+        The operation afterward is similar and the proof from the other side is likewise.
+\end{solution}
+
+\begin{exercise}
+    Suppose $T \in \mathcal{L}(V)$ is normal. Prove that
+    \[\n T^k = \n T ~\text{and}~ \range T^k = \range T\]
+    for every positive integer $k$.
+\end{exercise}
+
+\begin{solution}
+    First for $S$ self-adjoint: suppose $S^k x=0$. Then
+   
+    \[0=\left<S^k x,S^{k-2}x\right>=\left<S^{k-1}x,S^{k-1}x\right>\]
+   
+    so by positive definiteness of inner product, $S^{k-1}x=0$, and we can continue down to $Sx=0$.\\
+
+    If $T$ is normal, suppose $T^kx=0$. Then
+   
+    \[(T^\ast T)^k x=(T^\ast )^k(T^k x) = 0\]
+   
+    (The key is $(T^\ast T)^k = (T^\ast )^k T^k$ since $T$ is normal). So by the first part (since $T^\ast T$ is self adjoint)
+   
+    \[0=\left<T^\ast Tx,x\right>=\left<Tx,Tx\right>\]
+    so $Tx=0$.
+
+    It's trivial to show that if $x \in V , Tx = 0, T^k x = 0$
+   
+    so
+    \[\n T^k = \n T\]
+    It's also simple to show that 
+    \[\range T^k = \range T\]
+\end{solution}
+
+\begin{exercise}
+    Suppose $T \in \mathcal{L}(V)$ is normal. Prove that if $\lambda \in \FF$, then the minimal polynomial of $T$ is not a polynomial multiple of $(x - \lambda)^2$.
+
+\end{exercise}
+
+\begin{solution}
+    From the conclusion above and the property of normal operator, we have 
+    \[\n (T - \lambda I)^2 = \n (T - \lambda I)\]
+    however if $T$ is a polynomial multiple of $(x - \lambda)^2$, then it means $\exists v \in V$ s.t. $(T - \lambda I)^2 v = 0$ but $(T - \lambda I) v \neq 0$, which lead to a contradiction.
+
+    The conclusion we get from the exercise is amazing since it tells us \textbf{a normal operator is diagonalizable!}
+\end{solution}
+
+\begin{exercise}
+    Prove or give a counterexample: If $T \in \mathcal{L}(V)$ and there is an orthonormal basis $e_1, \ldots,e_n$ of $V$ such that $\|Te_k\| = \|T^\ast e_k\|$ for each $k = 1,\ldots,n$, then $T$ is normal
+\end{exercise}
+
+\begin{solution}
+    let 
+    \[T e_k =
+    \begin{cases}
+        e_{k + 1} , k \neq n\\
+        0 , k = n\\
+    \end{cases} \]
+    then 
+    \[T^\ast e_k = \begin{cases}
+        0, k = 0\\
+        e_{k - 1}, k \neq 0\\
+    \end{cases}\]
+    Then we find that 
+    \[(T^\ast T - T T^\ast) e_1 \neq 0\]
+    Therefore $T$ is not normal.
+\end{solution}
+
+\begin{exercise}
+    Fix a positive integer $n$. In the inner product space of continuous real-valued functions on $[-\pi,\pi]$ with inner product 
+    \[\left<f,g\right> = \int_{-\pi}^{\pi} fg\]
+    let 
+    \[V = span(1,\cos x,\cos 2x,\ldots,\cos nx,\sin x,\sin 2x,\ldots,\sin nx)\]
+  
+    (a) Define $D \in\mathcal{L}(V)$ by $Df = f'$. Showthat $D^\ast  = -D$. Conclude that $D$ is normal but not self-adjoint.
+
+    (b) Define $T \in \mathcal{L}(V)$ by $Tf = f''$. Showthat $T$ is self-adjoint.
+\end{exercise}
+
+\begin{solution}
+    This exercise is simplier with matrices.
+
+    From previous exercises we learned that 
+    \[\dfrac{1}{\sqrt{2\pi}},\dfrac{\cos x}{\sqrt{\pi}},\ldots,\dfrac{\cos nx}{\sqrt{\pi}},\dfrac{\sin x}{\sqrt{\pi}},\ldots,\dfrac{\sin nx}{\sqrt{\pi}}\]
+    is an orthogonormal basis. 
+    
+    (a) With respect to this basis, the matrix of $D$ is
+    \[\begin{pmatrix}
+        0&0&\cdots&0&0&\cdots&0\\
+        0&0&\cdots&0&1&\cdots&0\\
+        \vdots&\vdots&&\vdots&\vdots&\ddots&\vdots\\
+        0&0&\cdots&0&0&\cdots&n\\
+        0&-1&\cdots&0&0&\cdots&0\\
+        \vdots&\vdots&\ddots&\vdots&\vdots&&\vdots\\
+        0&0&\cdots&-n&0&\cdots&0\\
+    \end{pmatrix}\]
+    It's not hard to verify that $D^\ast = - D$ and therefore $D$ is normal but not self-adjoint.
+
+    (b) It's similar to (a), except the matrix now become
+    \[\begin{pmatrix}
+        0&0&\cdots&0&0&\cdots&0\\
+        0&0&\cdots&0&1&\cdots&0\\
+        \vdots&\vdots&&\vdots&\vdots&\ddots&\vdots\\
+        0&0&\cdots&0&0&\cdots&n^2\\
+        0&1&\cdots&0&0&\cdots&0\\
+        \vdots&\vdots&\ddots&\vdots&\vdots&&\vdots\\
+        0&0&\cdots&n^2&0&\cdots&0\\
+    \end{pmatrix}\]
+
+    But the rigorious solution may not use the matrix.
+
+    let $e_j = \dfrac{\sin jx}{\sqrt{\pi}}$,$f_j = \dfrac{\cos jx}{\sqrt{\pi}}$, then for $\forall v,w \in V$
+    \[\begin{aligned}
+        \left<v,D^\ast w\right> &= \left<Dv, w\right>\\
+        &= \left<D\parameter{\left<v,\dfrac{1}{\sqrt{2\pi}}\right>\dfrac{1}{\sqrt{2\pi}} + \sum_{j = 1}^n \parameter{\left<v,e_j\right> e_j  + \left<v,f_j\right> f_j}},w\right>\\
+        &= \left<\sum_{j = 1}^n \parameter{-j \left<v,e_j\right> f_j  + j \left<v,f_j\right> e_j},\left<w,\dfrac{1}{\sqrt{2\pi}}\right>\dfrac{1}{\sqrt{2\pi}} + \sum_{j = 1}^n \parameter{\left<w,e_j\right> e_j  + \left<w,f_j\right> f_j}\right>\\
+        &= \sum_{j = 1}^{n}\parameter{-j \left<v,e_j\right>\left<w,f_j\right> + j\left<v,f_j\right>\left<w,e_j\right> }\\
+        &= \left<\left<v,\dfrac{1}{\sqrt{2\pi}}\right>\dfrac{1}{\sqrt{2\pi}} + \sum_{j = 1}^n \parameter{\left<v,e_j\right> f_j  +\left<v,f_j\right> e_j},\sum_{j = 1}^n - j\parameter{\left<w,f_j\right> e_j  + j\left<w,e_j\right> f_j}\right>\\
+        &= \left<v,-D^\ast w\right>\\
+    \end{aligned}\]
+    Therefore, we get $D^\ast = - D$
+
+    (b) Note that $T = D^2$, thus $T^\ast = (DD)^\ast = D^\ast D^\ast = (-D)(-D) = D^2 = T$
+\end{solution}
+
+
+
+\subsection{Spectral Theorem}
+
+\subsubsection{Real Spectral Theorem}
+
+\begin{theorem}
+    invertible quadratic expressions\\
+
+    Suppose $T \in \mathcal{L}(V)$ is self-adjoint and $b,c \in \RR$ are such that $b^2 < 4c$. Then
+    \[T^2 +bT+cI\]
+    is an invertible operator
+\end{theorem}
+
+\begin{theorem}
+    minimal polynomial of self-adjoint operator\
+
+    Suppose $T \in \mathcal{L}(V)$ is self-adjoint. Then the minimal polynomial of $T$ equals
+    $(z - \lambda_1)\cdots(z- \lambda_m)$ for some $\lambda_1,\ldots, \lambda_m \in \RR$.
+\end{theorem}
+
+\begin{theorem}
+    real spectral theorem\\
+
+    Suppose $\FF=\RR$ and $T\in\mathcal{L}(V)$.Then the following are equivalent.
+    
+    (a) $T$ is self-adjoint.
+
+    (b) $T$ has a diagonal matrix with respect to some orthonormal basis of $V$.
+
+    (c) $V$ has an orthonormal basis consisting of eigenvectors of $T$.
+\end{theorem}
+
+\subsubsection{Complex Spectral Theorem}
+
+\begin{theorem}
+    complex spectral theorem\\
+
+    Suppose $\FF = \CC$ and $T \in \mathcal{L}(V)$. Then the following are equivalent.
+
+    (a) $T$ is normal.
+
+    (b) $T$ has a diagonal matrix with respect to some orthonormal basis of $V$.
+
+    (c) $V$ has an orthonormal basis consisting of eigenvectors of $T$.
+\end{theorem}
+
+Notice that the proof use 
+\[\|Te_1\|^2 = |a_{1,1}|^2,
+\]
+\[\|T^\ast e_1\|^2 = |a_{1,1}|^2 + |a_{1,2}|^2 + \cdots + |a_{1,n}|^2\]
+and
+\[\|Te_1\|^2 = \|T^\ast e_1\|^2\]
+
+\begin{exercise}
+    Suppose $\FF = \CC$ and $T \in \mathcal{L}(V)$. Prove that $T$ is normal if and only if there exists a polynomial $p \in  \mathcal{P}(\CC)$ such that $T^\ast = p(T)$.    
+\end{exercise}
+
+\begin{solution}
+    $\Rightarrow$:
+
+    Assume that $T$ is normal, i.e., $TT^\ast = T^\ast T$.Since $T$ is normal, it is diagonalizable. Let $\lambda_1, \lambda_2, \ldots, \lambda_n$ be its distinct eigenvalues.
+
+    By Lagrange interpolation, we can find a polynomial
+    \[p(z) = a_0 + a_1 z + \cdots + a_k z^k\]
+    such that $p(\lambda_j) = \overline{\lambda_j}$ for $j = 1, 2, \ldots, n$.
+
+    So we can define 
+    \[p(T) = a_0 I + a_1 T + \cdots + z_k T^k\]
+    then 
+    \[p(T) v = p(\lambda_i) v = \overline{\lambda_i} v\]
+    and $v$ is any eigenvector of $T$.
+
+    So the matrix of $p(T)$ is the conjugate transpose of $T$, which can be deduced from the fact that they are diagonal with respect to the same basis and the eigenvalues are the conjugate of the others.\\
+
+    $\Leftarrow$:
+
+    Trivial, since $p(T)$ commute with $T$.
+    
+\end{solution}
+
+\begin{exercise}
+    Suppose $V$ is a complex vector space and $T \in  \mathcal{L}(V)$ is normal. Prove that if $S$ is an operator on $V$ that commutes with $T$, then $S$ commutes with $T^\ast$.
+\end{exercise}    
+
+\begin{solution}
+    This can be proved using the conclusion of last exercise.
+
+    Since $T^\ast$ can be expressed like $p(T)$. So if $S$ commute with $T$, then it commute with $T^\ast = p(T)$ 
+\end{solution}
+    
+\begin{exercise}
+    Suppose $T \in \mathcal{L}(V)$ is self-adjoint and $U$ is a subspace of $V$ that is invariant under $T$.
+    %  [Maybe it need the condition that $\FF = \RR$?]
+
+    (a) Prove that $U^\bot$ is invariant under $T$.
+
+    (b) Prove that $T|_U \in \mathcal{L}(U)$ is self-adjoint.
+
+    (c) Prove that $T|_{U^\bot} \in \mathcal{L}(U^\bot)$ is self-adjoint.
+\end{exercise}
+
+\begin{solution}
+
+    (a) for every $u \in U, w \in U^\bot$
+    \[\left<Tu,w\right> = \left<u,Tw\right> = 0\]
+    Therefore $Tw \in U^\bot$, so $U^\bot$ is invariant under $T$\\
+
+    (b) We know that $T$ is self-adjoint. Now let's consider the restriction of $T$ to $U$, denoted as $T|_U$. We want to show that $T|_U$ is also self-adjoint.
+    
+    For any vectors $u, v \in U$, we have:
+    \[\left< T|_U(u), v \right> = \left< T(u), v \right>= \left< u, T(v) \right> = \left< u,T|_U(v) \right>\]
+
+    (c) similar.
+
+% Some ideas for doing this exercise (but no work)
+
+%     By condition, $T$ is diagonal thus its minimal polynomial have the form $p = (z - \lambda_1)\cdots(z - \lambda_m)$. And by the property we learned in chapter 5, $p$ is polynomial multiple of the minimal polynomial of $T|_U$, we denote it by $q = (z - \lambda_{i_1})\cdots(z - \lambda_{i_q})$.
+%     Since $U \cap U^\bot = \{0\}$ and $U + U^\bot = V$, $V = U \oplus U^\bot$
+    
+
+    % By the conclusion we have in the exercise in 5D (page 191 T16). 
+
+    % By condition, $T$ has a diagonal matrix with respect to some orthonormal basis.
+
+    % Suppose $T$ has distinct eigenvalues $\lambda_1,\ldots,\lambda_n$, which corresponds to the eigenspace $E(\lambda_i,T)$. The vectors in different eigenspaces are orthogonal by the property of the normal operator. Every eigenspace is spanned by the eigenvector(s) in the basis, we denote them by $v_{i_1},\ldots,v_{i_{n_i}}$
+
+    % \[v_{11},\ldots,v_{1n_1},\ldots,v_{m 1},\ldots,v_{m n_m}\]
+    % and $v_{i 1},\ldots,v_{i n_i}$ corresponds to the eigenspace $E(\lambda_i,T)$.
+
+    % The self-adjoint operator are normal, then the eigenvector corresponds to different eigenvalues are orthogonal. So the vectors in different eigenspace are orthogonal. Thus $U$ is a sum of some eigenspaces 
+
+\end{solution}
+
+\begin{exercise}
+    Suppose $T \in \mathcal{L}(V)$ is normal and $U$ is a subspace of $V$ that is invariant under $T$. [Maybe it need the condition that $\FF = \CC$?]
+
+    (a) Prove that $U^\bot$ is invariant under $T$.
+
+    (b) Prove that $U$ is invariant under $T^\ast$.
+
+    (c) Prove that $(T|_U)^\ast = (T^\ast)|_U$.
+
+    (d) Prove that $T|_U \in \mathcal{L}(U)$ and $T|_{U^\bot} \in  \mathcal{L}(U^\bot)$ are normal operators.
+
+    This exercise can be used to give yet another proof of the complex spectral theorem (use induction on $\dim V$ and the result that $T$ has an eigenvector)
+\end{exercise}
+
+\begin{solution}
+%     for $u \in U,w\in U^\bot$
+%     \[\left<T^\ast T u,w\right> = \left< T u, T w\right> \]
+There's no solution yet.
+
+\end{solution}
+
+\subsection{Positive Operators}
+
+\begin{definition}
+    positive operator\\
+
+    An operator $T \in \mathcal{L}(V)$ is called positive if T is self-adjoint and
+    \[\left<Tv,v\right> \geq 0\]
+    for all $v \in V$.
+\end{definition}
+
+If $V$ is a \textbf{complex vector space}, then the requirement that $T$ be self-adjoint can be dropped from the definition above (by 7.14).
+
+\begin{definition}
+    square root\\
+
+    An operator $R$ is called a square root of an operator $T$ if $R^2 = T$.
+\end{definition}
+
+\begin{theorem}
+    characterization of positive operators\\
+
+    Let $T \in \mathcal{L}(V)$. Then the following are equivalent.
+
+    (a) $T$ is a positive operator.
+
+    (b) $T$ is self-adjoint and all eigenvalues of $T$ are nonnegative.
+ 
+    (c) With respect to some orthonormal basis of $V$, the matrix of $T$ is a diagonal matrix with only \textbf{nonnegative} numbers on the diagonal.
+ 
+    (d) $T$ has a positive square root.
+
+    (e) $T$ has a self-adjoint square root.
+
+    (f) $T = R^\ast R$ for some $R \in \mathcal{L}(V)$.
+\end{theorem}
+
+\begin{theorem}
+    each positive operator has only one \textbf{positive} square root\\
+
+    Every positive operator on $V$ has a unique positive square root.
+\end{theorem}
+
+A positive operator can have infinitely many square roots (although only one of them can be positive). For example, the identity operator on $V$ has infinitely many square roots if $\dim V > 1$. (Just imagine rotating around an arbitrarily chosen axis)
+
+\begin{definition}
+    notation: $\sqrt{T}$\\
+
+    For $T$ a positive operator, $\sqrt{T}$ denotes the \textbf{unique positive square root} of $T$
+\end{definition}
+
+\begin{theorem}
+    Tpositive and $\left<Tv,v\right> = 0 \Rightarrow Tv = 0$\\
+
+    Suppose $T$ is a positive operator on $V$ and $v \in V$ is such that $\left<Tv,v\right> = 0$. Then $Tv = 0$
+\end{theorem}
+
+\begin{exercise}
+    Suppose $T\in\mathcal{L}(V)$ and $e_1,\ldots,e_n$ is an orthonormal basis of $V$. Prove that $T$ is a positive operator if and only if there exist $v_1,\ldots,v_n \in V$ such that
+    \[\left<Te_k,e_j\right> = \left<v_k,v_j\right>\]
+    forall $j,k=1,\ldots,n$.
+
+    The numbers $\{\left<Te_k,e_j\right>\}j,k=1,\ldots,n$ are the entries in the matrix of $T$ with respect to the orthonormal basis $e_1,\ldots,e_n$.
+
+\end{exercise}
+
+\begin{solution}
+    Since $T$ is a positive operator, by theorem we know there exists a unique positive square root $\sqrt{T}$. Let $v_j = \sqrt{T} e_j$, which satisfy that 
+    \[\left<Te_k,e_j\right> = \left<\sqrt{T}e_k,\sqrt{T}e_j\right> = \left<v_k,v_j\right>\]
+    thus we finished our proof.
+\end{solution}
+
+\begin{exercise}
+    Suppose $n$ is a positive integer. The $n-by-n$ Hilbert matrix is the $n-by-n$ matrix whose entry in row $j$,column $k$ is $\frac{1}{j + k - 1}$. Suppose $T\in\mathcal{L}(V)$ is an operator whose matrix with respect to some orthonormal basis of $V$ is the $n-by-n$ Hilbert matrix. Prove that $T$ is a positive invertible operator.\\
+
+    Example: The $4-by-4$ Hilbert matrix
+    \[\begin{pmatrix}
+        1 & \frac{1}{2}&\frac{1}{3}&\frac{1}{4}\\
+        \frac{1}{2} & \frac{1}{3}&\frac{1}{4}&\frac{1}{5}\\
+        \frac{1}{3} & \frac{1}{4}&\frac{1}{5}&\frac{1}{6}\\
+        \frac{1}{4} & \frac{1}{5}&\frac{1}{6}&\frac{1}{7}\\
+    \end{pmatrix}\]
+\end{exercise}
+
+\begin{solution}
+    Given an orthonormal basis $\{e_1, e_2, \ldots, e_n\}$, we can express any vector $v \in V$ as $v = \sum_{i=1}^{n} v_i e_i$. Then, the inner product $\left< Tv, v \right>$ becomes:
+    
+    \[
+    \begin{aligned}
+        \left< Tv, v \right> &= \left< \sum_{j=1}^{n}v_j \sum_{k=1}^{n} \frac{1}{j + k - 1} e_k, \sum_{i=1}^{n} v_i e_i \right> \\
+        &= \left<  \sum_{k=1}^{n}\sum_{j=1}^{n}\frac{1}{j + k - 1} v_j e_k, \sum_{i=1}^{n} v_i e_i \right> \\
+        &= \sum_{k=1}^{n}\left< \sum_{j=1}^{n}\frac{1}{j + k - 1} v_j e_k, v_k e_k \right> \\
+        &= \sum_{j=1}^{n} \sum_{k=1}^{n} \frac{1}{j + k - 1} v_j \overline{v_k}\\
+        &= \int_{0}^{1} \sum_{j=1}^{n} \sum_{k=1}^{n}  v_j \overline{v_k} x^{j- 1} x^{k - 1} \, dx\\
+        &= \int_{0}^{1} (v_1 + v_2 x + \cdots v_n x^{n - 1})(\overline{v_1} + \overline{v_2} x + \cdots + \overline{v_n}x^{n - 1})\, dx\\
+        &= \int_{0}^{1} (v_1 + v_2 x + \cdots v_n x^{n - 1})\overline{(v_1 + v_2 x + \cdots + v_nx^{n - 1})}\, dx\\
+        &= \int_{0}^{1} \left|(v_1 + v_2 x + \cdots v_n x^{n - 1})\right|^2\, dx \geq 0\\
+    \end{aligned}    
+    \]
+    The following part is trivial compared to the trick of transformtion above.\\
+
+    https://math.stackexchange.com/questions/4309056/how-to-show-a-hilbert-matrix-is-invertible
+
+    https://math.stackexchange.com/questions/1754729/prove-the-positive-definiteness-of-hilbert-matrix
+
+    The link above is some solution but is a little irrelevant to the content of this book. I prefer the first one, which also tells how to prove positiveness
+\end{solution}
+
+\begin{exercise}
+    For $T \in\mathcal{L}(V)$ and $u,v \in V$, define $\left<u,v\right>_T$ by $\left<u,v\right>_T = \left<Tu,v\right>$.
+
+    (a) Suppose $T \in \mathcal{L}(V)$. Prove that $\left<\cdot,\cdot\right>_T$ is an inner product on $V$ if and only if $T$ is an invertible positive operator (with respect to the original inner product $\left<\cdot,\cdot\right>$).
+
+    (b) Prove that every inner product on $V$ is of the form $\left<\cdot,\cdot\right>_T$ for some positive
+    invertible operator $T \in \mathcal{L}(V)$.
+\end{exercise}
+
+\begin{solution}
+    (a) is simple, you can verify it yourself.\\
+
+    (b) Now we just prove the finite-dimensional one.
+
+    Suppose $v_1,\ldots,v_n$ is a basis of $V$, thinking of a series of linear functionals $\varphi_i(u) = \left<u,v_1\right>'$ from $V$ to $\FF$, for any $u \in V$.
+
+    By Riesz represents theorem, there exists $w_i$ s.t. 
+    \[\left<u,v_i\right>' = \left<u,w_i\right>\]
+    And by linear map lemma, there exists linear map s.t.
+    \[T v_i = w_i\]
+    So 
+    \[\left<u,v_i\right>' = \left<u,T v_i\right> = \left<u, v_i\right>_{T^\ast}\]
+    from which we can imply that 
+    \[\left<u,v\right>' = \left<u, v\right>_{T^\ast}, \forall u,v \in V \]
+    And because $\left<\cdot,\cdot\right>'$ is an inner product, then $\left<\cdot,\cdot\right>_{T^\ast}$ is an inner product, thus $T$ is an invertible positive operator.\\
+    
+    I'm not sure with my solution, please check it carefully for any possible mistake.
+\end{solution}
+\subsection{Isometries, Unitary Operators, and Matrix Factorization}
+
+\subsection{Singular Value Decomposition}
+
+\subsection{Consequences of Singular Value Decomposition}
+
+\section{Operators on Complex Vector Spaces}
+
+\subsection{Generalized Eigenvectors and Nilpotent Operators}
+
+\subsection{Generalized Eigenspace Decomposition}
+
+\subsection{Consequences of Generalized Eigenspace Decomposition}
+
+\subsection{Trace: A Connection Between Matrices and Operators}
+
+\section{Multilinear Algebra and Determinants}
+
+\subsection{Bilinear Forms and Quadratic Forms}
+
+\subsection{Alternating Multilinear Forms}
+
+\subsection{Determinants}
+
+\subsection{Tensor Products}
+
+\end{CJK}
+\end{document}
+
+\begin{itemize} 
+\end{itemize}
