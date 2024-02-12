@@ -867,7 +867,7 @@ In the next two section, the content will become much harder and require a thoro
 
 \begin{definition}matrix of a linear map, $\mathcal{M}(T)$\\
     
-    Suppose $T \in \mathcal{L}(V,W)$ and $v_1,\ldots,v_n$ is a basis of $V$ and $w_1,\ldots,w_m$ is a basis of $W$. The matrix of $T$ with respect to these bases is the $m-by-n$ matrix $\mathcal{M}(T)$, whose entries $A{j,k}$ are defined by
+    Suppose $T \in \mathcal{L}(V,W)$ and $v_1,\ldots,v_n$ is a basis of $V$ and $w_1,\ldots,w_m$ is a basis of $W$. The matrix of $T$ with respect to these bases is the $m$-by-$n$ matrix $\mathcal{M}(T)$, whose entries $A{j,k}$ are defined by
     \[Tv_k = A_{1,k}w_1 +\cdots+A_{m,k}w_m\]
     If the bases $v_1,\ldots,v_n$ and $w_1,\ldots,w_m$ are not \textbf{clear from the context}, then the notation $\mathcal{M}(T,(v_1,\ldots,v_n),(w1,\ldots,w_m))$ is used.
  
@@ -895,7 +895,7 @@ And of course, with these to properties, the concept of \textbf{linear map} will
 
 notation: $\FF^{m,n}$\\
 
-For $m$ and $n$ positive integers, the set of all $m-by-n$ matrices with entries in $\FF$ is denoted by $\FF^{m,n}$.
+For $m$ and $n$ positive integers, the set of all $m$-by-$n$ matrices with entries in $\FF$ is denoted by $\FF^{m,n}$.
 
 \[\dim\FF^{m,n} = mn\]
 
@@ -905,7 +905,7 @@ Suppose $m$ and $n$ are positive integers. With addition and scalar multiplicati
 \begin{definition}
     matrix multiplication\\
     
-    Suppose $A$ is an $m-by-n$ matrix and $B$ is an $n-by-p $ matrix.Then $AB$ is defined to be the $m-by-p$ matrix whose entry in row $j$, column $k$, is given by the equation
+    Suppose $A$ is an $m$-by-$n$ matrix and $B$ is an $n$-by-$p $ matrix.Then $AB$ is defined to be the $m$-by-$p$ matrix whose entry in row $j$, column $k$, is given by the equation
     \[(AB)_{j,k} = \sum_{i = 1}^n A_{j,i}\cdots B_{i,k}\]
     Thus the entry in row $j$, column $k$,of $AB$ is computed by taking row $j$ of $A$ and column $k$ of $B$, multiplying together corresponding entries, and then summing.
 \end{definition}
@@ -922,11 +922,11 @@ Then we would like to introduce the notation of the columns and rows of the matr
 \begin{definition}
     notation: $A_{j,\cdots}$, $A{\cdots,k}$\\
 
-    Suppose $A$ is an $m-by-n$ matrix.\\
+    Suppose $A$ is an $m$-by-$n$ matrix.\\
 
-    • If $1 \leq j \leq m$,then $A_{j,\cdot}$ denotes the $1-by-n$ matrix consisting of row $j$ of $A$.
+    • If $1 \leq j \leq m$,then $A_{j,\cdot}$ denotes the $1$-by-$n$ matrix consisting of row $j$ of $A$.
 
-    • If $1 \leq k \leq n$,then $A_{\cdot,k}$ denotes the $m-by-1$ matrix consisting of column $k$ of A
+    • If $1 \leq k \leq n$,then $A_{\cdot,k}$ denotes the $m$-by-$1$ matrix consisting of column $k$ of A
 \end{definition}
 
 After that, we will introduce the $4$ different ways of understanding matrices multiplications, which we have already learned, so we just skip that part.\\
@@ -938,7 +938,7 @@ Now we'd like to introduce the concept of rank, but the definition is slightly d
 \begin{definition}
     column rank, row rank\\
 
-    Suppose $A$ is an $m-by-n$ matrix with entries in $\FF$.\\
+    Suppose $A$ is an $m$-by-$n$ matrix with entries in $\FF$.\\
 
     • The column rank of $A$ is \textbf{the dimension of the span of the columns} of $A$ in $\FF^{m,1}$.
 
@@ -950,7 +950,7 @@ Now we'd like to introduce the concept of rank, but the definition is slightly d
 \begin{definition}
     transpose, $A^t$\\
 
-    The transpose of a matrix $A$, denoted by $A^t$, is the matrix obtained from $A$ by interchanging rows and columns. Specifically, if $A$ is an $m-by-n$ matrix, then $A^t$ is the $n-by-m$ matrix whose entries are given by the equation
+    The transpose of a matrix $A$, denoted by $A^t$, is the matrix obtained from $A$ by interchanging rows and columns. Specifically, if $A$ is an $m$-by-$n$ matrix, then $A^t$ is the $n$-by-$m$ matrix whose entries are given by the equation
     \[(A^t)_{k,j} = A_{j,k}\]
 \end{definition}
 
@@ -958,7 +958,7 @@ Use the column-row factorization
 
 \begin{theorem}
     
-    Suppose $A$ is an $m-by-n$ matrix with entries in $\FF$ and column rank $c \geq 1$. Then there exist an $m-by-c$ matrix $C$ and a $c-by-n$ matrix $R$, both with entries in $\FF$, such that $A = CR$.
+    Suppose $A$ is an $m$-by-$n$ matrix with entries in $\FF$ and column rank $c \geq 1$. Then there exist an $m$-by-$c$ matrix $C$ and a $c$-by-$n$ matrix $R$, both with entries in $\FF$, such that $A = CR$.
     
 \end{theorem}
 
@@ -1075,7 +1075,7 @@ We have already define the matrix of the linear maps, now we can define the matr
 \begin{definition}
     \textbf{matrix of a vector},$\mathcal{M}(v)$\\
 
- Suppose $v_1,\ldots,v_n$is a basis of $V$.The matrix of $v$ \textbf{with respect to this basis} is the $n-by-1$ matrix
+ Suppose $v_1,\ldots,v_n$is a basis of $V$.The matrix of $v$ \textbf{with respect to this basis} is the $n$-by-$1$ matrix
     \[\mathcal{M}(v) = \begin{pmatrix}
         b_1\\
         \vdots\\
@@ -1086,7 +1086,7 @@ We have already define the matrix of the linear maps, now we can define the matr
 \end{definition}
 The matrix $\mathcal{M}(v)$ of a vector $v \in V$ depends on the basis $v_1,\ldots,v_n$ of $V$, as well as on $v$. However, the basis should be clear from the context and thus it is not included in the notation.\\
 
-This operation is like \textbf{relabling}. Occasionally,we want to think of elements of V as relabeled to be $n-by-1$ matrices[for example we want to make a change in basis]. Once a basis $v_1,\ldots,v_n$ is chosen, the function $\mathcal{M}$ that takes $v\in V$ to $\mathcal{M}(v)$ is an isomorphism of $V$ onto $\FF^{n,1}$ that implements this relabeling.\\
+This operation is like \textbf{relabling}. Occasionally,we want to think of elements of V as relabeled to be $n$-by-$1$ matrices[for example we want to make a change in basis]. Once a basis $v_1,\ldots,v_n$ is chosen, the function $\mathcal{M}$ that takes $v\in V$ to $\mathcal{M}(v)$ is an isomorphism of $V$ onto $\FF^{n,1}$ that implements this relabeling.\\
 
 \begin{theorem}
     $\mathcal{M}(T)_{\cdot,k} = \mathcal{M}(Tv_k)$\\
@@ -2258,7 +2258,7 @@ the finite-dimensional hypothesis in the result above also cannot be deleted.
 \begin{definition}
     matrix of an operator,$\mathcal{M}(T)$\\
 
- Suppose $T \in\mathcal{L}(V)$. The matrix of $T$ with respect to a basis $v_1,\ldots,v_n$ of $V$ is the $n-by-n$ matrix
+ Suppose $T \in\mathcal{L}(V)$. The matrix of $T$ with respect to a basis $v_1,\ldots,v_n$ of $V$ is the $n$-by-$n$ matrix
     \[\mathcal{M}(T) = \begin{pmatrix}
         A_{1,1}&\cdots&A_{1,n}\\
         \vdots&&\vdots\\
@@ -2458,7 +2458,59 @@ This theorem tells us that if the nondiagonal entries of $A$ are small, then eac
 \end{exercise}
 
 \begin{solution}
-    Remained unsolved.
+    This exercise is really hard!\\
+
+    $\Rightarrow$ is trivial.\\
+
+    $\Leftarrow$: Suppose $T$ is not diagonalizable.
+
+    Since $\FF = \CC$, the minimal polynomial of $T$ can always be expressed in the form:
+    \[(z - \lambda_1)^{p_1}\cdots (z - \lambda_n)^{p_n}\]
+    But since $T$ isn't diagonalizable, so there exists $p_j >1$, which indicates an exceedingly significant fact, any polynomial in the form $q = (z - \lambda_1) \cdots (z - \lambda_m)$ isn't the minimal polynomial of $T$ and even not the polynomial multiple of the minimal polynomial of $T$! This means $\exists v \in V$ s.t.
+    \[q(T)v \neq 0 \]
+
+    If $T^k$ is diagonalizable, then its minimal polynomial can be expressed like 
+    \[(z - \lambda_1')\cdots(z - \lambda_m'),(\lambda_j' \neq 0) ~\text{since $T$ is not invertible}\]
+
+    Now we consider $(z^k - a)$ and $(z^k - b)$,$a, b \neq 0, a\neq b$ they can be factorized into disjoint (means no common root) sets of degree one polynomial and in a single set a root only appears once.
+    \[(z - a_1)\cdots(z - a_k)\]
+    and
+    \[(z - b_1)\cdots(z - b_k)\]
+    in which $a_i \neq a_j (i \neq j), a_i \neq b_j ,\forall i,j $ and $i,j = 1,\ldots,k$ because the property of the complex number and $a,b$ are not zero\\
+
+    Therefore, for any polynomial in the form $q = (z - \lambda_1) \cdots (z - \lambda_m)$, $q(T^k)$ can be factorized into the form like
+    \[(T - \lambda_{11} I)\cdots(T - \lambda_{1k} I)\cdots(T - \lambda_{m1} I)\cdots(T - \lambda_{mk} I)\]
+    where there is no repeated root.
+
+    But we have already proved that any polynimial $q'(T)$ in this kind won't able to cast all the vectors into $0$, which implies that the minimal polynomial of $T^k$ can't have the form without repeated root. 
+
+    % The case $k = 1$ is trivial.
+
+    % Now suppose we have proved the case that $k = p$, that means that $T$ is diagonalizable if and only if $T^p$ is diagonalizable, and we also suppose a strengthed lemma, $T^p$ and $T$ have the same eigenvectors (which is also trivial when $k = 1$). 
+
+    % If $T$ is not diagonalizable, so do $T^p$ Therefore, we suppose $v_1,\ldots,v_n$ is all the eigenvectors of $T$ and it is not a basis of $V$. So we can extend it into $v_1,\ldots,v_n,u_1,\ldots,u_m$. We let $W = \spans(v_1,\ldots,v_n),U = \spans(u_1,\ldots,u_m)$. $U$ can't be an invariant space, otherwise there will be eigenvector in it since $\FF = \CC$. 
+
+    % for $u^0 \in U$,($u^0 \neq 0$, we ignore this in the process afterwards), $Tu^0 = w^1 + u^1, w^1 \in W$ and $u^1 \in U$, $w^1 \neq 0$. And it' s also true that $u^1 \neq 0$, otherwise there exists $v' \in W$ s.t. $Tv' = w^1 = Tu^0$, which implies that $v' - u^0 \notin W$ is an eigenvector corresponding to eigenvalue $0$, and lead to contradition.\\
+
+    % for $u \in U$,
+    % \[T^{p + 1} u = T T^p u = T(w' + u') = w'' + u''\]
+    % If $w'' = 0$, then $T w' = T(w' + u') - T u' = u '' - Tu' \notin U$, so $Tu' = $
+    % For the notation below, we denote 
+    % \[T(w^j + u^j) = w^{j + 1} + u^{j + 1} ,j \geq 1\] 
+
+    % Suppose for $k = p$, we have $T^p u^0 = w^p + u^p$ s.t.
+    % \[w^p \in W, u^p \in U ~\text{and}~ w^p,u^p \neq 0\]
+
+    % Then for $k = p + 1$, $\forall u^0 \in U$,
+    % \[T^{p+1} u^0 = T T^{p} u^0 = T (w^{p} + u^{p}) =  w^{p+1} + u^{p+1}\]
+    % If $w^{p + 1} = 0$, then there also be a $v \in W$, s.t. 
+
+    % , where $w^{p + 1}, u^{p + 1} \neq 0$ since $u^{p} \neq 0$.
+
+    % Therefore we proved that for any $k$, $T^k u = w' + u', w' \in W, w'\neq 0$.\\
+
+    % If $T^{k}$ is diagonalizable, then there must exists $u \in U$ s.t. $T^k u = cu \in U$, but we had already proved that $T^k u = w' + u'$, which leads to a contradiction.
+
 \end{solution}
 
 \begin{exercise}
@@ -3413,7 +3465,7 @@ is not linear because of the complex conjugate that appears in (b).
 \begin{definition}
     conjugate transpose, $A^\ast$\\
 
-    The conjugate transpose of an $m -by- n$ matrix $A$ is the $n-by-m$ matrix $A^\ast$ obtained by interchanging the rows and columns and then taking the complex conjugate of each entry. In other words, if $j\in{1,\ldots, n}$ and $k\in{1,\ldots,m }$, then
+    The conjugate transpose of an $m $-by-$ n$ matrix $A$ is the $n$-by-$m$ matrix $A^\ast$ obtained by interchanging the rows and columns and then taking the complex conjugate of each entry. In other words, if $j\in{1,\ldots, n}$ and $k\in{1,\ldots,m }$, then
     \[( A^\ast)_{j,k}= \overline{A_{k,j}}\]
 \end{definition}
 
@@ -3537,7 +3589,7 @@ The next result provides another good example of how self-adjoint operators beha
 
     (b) We can use the perspective of the matrix.
 
-    suppose $\dim V= n$, then $\mathcal{M}(T)$ would be a $n-by-n$ matrix. Since the self-adjoint operator satisfies that 
+    suppose $\dim V= n$, then $\mathcal{M}(T)$ would be a $n$-by-$n$ matrix. Since the self-adjoint operator satisfies that 
     \[\mathcal{M}(T)_{j,k} = \overline{\mathcal{M}(T^\ast)_{k,j}}\]
     In this context, it just need 
     \[\mathcal{M}(T)_{j,k} = \mathcal{M}(T^\ast)_{k,j}\]
@@ -4021,9 +4073,9 @@ A positive operator can have infinitely many square roots (although only one of 
 \end{solution}
 
 \begin{exercise}
-    Suppose $n$ is a positive integer. The $n-by-n$ Hilbert matrix is the $n-by-n$ matrix whose entry in row $j$,column $k$ is $\frac{1}{j + k - 1}$. Suppose $T\in\mathcal{L}(V)$ is an operator whose matrix with respect to some orthonormal basis of $V$ is the $n-by-n$ Hilbert matrix. Prove that $T$ is a positive invertible operator.\\
+    Suppose $n$ is a positive integer. The $n$-by-$n$ Hilbert matrix is the $n$-by-$n$ matrix whose entry in row $j$,column $k$ is $\frac{1}{j + k - 1}$. Suppose $T\in\mathcal{L}(V)$ is an operator whose matrix with respect to some orthonormal basis of $V$ is the $n$-by-$n$ Hilbert matrix. Prove that $T$ is a positive invertible operator.\\
 
-    Example: The $4-by-4$ Hilbert matrix
+    Example: The $4$-by-$4$ Hilbert matrix
     \[\begin{pmatrix}
         1 & \frac{1}{2}&\frac{1}{3}&\frac{1}{4}\\
         \frac{1}{2} & \frac{1}{3}&\frac{1}{4}&\frac{1}{5}\\
@@ -4043,14 +4095,14 @@ A positive operator can have infinitely many square roots (although only one of 
         &= \sum_{j=1}^{n} \sum_{k=1}^{n} \frac{1}{j + k - 1} v_j \overline{v_k}\\
         &= \int_{0}^{1} \sum_{j=1}^{n} \sum_{k=1}^{n}  v_j \overline{v_k} x^{j- 1} x^{k - 1} \, dx\\
         &= \int_{0}^{1} (v_1 + v_2 x + \cdots v_n x^{n - 1})(\overline{v_1} + \overline{v_2} x + \cdots + \overline{v_n}x^{n - 1})\, dx\\
-        &= \int_{0}^{1} (v_1 + v_2 x + \cdots v_n x^{n - 1})\overline{(v_1 + v_2 x + \cdots + v_nx^{n - 1})}\, dx\\
+        &= \int_{0}^{1} (v_1 + v_2 x + \cdots v_n x^{n - 1})\overline{(v_1 + v_2 x + \cdots + v_n x^{n - 1})}\, dx\\
         &= \int_{0}^{1} \left|(v_1 + v_2 x + \cdots v_n x^{n - 1})\right|^2\, dx \geq 0\\
     \end{aligned}    
     \]
     The following part is trivial compared to the trick of transformtion above.\\
 
     https://math.stackexchange.com/questions/4309056/how-to-show-a-hilbert-matrix-is-invertible
-
+ 
     https://math.stackexchange.com/questions/1754729/prove-the-positive-definiteness-of-hilbert-matrix
 
     The link above is some solution but is a little irrelevant to the content of this book. I prefer the first one, which also tells how to prove positiveness
@@ -4086,14 +4138,702 @@ A positive operator can have infinitely many square roots (although only one of 
 \end{solution}
 \subsection{Isometries, Unitary Operators, and Matrix Factorization}
 
+\subsubsection{Isometries}
+The Greek word \textbf{isos} means equal; the Greek word \textbf{metron} means measure. Thus isometry literally means equal measure.
+
+\begin{definition}
+    isometry\\
+
+    A \textbf{linear map} $S \in \mathcal{L}(V,W)$ is called an isometry if
+    \[\|Sv\| = \|v\|\]
+    for every $v \in V$. In other words, a linear map is an isometry if it \textbf{preserves norms}.
+\end{definition}
+
+\begin{theorem}
+    characterization of isometries\\
+
+    Suppose $S \in \mathcal{L}(V,W)$. Suppose $e_1,\ldots,e_n$ is an orthonormal basis of $V$ and $f_1, \ldots, f_m$ is an orthonormal basis of $W$. Then the following are equivalent.
+
+    (a) $S$ is an isometry.
+
+    (b) $S^\ast S = I$.
+
+    (c) $\left<Su,Sv\right> = \left<u,v\right>$ for all $u,v \in V$.
+
+    (d) $Se_1,\ldots,Se_n$ is an orthonormal list in $W$.
+
+    (e) The columns of $\mathcal{M}(S,(e_1,\ldots,e_n),(f_1,\ldots, f_m))$ form an orthonormal list in $\FF^m$ with respect to the Euclidean inner product.
+\end{theorem}
+
+For better understanding, the matrix in (e) may look likes such long one.
+\[\begin{pmatrix}
+    &&\\
+    &&\\
+    &&\\
+    &&\\
+\end{pmatrix}\]
+\subsubsection{Unitary Operators}
+
+\begin{definition}
+    unitary operator\\
+
+    An \textbf{operator} $S \in \mathcal{L}(V)$ is called unitary if $S$ is an invertible isometry
+\end{definition}
+In the case of infinite-dimensional space, the conditioin ``invertible'' can't be left out, despite in the finite-dimensional case isometry implies injective and invertibility.
+
+\begin{theorem}
+    characterization of unitary operators\\
+
+    Suppose $S \in \mathcal{L}(V)$. Suppose $e_1,\ldots,e_n$ is an orthonormal basis of $V$. Then the following are equivalent.
+
+    (a) $S$ is a unitary operator.
+
+    (b) $S^\ast S = SS^\ast  = I$.
+    
+    (c) $S$ is invertible and $S^{-1} = S^\ast$.
+
+    (d) $Se_1,\ldots,Se_n$ is an orthonormal \textbf{basis} of $V$.
+        
+    (e) The rows of $\mathcal{M}(S,(e_1,\ldots,e_n))$ form an orthonormal basis of $\FF^n$ with respect to the Euclidean inner product.
+
+    (f) $S^\ast$ is a unitary operator.
+\end{theorem}
+
+Recall our analogy between $\CC$ and $\mathcal{L}(V)$. Under this analogy, a complex number $z$ corresponds to an operator $S \in \mathcal{L}(V)$, and $\overline{z}$ corresponds to $S^\ast$. The real numbers $(z = \overline{z})$ correspond to the self-adjoint operators $(S = S^\ast)$, and the nonnegative numbers correspond to the (badly named) positive operators.
+
+\begin{theorem}
+    eigenvalues of unitary operators have \textbf{absolute} value $1$\\
+
+    Suppose $\lambda$ is an eigenvalue of a unitary operator. Then $|\lambda| = 1$
+\end{theorem}
+
+\begin{theorem}
+    description of unitary operators on complex inner product spaces\\
+
+    Suppose $\FF = \CC$ and $S \in \mathcal{L}(V)$. Then the following are equivalent.
+
+    (a) $S$ is a unitary operator.
+
+    (b) There is an orthonormal basis of $V$ consisting of eigenvectors of $S$ whose corresponding eigenvalues all have absolute value $1$.
+\end{theorem}
+\subsubsection{$QR$ Factorization}
+
+\begin{definition}
+    unitary matrix\\
+
+    An $n$-by-$n$ matrix is called unitary if its columns form an orthonormal list in $\FF^n$.
+\end{definition}
+
+\begin{theorem}
+    characterizations of unitary matrices\\
+
+    Suppose $Q$ is an $n$-by-$n$ matrix. Then the following are equivalent.
+
+    (a) $Q$ is a unitary matrix.
+
+    (b) The rows of $Q$ form an orthonormal list in $\FF^n$.
+
+    (c) $\|Qv\| = \|v\|$ for every $v \in \FF^n$.
+
+    (d) $Q^\ast Q = QQ^\ast  = I$, the $n$-by-$n$ matrix with $1$'s on the diagonal and $0$'s elsewhere
+\end{theorem}
+
+\begin{theorem}
+    $QR$ factorization\\
+
+    Suppose $A$ is a square matrix with linearly independent columns. Then there exist \textbf{unique} matrices $Q$ and $R$ such that $Q$ is unitary, $R$ is upper triangular with only positive numbers on its diagonal, and
+    \[A =QR\]
+\end{theorem}
+
+\subsubsection{Cholesky Factorization}
+
+\begin{theorem}
+    positive invertible operator\\
+
+    A self-adjoint operator $T \in \mathcal{L}(V)$ is a positive invertible operator if and only if $\left<Tv,v\right> > 0$ for every nonzero $v \in V$.
+\end{theorem}
+
+\begin{definition}
+    positive definite\\
+
+    A matrix $B \in \FF^{n,n}$ is called positive definite if $B^\ast  = B$ and
+    \[\left<Bx,x\right> > 0\]
+    for every nonzero $x \in \FF^n$
+\end{definition}
+
+\begin{theorem}
+    Cholesky factorization\\
+
+    Suppose $B$ is a positive definite matrix. Then there exists a \textbf{unique} upper triangular matrix $R$ with only positive numbers on its diagonal such that
+    \[B =R^\ast R\]
+\end{theorem}
+
+\begin{exercise}
+    Suppose $\FF = \CC$ and $T \in \mathcal{L}(V)$.Suppose every eigenvalue of $T$ has absolute value $1$ and $\|Tv\| \leq \|v\|$ for every $v \in V$. Prove that $T$ is a unitary operator
+\end{exercise}
+
+\begin{solution}
+    The key is that the \textbf{unitary operator is normal}, since we know that $T^\ast T = T T^\ast = I$.
+    
+    Then by complex spectral theorem, there is an orthonormal basis consists of the eigenvectors of $T$, we denote them by $v_1,\ldots,v_n$. And it is easy to show that $\|Tv\| = \|v\|$ for $\forall v \in V$
+\end{solution}
+
+\begin{exercise}
+    Suppose $S \in \mathcal{L}(V)$. Prove that $S$ is a unitary operator if and only if
+    \[\{Sv : v \in V ~\text{and}~ \|v\| \leq 1\} = \{v \in V : \|v\| \leq 1\}\]
+\end{exercise}
+
+\begin{solution}
+    we denote the set on the left and right with $A$ and $B$ respectively.\\
+
+    $\Rightarrow$: It's easy to show that $\forall u \in A$, $\exists v \in V$ s.t. $\|u\| =\|S v\| = \|v\| \leq 1$, so $A \subset B$
+
+    for $v \in B$, $v = S(S^{-1}v)$ for some $S^{-1}v \in V$ and $\|S^{-1}v\| = \|v\| \leq 1$, so $B \subset A$. Therefoer $A = B$\\
+
+    $\Leftarrow$: If $S$ is not unitary, then there exists $v \in V$ s.t. $\|Sv\| = |c|\|v\|$ for $|c| \neq 1$, now we suppose $|c| > 1$, then for the equation below, it means for $\forall v \in V$ s.t. $\|v\| = 1$, $\|Sv\| \leq 1$, but out assumption shows that $\|Sv\| >1$, which leads to a contradiction.
+\end{solution}
+
+\begin{exercise}
+    Prove or give a counterexample: If $S \in \mathcal{L}(V)$ is invertible and $\|S^{-1}v\| = \|Sv\|$ for every $v \in V$, then $S$ is unitary.
+\end{exercise}
+
+\begin{solution}
+    The condition implies that 
+    \[\left<S^{-1}v,S^{-1}v\right> - \left<Sv,Sv\right>= \left<\parameter{(S^{-1})^\ast S^{-1} - S^\ast S} v,v\right> = 0\]
+    Therefore $(S^{-1})^\ast S^{-1} = S^\ast S$ i.e. 
+    \[S^\ast S S S^\ast  = S S^\ast S^\ast S = S S S^\ast S^\ast = S^\ast S^\ast S S =  I\]
+    Thus $S^2$ and $S^\ast S$ are unitary.
+
+    The latter one is self-adjoint, then it has a diagonal matrix with respect to some orthonormal basis consists of its eigenvectors. Since self-adjoint means that its eigenvalues are real numbers. It's also positive since $\left<S^\ast Sv,v\right> = \left<Sv,Sv\right> \geq 0$ $\forall v \in V$, so all the eigenvalues of $S^\ast S$ are non-negative. So the only eigenvalue it has is $1$ and it means $S^\ast S = I$, which implies that $S$ is unitary.\\
+
+    I'm not quite confident with the proof above, so you can check carefully for any possible mistake.
+\end{solution}
+
+\begin{exercise}
+    A square matrix $A$ is called symmetric if it equals its transpose. Prove that if $A$ is a symmetric matrix with real entries, then there exists a unitary matrix $Q$ with real entries such that $Q^\ast AQ$ is a diagonal matrix.
+\end{exercise}
+
+\begin{solution}
+    It's a trivial fact we have already learned, but we might want to use the language of this book to solve it.\\
+
+    Since $A$ equals to its conjugate transpose, so we can arbitrarily choose an orthonormal basis $e_1,\ldots,e_n$, so there exists some operator $T$ with respect to $e_1,\ldots,e_n$ are matrix $A$, which is self-adjoint. $T$ has a diagonal matrix with respect to some other orthonormal basis $f_1,\ldots,f_n$. Since $Q = \mathcal{M}(I,(e_1,\ldots,e_n),(f_1,\ldots,f_n))$ satisfy the condition that $\|Qv\| = \|v\|$ for every $v \in V$, so we finished our proof.
+\end{solution}
+
+\begin{exercise}
+    Suppose $n$ is a positive integer. For this exercise, we adopt the notation that a typical element $z$ of $\CC^n$ is denoted by $z = (z_0,z_1,\ldots,z_{n-1})$. Define linear functionals $\omega_0,\omega_1,\ldots,\omega_{n-1}$ on $\CC^n$ by
+    \[\omega_j(z_0, z_1, \ldots,z_{n-1}) = \dfrac{1}{\sqrt{n}}\sum_{m = 0}^{n - 1} z_m e^{\frac{-2\pi i j m}{n}}\]
+    The discrete Fourier transform is the operator $\mathcal{F}: \CC^n \to \CC^n$ defined by 
+    \[\mathcal{F}z =(\omega_0(z),\omega_1(z),\ldots,\omega_{n-1}(z))\]
+
+    (a) Show that $\mathcal{F}$ is a unitary operator on $\CC^n$.
+
+    (b) Show that if $(z_0,\ldots,z_{n-1}) \in \CC^n$ and $z_n$ is defined to equal $z_0$, then
+    \[\mathcal{F}^{-1}(z_0,z_1,\ldots,z_{n - 1}) = \mathcal{F}(z_n,z_{n - 1},\ldots,z_1)\]
+
+    (c) Show that $\mathcal{F}^4 = I$.
+
+    The discrete Fourier transform has many important applications in data analysis. The usual Fourier transform involves expressions of the form $\int_{-\infty}^{+\infty} f(x) e^{-2\pi i t x}$ for complex-valued integrable functions $f$ defined on $\RR$.
+\end{exercise}
+
+\begin{solution}
+    Remain to be solved.
+    % Let $e_1,\ldots,e_n$ be the standard basis of $\CC^n$, then 
+    % \[w_j(e_k) = \dfrac{1}{\sqrt{n}} e^{\frac{-2\pi jk}{n}i}\]
+    % Therefore,
+    % \[\mathcal{F}e_k = (\dfrac{1}{\sqrt{n}} e^{\frac{-2\pi 0k}{n}i},\dfrac{1}{\sqrt{n}} e^{\frac{-2\pi 1k}{n}i},\ldots,\dfrac{1}{\sqrt{n}} e^{\frac{-2\pi (n - 1)k}{n}i})\]
+
+    % (a) $\left<\mathcal{F}e_k,\mathcal{F}e_p\right> = \dfrac{1}{n}\parameter{e^{\frac{-2\pi 0 (k + p)}{n}i} + e^{\frac{-2\pi 1 (k + p)}{n}i} + \cdots + e^{\frac{-2\pi (n - 1) (k + p)}{n}i}}$
+\end{solution}
+
 \subsection{Singular Value Decomposition}
 
+\subsubsection{Singular Values}
+
+\begin{theorem}
+    properties of $T^\ast T$\\
+
+    Suppose $T \in \mathcal{L}(V,W)$. Then
+
+    (a) $T^\ast T$ is a positive operator on $V$;
+
+    (b) $\n T^\ast T = \n T$;
+
+    (c) $\range T^\ast T = \range T^\ast$;
+
+    (d) $\dim \range T = \dim \range T^\ast  = \dim \range T^\ast T$.
+\end{theorem}
+
+\begin{definition}
+    singularvalues\\
+
+    Suppose $T\in\mathcal{L}(V,W)$.The singular values of $T$ are the nonnegative square roots of the eigenvalues of $T^\ast T$, listed in decreasing order, each included \textbf{as many times as the dimension of the corresponding eigenspace} of $T^\ast T$.
+\end{definition}
+
+\begin{theorem}
+    role of positive singular values\\
+
+    Suppose that $T \in \mathcal{L}(V,W)$. Then
+
+    (a) $T$ is injective $\Leftrightarrow 0$ is not a singular value of $T$;
+
+    (b) the number of positive singular values of $T$ equals $\dim \range T$;
+
+    (c) $T$ is surjective $\Leftrightarrow$ number of positive singular values of $T$ equals $\dim W$
+\end{theorem}
+
+Notice that (b) is important and this condition can be transformed into the rank of matrix.
+
+\begin{theorem}
+    isometries characterized by having all singular values equal $1$\\
+
+    Suppose that $S \in \mathcal{L}(V,W)$. Then $S$ is an isometry $\Leftrightarrow$ all singular values of S equal $1$.
+\end{theorem}
+
+\subsubsection{SVD for Linear Maps and for Matrices}
+\begin{theorem}
+    singular value decomposition\\
+
+    Suppose $T \in \mathcal{L}(V,W)$ and the positive singular values of $T$ are $s_1,\ldots,s_m$. Then there exist orthonormal lists $e_1,\ldots,e_m$ in $V$ and $f_1,\ldots, f_m$ in $W$ such that
+    \[ Tv =s_1\left<v,e_1\right>f_1 + \cdots+s_m\left<v,e_m\right>f_m\]
+    for every $v \in V$
+\end{theorem}
+
+Attention that $e_1,\ldots,e_n$ are the eigenvectors of $T^\ast T$ and 
+\[f_k = \dfrac{T e_k}{s_k}\quad k = 1,\ldots,m\] 
+
+\begin{definition}
+    diagonal matrix\\
+
+    An $M$-by-$N$ matrix $A$ is called a diagonal matrix if all entries of the matrix are $0$ except possibly $A_{k,k}$ for $k = 1,\ldots,\min\{M,N\}$.
+\end{definition}
+
+\begin{theorem}
+    singular value decomposition of adjoint and pseudoinverse
+
+    Suppose $T \in \mathcal{L}(V,W)$ and the positive singular values of $T are s_1,\ldots,s_m$. Suppose $e_1,\ldots,e_m$ and $f_1,\ldots, f_m$ are orthonormal lists in $V$ and $W$ such that
+    \[Tv = s_1\left<v,e_1\right>f_1 + \cdots+s_m\left<v,e_m\right>f_m\]
+    for every $v \in V$. Then
+    \[T^\ast w =s_1\left<w, f_1\right>e_1 + \cdots+s_m\left<w, f_m\right>e_m\]
+    and
+    \[T^\dagger w = \dfrac{\left<w, f_1\right>}{s_1}e_1 +\cdots+ \dfrac{\left<w, f_m\right>}{s_m}e_m\]
+    for every $w \in W$.
+
+\end{theorem}
+
+\begin{theorem}
+    matrix version of SVD\\
+    
+    Suppose $A$ is an $M$-by-$n$ matrix of rank $m \geq 1$. Then there exist an $M$-by-$m$ matrix $B$ with orthonormal columns, an $m$-by-$m$ diagonal matrix $D$ with positive numbers on the diagonal, and an $n$-by-$m$ matrix $C$ with orthonormal columns such that
+    \[A =B D C^\ast \]
+\end{theorem}
+The theorem above is a simplified version of the SVD for matrix.
+
+\begin{exercise}
+    Suppose $T \in \mathcal{L}(V)$ is normal. Prove that the singular values of $T^2$ equal the squares of the singular values of $T$.
+\end{exercise}
+
+\begin{solution}
+    Let $s$ be one singular value of $T$, then $T^\ast T v = s^2 v$ for some $v \in V$, therefore
+    \[(T^2)^\ast T^2 v = T^\ast T T^\ast T v = s^4 v\]
+    so $s^2$ is the singular value of $T^2$.
+    
+    Since $T$ and $T^2$ have the same number of singular values, so there exists such one-on-one corresponding relation.
+\end{solution}
+
 \subsection{Consequences of Singular Value Decomposition}
+
+\subsubsection{Norms of Linear Maps}
+
+\begin{theorem}
+    upper bound for $\|Tv\|$\\
+
+    Suppose $T \in \mathcal{L}(V,W)$. Let $s_1$ be the largest singular value of $T$. Then
+    \[\|Tv\| \leq s_1\|v\|\]
+    for all $v \in V$.
+\end{theorem}
+The lower bound can also be proved to be 
+\[ \|Tv\| \geq s_n\|v\|\]
+
+\begin{definition}
+    norm of a linear map, $\|\cdot\|$\\
+    
+    Suppose $T \in \mathcal{L}(V,W)$. Then the norm of $T$, denoted by $\|T\|$, is defined by
+    \[\|T\| = \max\{\|Tv\| : v \in V ~\text{and}~ \|v\| \leq 1\}   \]
+\end{definition}
+
+\begin{theorem}
+    basic properties of norms of linear maps\\
+
+    Suppose $T \in \mathcal{L}(V,W)$. Then
+
+    (a) $\|T\| \geq 0$;
+
+    (b) $\|T\| = 0 \Leftrightarrow T =0$;
+
+    (c) $\|\lambda T\| = |\lambda|\|T\| for all \lambda \in \FF$;
+
+    (d) $\|S +T\| \leq \|S\|+\|T\| for all S \in \mathcal{L}(V,W)$.
+\end{theorem}
+
+\begin{theorem}
+    alternative formulas for $\|T\|$\\
+
+    Suppose $T \in \mathcal{L}(V,W)$. Then
+
+    (a) $\|T\| =$ the largest singular value of $T$;
+
+    (b) $\|T\| = \max\{\|Tv\| : v \in V ~\text{and}~ \|v\| = 1\}$;
+
+    (c) $\|T\| =$ the smallest number $c$ such that $\|Tv\| \leq c\|v\|$ for all $v \in V$.
+\end{theorem}
+
+And a frequently used inequality:
+\[ \|Tv\| \leq \|T\|\|v\|\]
+
+\begin{theorem}
+    norm of the adjoint\\
+
+    Suppose $T \in \mathcal{L}(V,W)$. Then $\|T^\ast\| = \|T\|$.
+\end{theorem}
+
+Since we have already proved $T$ and $T^\ast$ have the positive singular values in the exercise before.
+
+\subsubsection{Approximation by Linear Maps with Lower-Dimensional Range}
+
+\begin{theorem}
+    best approximation by linear map whose range has dimension $\leq k$\\
+
+    Suppose $T \in \mathcal{L}(V,W)$ and $s_1 \geq \cdots \geq s_m$ are the positive singular values of $T$. Suppose $1 \leq k < m$. Then
+
+    \[\min\{\|T -S\| : S \in \mathcal{L}(V,W) ~\text{and}~ \dim \range S \leq k\} = s_{k+1}.\]
+    Furthermore, if
+    \[Tv =s_1\left<v,e_1\right>f_1 + \cdots+s_m\left<v,e_m\right>f_m\]
+    is a singular value decomposition of $T$ and $T_k \in \mathcal{L}(V,W)$ is defined by
+    \[T_k v = s_1\left<v,e_1\right>f_1 + \cdots +s_k\left<v,e_k\right>f_k\]
+    for each $v \in V$, then $\dim \range T_k = k$ and $\|T -T_k\| = s_{k+1}$.
+\end{theorem}
+
+\subsubsection{Polar Decomposition}
+
+\begin{theorem}
+    polar decomposition\\
+
+    Suppose $T \in \mathcal{L}(V)$. Then there exists a unitary operator $S \in \mathcal{L}(V)$ such that
+    \[T =S\sqrt{T^\ast T}.\]
+\end{theorem}
+
+\subsubsection{Operators Applied to Ellipsoids and Parallelepipeds}
+
+\begin{definition}
+    ball, $B$\\
+
+    The ball in $V$ of radius $1$ centered at $0$, denoted by $B$, is defined by
+    \[B = \{v \in V:\|v\| < 1 \}.\]
+\end{definition}
+
+\begin{definition}
+    ellipsoid, $E(s_1 f_1,\ldots,s_n f_n)$, principal axes\\
+
+    Suppose that $f_1,\ldots, f_n$ is an orthonormal basis of $V$ and $s_1,\ldots,s_n$ are positive numbers. The ellipsoid $E(s_1 f_1,\ldots,s_n f_n)$ with principal axes $s_1 f_1,\ldots,s_n f_n$ is defined by
+    \[E(s_1f_1,\ldots,e_n f_n) = \left\{v \in V :\dfrac{\left|\left<v,f_1\right>\right|^2}{s_1^2} + \cdots + \dfrac{\left|\left<v,f_n\right>\right|^2}{s_n^2} < 1\right\}\]
+\end{definition}
+
+\begin{definition}
+    notation: $T(\Omega)$\\
+
+    For $T$ a function defined on $V$ and $\Omega \subset V$, define $T(\Omega)$ by
+    \[T(\Omega) = \{Tv : v \in \Omega\}.\]
+\end{definition}
+
+\begin{theorem}
+    invertible operator takes ball to ellipsoid\\
+    
+    Suppose $T \in \mathcal{L}(V)$ is invertible. Then $T$ maps the ball $B$ in $V$ onto an ellipsoid in $V$
+\end{theorem}
+
+\begin{theorem}
+    invertible operator takes ellipsoids to ellipsoids\\
+
+    Suppose $T \in \mathcal{L}(V)$ is invertible and $E$ is an ellipsoid in $V$. Then $T(E)$ is an ellipsoid in $V$.
+\end{theorem}
+
+\begin{definition}
+    $P(v_1,\ldots,v_n)$, parallelepiped\\
+
+    Suppose $v_1,\ldots,v_n$ is a basis of $V$. Let
+    \[P(v_1,\ldots,v_n) = \{\alpha_1 v_1 + \cdots+\alpha_n v_n: \alpha_1,\ldots,\alpha_n \in (0,1)\}.\]
+    A \textbf{parallelepiped} is a set of the form $u + P(v_1,\ldots,v_n)$ for some $u \in V$. The vectors $v_1,\ldots,v_n$ are called the \textbf{edges} of this parallelepiped.
+\end{definition}
+
+\begin{theorem}
+    invertible operator takes parallelepipeds to parallelepipeds\\
+
+    Suppose $u \in V$ and $v_1,\ldots,v_n$ is a \textbf{basis} of $V$. Suppose $T \in \mathcal{L}(V)$ is invertible. Then
+    \[T(u +P(v_1,\ldots,v_n)) = Tu+P(Tv_1,\ldots,Tv_n).\]
+\end{theorem}
+
+\begin{definition}
+    box\\
+
+    A box in $V$ is a set of the form
+    \[u +P(r_1e_1,\ldots,r_n e_n)\]
+    where $u \in V$ and $r_1,\ldots,r_n$ are positive numbers and $e_1,\ldots,e_n$ is an \textbf{orthonormal} \textbf{basis} of V.
+\end{definition}
+
+\begin{theorem}
+    every invertible operator takes some boxes to boxes\\
+
+    Suppose $T \in \mathcal{L}(V)$ is invertible. Suppose $T$ has singular value decomposition
+    \[Tv =s_1\left<v,e_1\right>f_1 + \cdots+s_n\left<v,e_n\right>f_n\]
+    where $s_1,\ldots,s_n$ are the singular values of $T$ and $e_1,\ldots,e_n$ and $f_1,\ldots, f_n$ are orthonormal bases of $V$ and the equation above holds for all $v \in V$. Then $T$ maps the box $u +P(r_1e_1,\ldots,r_n e_n)$ onto the box $Tu + P(r_1 s_1 f_1,\ldots,r_n s_n f_n)$ for all positive numbers $r_1,\ldots,r_n$ and all $u \in V$.
+\end{theorem}
+
+\subsubsection{Volume via Singular Values}
+
+\begin{definition}
+    volume of a box\\
+
+    Suppose $\FF = \RR$. If $u \in V$ and $r_1,\ldots,r_n$ are positive numbers and $e_1,\ldots,e_n$ is an orthonormal basis of $V$, then
+    \[volume(u + P(r_1e_1,\ldots,r_n e_n)) = r_1 \times \cdots \times r_n\]
+\end{definition}
+
+To define the volume of a subset of $V$, approximate the subset by a finite collection of disjoint boxes, and then add upthe volumes of the approximating collection of boxes. As we approximate a subset of V more accurately by disjoint unions of more boxes, we get a better approximation to the volume.
+
+These ideas should remind you of how the Riemann integral is defined by approximating the area under a curve by a disjoint collection of rectangles. This discussion leads to the following nonrigorous but intuitive definition.
+
+\begin{definition}
+    volume\\
+
+    Suppose $\FF = \RR$ and $\Omega \subset V$. Then the volume of $\Omega$, denoted by $volume\Omega$, is approximately the sum of the volumes of a collection of disjoint boxes that approximate $\Omega$.
+\end{definition}
+
+\begin{theorem}
+    volume changes by a factor of the product of the singular values\\
+
+    Suppose $\FF = \RR$, $T \in \mathcal{L}(V)$ is invertible, and $\Omega \subset V$. Then
+    \[volumeT(\Omega) = (product of singular values of T)(volume\Omega).\]
+\end{theorem}
+
+Suppose $T \in \mathcal{L}(V)$. As we will see when we get to determinants, the product of the singular values of $T$ equals $|\det T|$;
+
+\subsubsection{Properties of an Operator as Determined by Its Eigenvalues}
+\begin{center}
+    
+    \begin{tabular}{|c|c|}
+        \hline
+        properties of a normal operator& eigenvalues are contained in\\
+        \hline
+        invertible &$\CC\setminus\{0\}$\\
+        \hline
+        self-adjoint&$\RR$\\
+        \hline    
+        skew &$\{\lambda \in \CC :Re\lambda=0\}$\\
+        \hline
+        orthogonal projection&$\{0, 1\}$\\
+        \hline
+        positive&$\left[0, \infty\right)$\\
+        \hline
+        unitary &$\{\lambda \in \CC : |\lambda| = 1\}$\\
+        \hline    
+        norm is less than $1$ &$\{\lambda \in \CC : |\lambda| < 1\}$\\
+        \hline
+    \end{tabular}
+\end{center}
+
+\begin{exercise}
+    Showthat defining $d(S,T) = \|S-T\|$ for $S,T \in \mathcal{L}(V,W)$ makes $d$ a metric on $\mathcal{L}(V,W)$.
+
+    This exercise is intended for readers who are familiar with metric spaces.
+\end{exercise}
+
+\begin{solution}
+    This will remain until I learned the function analysis.
+\end{solution}
+
+\begin{exercise}
+    (a) Prove that if $T \in \mathcal{L}(V)$ and $\|I -T\| < 1$, then $T$ is invertible.
+
+    (b) Suppose that $S \in \mathcal{L}(V)$ is invertible. Prove that if $T \in \mathcal{L}(V)$ and $\|S -T\| < 1/\|S^{-1}\|$, then $T$ is invertible.
+
+    This exercise shows that the set of invertible operators in $\mathcal{L}(V)$ is an open subset of $\mathcal{L}(V)$, using the metric defined in Exercise above
+\end{exercise}
+
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+    Suppose $T \in \mathcal{L}(V)$. Prove that for every $\varepsilon > 0$, there exists an invertible operator $S \in \mathcal{L}(V)$ such that $0 < \|T -S\| < \varepsilon$.
+\end{exercise}
+
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+    Suppose $\FF = \CC$ and $T \in \mathcal{L}(V)$. Prove that for every $\varepsilon > 0$ there exists a diagonalizable operator $S \in \mathcal{L}(V)$ such that $0 < \|T - S\| < \varepsilon$.
+\end{exercise}
+
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+    Suppose $e_1,\ldots,e_n$ is an orthonormal basis of $V$ and $T \in \mathcal{L}(V,W)$.
+
+    (a) Prove that $\max\{\|Te_1\|,\ldots,\|Te_n\|\} \leq \|T\| \leq (\|Te_1\|^2 + \cdots + \|Te_n\|^2)^{\frac{1}{2}}$.
+
+    (b) Prove that $\|T\| = (\|Te_1\|^2 + \cdots + \|Te_n\|^2)^{\frac{1}{2}}$ if and only if $\dim\range T \leq 1$.
+
+    Here $e_1,\ldots,e_n$ is an arbitrary orthonormal basis of $V$, not necessarily connected with a singular value decomposition of $T$. If $s1,\ldots,sn$ is the list of singular values of $T$, then the right side of the inequality above equals $(s_1^2 + \cdots +s_n^2)^{\frac{1}{2}}$, as was shown in Exercise 11(a) in Section 7E.
+\end{exercise}
+
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+    Suppose $T \in \mathcal{L}(V)$ is normal. Prove that $\|T^k\| = \|T\|^k$ for every positive integer $k$.
+\end{exercise}
+
+\begin{solution}
+    
+\end{solution}
+
+\begin{exercise}
+    Suppose $\dim V > 1$ and $\dim W > 1$. Prove that the norm on $\mathcal{L}(V,W)$ does not come from an inner product. In other words, prove that there does not exist an inner product on $\mathcal{L}(V,W)$ such that
+    \[\max\{\|Tv\| : v \in V ~\text{and}~ \|v\| \leq 1\} = \sqrt{\left<T,T\right>}\]
+    for all $T \in \mathcal{L}(V,W)$.
+\end{exercise}
+
+\begin{solution}
+    
+\end{solution}
+
+\begin{exercise}
+    Suppose $T \in \mathcal{L}(V,W)$. Showthat $T$ is uniformly continuous with respect to the metrics on $V$ and $W$ that arise from the norms on those spaces (see Exercise 23 in Section 6B).
+\end{exercise}
+
+\begin{solution}
+    
+\end{solution}
+
+\begin{exercise}    
+    Fix $u,x \in V$ with $u \neq 0$. Define $T \in \mathcal{L}(V)$ by $Tv = \left<v,u\right>x $ for every $v \in V$. Prove that 
+    \[\sqrt{T^\ast T } v = \dfrac{\|x\|}{\|u\|} \left<v, u\right>u\]
+    for every $v \in V$.
+\end{exercise}
+
+\begin{solution}
+    
+\end{solution}
 
 \section{Operators on Complex Vector Spaces}
 
 \subsection{Generalized Eigenvectors and Nilpotent Operators}
 
+\subsubsection{Null Spaces of Powers of an Operator}
+
+\begin{theorem}
+    sequence of increasing null spaces\\
+    Suppose $T \in \mathcal{L}(V)$. Then
+    \[\{0\} = \n T^0 \subset \n T^1 \subset \cdots \subset \n T^k \subset \n T^{k+1} \subset \cdots\]
+\end{theorem}
+
+\begin{theorem}
+    equality in the sequence of null spaces\\
+
+    Suppose $T \in \mathcal{L}(V)$ and $m$ is a nonnegative integer such that
+    \[\n T^m = \n T^{m+1}\]
+    Then
+    \[\n T^m = \n T^{m+1} = \n T^{m+2} = \n T^{m+3} = \cdots\]
+\end{theorem}
+
+\begin{theorem}
+    null spaces stop growing\\
+
+    Suppose $T \in \mathcal{L}(V)$. Then
+    \[\n T^{ \dim V} = \n T^{ \dim V+1} = \n T^{\dim V+2} = \cdots\]
+\end{theorem}
+
+\begin{theorem}
+    $V$ isthe direct sum of $\n T^{ \dim V}$ and $\range T^{ \dim V}$\\
+
+    Suppose $T \in \mathcal{L}(V)$. Then
+    \[V =\n T^{ \dim V} \oplus \range T^{ \dim V}\]
+\end{theorem}
+
+\subsubsection{Generalized Eigenvectors}
+
+\begin{definition}
+    generalized eigenvector\\
+
+    Suppose $T \in \mathcal{L}(V)$ and $\lambda$ is an eigenvalue of $T$. A vector $v \in V$ is called a generalized eigenvector of $T$ corresponding to $\lambda$ if $v \neq 0$ and
+    \[(T - \lambda I)^k v = 0\]
+    for some positive integer $k$
+\end{definition}
+
+Generalized eigenvalues are not defined because doing so would not lead to anything new. Reason: if $(T - \lambda I)^k$ is not injective for some positive integer $k$, then $T - \lambda I$ is not injective, and hence $\lambda$ is an eigenvalue of $T$.
+
+\begin{theorem}
+    a basis of generalized eigenvectors\\
+
+    Suppose $\FF = \CC$ and $T \in \mathcal{L}(V)$. Then there is a basis of $V$ consisting of generalized eigenvectors of $T$
+\end{theorem}
+
+\begin{theorem}
+    generalized eigenvector corresponds to a unique eigenvalue\\
+
+    Suppose $T \in \mathcal{L}(V)$. Then each generalized eigenvector of $T$ corresponds to only one eigenvalue of $T$.
+\end{theorem}
+
+\begin{theorem}
+    linearly independent generalized eigenvectors\\
+
+    Suppose that $T \in \mathcal{L}(V)$. Then every list of generalized eigenvectors of $T$ corresponding to distinct eigenvalues of $T$ is linearly independent.
+\end{theorem}
+
+\subsubsection{Nilpotent Operators}
+
+\begin{definition}
+    nilpotent\\
+
+    An operator is called nilpotent if some power of it equals $0$.
+\end{definition}
+
+\begin{theorem}
+    nilpotent operator raised to dimension of domain is 0\\
+
+    Suppose $T \in \mathcal{L}(V)$ is nilpotent. Then $T^{\dim V} = 0$.
+\end{theorem}
+
+\begin{theorem}
+    eigenvalues of nilpotent operator\\
+    
+    Suppose $T \in \mathcal{L}(V)$.
+
+    (a) If $T$ is nilpotent, then $0$ is an eigenvalue of $T$ and $T$ has no other eigenvalues.
+
+    (b) If $\FF = \CC$ and $0$ is the only eigenvalue of $T$, then $T$ is nilpotent.
+\end{theorem}
+
+\begin{theorem}
+    minimal polynomial and upper-triangular matrix of nilpotent operator\\
+
+    Suppose $T \in \mathcal{L}(V)$. Then the following are equivalent.
+
+    (a) $T$ is nilpotent.
+
+    (b) The minimal polynomial of $T$ is $z^m$ for some positive integer $m$.
+
+    (c) There is a basis of $V$ with respect to which the matrix of $T$ has the form
+    \[\begin{pmatrix}
+        0&&\ast\\
+        &\ddots&\\
+        0&&0\\
+    \end{pmatrix}\]
+    where all entries \textbf{on and below} the diagonal equal $0$
+\end{theorem}
 \subsection{Generalized Eigenspace Decomposition}
 
 \subsection{Consequences of Generalized Eigenspace Decomposition}
