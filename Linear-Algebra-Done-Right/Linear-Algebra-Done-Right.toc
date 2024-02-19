@@ -1,7 +1,7 @@
 \contentsline {section}{\numberline {1}Vector Spaces}{4}%
 \contentsline {subsection}{\numberline {1.1}$\mathbb {R}^n$\hspace {0.25em plus 0.125em minus 0.08em}\ignorespaces and\hspace {0.25em plus 0.125em minus 0.08em}\ignorespaces $\mathbb {C}^n$ }{4}%
 \contentsline {subsubsection}{\numberline {1.1.1}Complex Numbers}{4}%
-\contentsline {subsubsection}{\numberline {1.1.2}Lists}{4}%
+\contentsline {subsubsection}{\numberline {1.1.2}Lists}{5}%
 \contentsline {subsubsection}{\numberline {1.1.3}$\mathbb {F}^n$}{5}%
 \contentsline {subsection}{\numberline {1.2}Definition of Vector Space}{5}%
 \contentsline {paragraph}{Some interesting facts in Exercises\\}{6}%
@@ -15,7 +15,7 @@
 \contentsline {paragraph}{Some interesting facts in Exercises\\}{12}%
 \contentsline {subsection}{\numberline {2.3}Dimensions}{13}%
 \contentsline {paragraph}{Notice:}{13}%
-\contentsline {paragraph}{Some interesting facts in Exercises\\}{13}%
+\contentsline {paragraph}{Some interesting facts in Exercises\\}{14}%
 \contentsline {section}{\numberline {3}Linear Maps}{14}%
 \contentsline {subsection}{\numberline {3.1}Vector Space of Linear Maps}{14}%
 \contentsline {paragraph}{Some interesting facts in Exercises\\}{18}%
@@ -109,5 +109,7 @@
 \contentsline {subsubsection}{\numberline {9.1.2}Symmetric Bilinear Forms}{143}%
 \contentsline {subsubsection}{\numberline {9.1.3}Quadratic Forms}{145}%
 \contentsline {subsection}{\numberline {9.2}Alternating Multilinear Forms}{146}%
-\contentsline {subsection}{\numberline {9.3}Determinants}{146}%
-\contentsline {subsection}{\numberline {9.4}Tensor Products}{146}%
+\contentsline {subsubsection}{\numberline {9.2.1}Multilinear Forms}{146}%
+\contentsline {subsubsection}{\numberline {9.2.2}Alternating Multilinear Forms and Permutations}{147}%
+\contentsline {subsection}{\numberline {9.3}Determinants}{149}%
+\contentsline {subsection}{\numberline {9.4}Tensor Products}{149}%

@@ -105,6 +105,8 @@
 \newcommand{\range}{\text{range}}
 \newcommand{\n}{\text{null}}
 \newcommand{\tr}{\text{tr}}
+\newcommand{\sign}{\text{sign}}
+\newcommand{\perm}{\text{perm}}
 % 简化粗体字体的书写
 
 \newcommand{\f}[2]{\frac}
@@ -5388,8 +5390,116 @@ The $\lambda_k$'s need not be distinct. Also, $A_k$ may be a $1$-by-$1$ matrix $
     (b) If $\FF = \RR$ and $V$ is an inner product space, then the basis in (a) can be chosen to be an orthonormal basis of $V$.
 \end{theorem}
 
+The exercise in this Section is not hard with the definition and theorem here.\\
+
 \subsection{Alternating Multilinear Forms}
 
+\subsubsection{Multilinear Forms}
+
+\begin{definition}
+    $V^m$\\
+    For $m$ a positive integer, define $V^m$ by
+    \[V^m =\underbrace{V\times \cdots\times V} m times\]
+\end{definition}
+
+\begin{definition}
+    $m$-linear form, $V^{(m)}$, multilinear form\\
+
+    • For $m$ a positive integer, an $m$-linear form on $V$ is a function $\beta: V^m \to \FF$ that is linear in each slot when the other slots are held fixed. This means that for each $k \in \{1,\ldots,m\}$ and all $u_1,\ldots,u_m \in V$, the function 
+    \[v \to\beta(u_1,\ldots,u_{k-1},v,u_{k+1},\ldots,u_m)\]
+    is a linear map from $V$ to $\FF$.
+
+    • The set of $m$-linear forms on $V$ is denoted by $V^{(m)}$.
+
+    • A function $\beta$ is called a multilinear form on $V$ if it is an $m$-linear form on $V$ for some positive integer $m$.
+\end{definition}
+
+\begin{definition}
+    alternating forms, $V^{(m)}_{alt}$\\
+
+    Suppose $m$ is a positive integer.
+
+    • An $m$-linear form $\alpha$ on $V$ is called alternating if $\alpha(v_1,\ldots,v_m) = 0$ whenever $v_1, \ldots,v_m$ is a list of vectors in $V$ with $v_j = v_k$ for some two distinct values of $j$ and $k$ in $\{1,\ldots,m\}$.
+    \[V^{(m)}_{alt} = \{\alpha \in V^{(m)} : \alpha ~\text{is an alternating $m$-linear form on}~ V\}.\]
+\end{definition}
+
+\begin{theorem}
+    alternating multilinear forms and linear dependence\\
+
+    Suppose $m$ is a positive integer and $\alpha$ is an alternating $m$-linear form on V. If $v_1, \ldots,v_m$ is a linearly dependent list in $V$, then
+    \[\alpha(v_1, \ldots,v_m) = 0.\]
+\end{theorem}
+
+\begin{theorem}
+    no nonzero alternating $m$-linear forms for $m > \dim V$\\
+
+    Suppose $m > \dim V$. Then $0$ is the only alternating $m$-linear form on $V$.
+\end{theorem}
+
+\subsubsection{Alternating Multilinear Forms and Permutations}
+
+\begin{theorem}
+    swapping input vectors in an alternating multilinear form\\
+
+    Suppose $m$ is a positive integer, $\alpha$ is an alternating $m$-linear form on $V$, and $v_1, \ldots,v_m$ is a list of vectors in $V$. Then swapping the vectors in any two slots of $\alpha(v_1,\ldots,v_m)$ changes the value of $\alpha$ by a factor of $-1$.
+\end{theorem}
+
+\begin{definition}
+    permutation, permm\\
+
+    Suppose $m$ is a positive integer.
+
+    • A permutation of $(1,\ldots,m)$ is a list $(j_1,\ldots,j_m)$ that contains each of the numbers $1,\ldots,m$ exactly once.
+
+    • The set of all permutations of $(1,\ldots,m)$ is denoted by $\perm m$.
+\end{definition}
+
+\begin{definition}
+    sign of a permutation\\
+    
+    The sign of a permutation $(j_1,\ldots,j_m)$ is defined by
+    \[\sign(j_1, \ldots,j_m) = (-1)^N,\]
+    where $N$ is the number of pairs of integers $(k,l)$ with $1 \leq k < l \leq m$ such that $k$ appears after $l$ in the list $(j_1,\ldots,j_m)$
+\end{definition}
+
+\begin{theorem}
+    swapping two entries in a permutation\\
+
+    Swapping two entries in a permutation multiplies the sign of the permutation by $-1$.
+\end{theorem}
+
+\begin{theorem}
+    permutations and alternating multilinear forms\\
+
+    Suppose $m$ is a positive integer and $\alpha \in V^{(m)}_{alt}$. Then
+    \[\alpha(v_{j_1}, \ldots,v_{j_m} ) = (\sign(j_1,\ldots,j_m))\alpha(v_1,\ldots,v_m)\]
+    for every list $v_1,\ldots,v_m$ of vectors in $V$ and all $(j_1,\ldots,j_m) \in \perm m$
+\end{theorem}
+
+\begin{theorem}
+    formula for $(\dim V)$-linear alternating forms on $V$\\
+
+    Let $n = \dim V$. Suppose $e_1,\ldots,e_n$ is a basis of $V$ and $v_1,\ldots,v_n \in V$. For each $k \in \{1,\ldots,n\}$, let $b{1,k},\ldots,b{n,k} \in \FF$ be such that
+    \[v_k = \sum_{j = 1}^n b_{j,k}e_j\]
+    Then
+    \[\alpha(v_1,\ldots,v_n) = \sum_{(j_1,\ldots,j_n)\in \perm m} (\sign(j_1,\ldots,j_n)) b_{j_1,1} \cdots b_{j_n,n}\]
+    for every alternating $n$-linear form $\alpha$ on $V$
+\end{theorem}
+
+\begin{theorem}
+    $\dim V^(\dim V)_{alt}=1$\\
+
+    The vector space $V^(\dim V)_{alt}$ has dimension one.
+\end{theorem}
+
+\begin{theorem}
+    alternating $(\dim V)$-linear forms and linear independence\\
+
+    Let $n = \dim V$. Suppose $\alpha$ is a nonzero alternating $n$-linear form on $V$ and
+    $e_1, \ldots,e_n$ is a list of vectors in $V$. Then
+    \[\alpha(e_1, \ldots,e_n) \neq 0\]
+    \textbf{if and only if} $e_1,\ldots,e_n$ is linearly independent
+\end{theorem}
 \subsection{Determinants}
 
 \subsection{Tensor Products}
