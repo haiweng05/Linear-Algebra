@@ -5224,6 +5224,8 @@ The $\lambda_k$'s need not be distinct. Also, $A_k$ may be a $1$-by-$1$ matrix $
         1 & ~\text{if}~ j = k\\
         0 & ~\text{if}~ j \neq k\\
     \end{cases}\]
+    [the second case is easy to show with $\tau(ST) = \tau(TS)$, and the former is harder to show, fisrt to show that $\tau(P_{j,j}) = \tau(P_{k,k})$, then you can prove this.]
+
     Then for $T \in \mathcal{L}(V)$, use the equation 
     \[T = \sum_{k = 1}^{n}\sum_{j = 1}^{n}\mathcal{M}(T)_{j,k} P_{j,k}\]
     to show that $\tau(T) = \tr T$.
@@ -5399,7 +5401,7 @@ The exercise in this Section is not hard with the definition and theorem here.\\
 \begin{definition}
     $V^m$\\
     For $m$ a positive integer, define $V^m$ by
-    \[V^m =\underbrace{V\times \cdots\times V} m times\]
+    \[V^m =\underbrace{V\times \cdots\times V}_{m ~times}\]
 \end{definition}
 
 \begin{definition}
@@ -5445,7 +5447,7 @@ The exercise in this Section is not hard with the definition and theorem here.\\
 \end{theorem}
 
 \begin{definition}
-    permutation, permm\\
+    permutation, \perm m\\
 
     Suppose $m$ is a positive integer.
 
@@ -5479,7 +5481,7 @@ The exercise in this Section is not hard with the definition and theorem here.\\
 \begin{theorem}
     formula for $(\dim V)$-linear alternating forms on $V$\\
 
-    Let $n = \dim V$. Suppose $e_1,\ldots,e_n$ is a basis of $V$ and $v_1,\ldots,v_n \in V$. For each $k \in \{1,\ldots,n\}$, let $b{1,k},\ldots,b{n,k} \in \FF$ be such that
+    Let $n = \dim V$. Suppose $e_1,\ldots,e_n$ is a basis of $V$ and $v_1,\ldots,v_n \in V$. For each $k \in \{1,\ldots,n\}$, let $b_{1,k},\ldots,b_{n,k} \in \FF$ be such that
     \[v_k = \sum_{j = 1}^n b_{j,k}e_j\]
     Then
     \[\alpha(v_1,\ldots,v_n) = \sum_{(j_1,\ldots,j_n)\in \perm m} (\sign(j_1,\ldots,j_n)) b_{j_1,1} \cdots b_{j_n,n}\]
@@ -5487,9 +5489,9 @@ The exercise in this Section is not hard with the definition and theorem here.\\
 \end{theorem}
 
 \begin{theorem}
-    $\dim V^(\dim V)_{alt}=1$\\
+    $\dim V^{(\dim V)}_{alt}=1$\\
 
-    The vector space $V^(\dim V)_{alt}$ has dimension one.
+    The vector space $V^{(\dim V)}_{alt}$ has dimension one.
 \end{theorem}
 
 \begin{theorem}
@@ -5502,7 +5504,449 @@ The exercise in this Section is not hard with the definition and theorem here.\\
 \end{theorem}
 \subsection{Determinants}
 
+\subsubsection{Defining the Determinant}
+
+\begin{definition}
+    $\alpha_T$\\
+
+    Suppose that $m$ is a positive integer and $T \in \mathcal{L}(V)$. For $\alpha \in V^{(m)}_{alt}, \alpha_T \in V^{(m)}_{alt}$ by
+    \[\alpha_T(v_1,\ldots,v_m) = \alpha(Tv_1,\ldots,Tv_m)\]
+    for each list $v_1,\ldots,v_m$ of vectors in $V$.
+\end{definition}
+
+\begin{definition}
+    determinant of an operator, $\det T$\\
+
+    Suppose $T \in \mathcal{L}(V)$. The determinant of $T$, denoted by $\det T$, is defined to be the unique number in $\FF$ such that
+    \[ \alpha_T = (\det T)\alpha\]
+    for all $\alpha \in V^{(\dim V)}_{alt}$
+\end{definition}
+
+This definition make sense since in last section we know that $\dim V^{(\dim V)}_{alt} = 1$\\
+
+\begin{definition}
+    determinant of a matrix, $\det A$\\
+
+    Suppose that $n$ is a positive integer and $A$ is an $n$-by-$n$ square matrix with entries in $\FF$. Let $T \in \mathcal{L}(\FF^n)$ be the operator whose matrix \textbf{with respect to the standard basis} of $\FF^n$ equals $A$. The determinant of $A$, denoted by $\det A$, is defined by $\det A = \det T$.
+\end{definition}
+
+\begin{theorem}
+    determinant is an \textbf{alternating multilinear form}\\
+
+    Suppose that $n$ is a positive integer. The map that takes a list $v_1,\ldots,v_n$ of vectors in $\FF^n$ to $\det( v_1 \cdots v_n )$ is an alternating $n$-linear form on $\FF^n$.
+\end{theorem}
+
+This theorem give us a brand newe view of the determinents, the alternating multilinear form!\\
+
+\begin{theorem}
+    formula for determinant of a matrix\\
+
+    Suppose that $n$ is a positive integer and $A$ is an $n$-by-$n$ square matrix. Then
+    \[\det A = \sum_{(j_1,\ldots,j_n)\in \perm ~n} = (\sign(j_1,\ldots,j_n)) A_{j_1,1}\cdots A_{j_n,n}\]
+\end{theorem}
+
+\begin{theorem}
+    determinant of upper-triangular matrix\\
+
+    Suppose that $A$ is an upper-triangular matrix with $\lambda_1,\ldots, \lambda_n$ on the diagonal. Then $\det A = \lambda_1\cdots\lambda_n$.
+\end{theorem}
+
+\subsubsection{Properties of Determinants}
+
+\begin{theorem}
+    determinant is multiplicative\\
+
+    (a) Suppose $S,T \in \mathcal{L}(V)$. Then $\det(ST) = (\det S)(\det T)$.
+
+    (b) Suppose $A$ and $B$ are square matrices of the same size. Then
+    \[\det(AB) = (\det A)(\det B)\]
+\end{theorem}
+
+\begin{theorem}
+    invertible $\Leftrightarrow$ nonzero determinant\\
+
+    An operator $T \in \mathcal{L}(V)$ is invertible if and only if $\det T \neq 0$. Furthermore, if $T$ is invertible, then $\det(T^{-1}) = \frac{1}{\det T}$.
+\end{theorem}
+
+\begin{theorem}
+    eigenvalues and determinants\\
+
+    Suppose $T \in \mathcal{L}(V)$ and $\lambda \in \FF$. Then $\lambda$ is an eigenvalue of $T$ if and only if
+    \[\det(\lambda I - T) = 0.\]
+\end{theorem}
+
+\begin{theorem}
+    determinant is a similarity invariant\\
+
+    Suppose $T \in \mathcal{L}(V)$ and $S: W \to V$ is an invertible linear map. Then
+    \[\det(S^{-1} T S) = \det T.\]
+\end{theorem}
+
+Notice the proof 
+\[ \det(S^{-1}TS) = (\det S^{-1})(\det T)(\det S) = \det T\]
+is not correct if $V \neq W$, so construction is needed.
+
+\begin{theorem}
+    determinant of operator equals determinant of its matrix\\
+
+    Suppose $T \in \mathcal{L}(V)$ and $e_1,\ldots,e_n$ is a basis of $V$. Then
+    \[\det T = \det \mathcal{L}(T,(e_1,\ldots,e_n))\]
+\end{theorem}
+
+Here the basis can be anyone you want.
+
+\begin{theorem}
+    if $\FF = \CC$, then determinant equals product of eigenvalues\\
+
+    Suppose $\FF = \CC$ and $T \in \mathcal{L}(V)$. Then $\det T$ equals the product of the eigenvalues of $T$, with each eigenvalue included as many times as its multiplicity.
+\end{theorem}
+
+\begin{theorem}
+    determinant of transpose, dual, or adjoint\\
+
+    (a) Suppose $A$ is a square matrix. Then $\det A^t = \det A$.
+
+    (b) Suppose $T \in \mathcal{L}(V)$. Then $\det T' = \det T$.
+
+    (c) Suppose $V$ is an inner product space and $T \in \mathcal{L}(V)$. Then
+    \[\det(T^\ast) = \overline{\det T}.\]
+\end{theorem}
+
+\begin{theorem}
+    helpful results in evaluating determinants\\
+
+    (a) If either two columns or two rows of a square matrix are equal, then the determinant of the matrix equals $0$.
+
+    (b) Suppose $A$ is a square matrix and $B$ is the matrix obtained from $A$ by swapping either two columns or two rows. Then $\det A = - \det B$.
+
+    (c) If one column or one row of a square matrix is multiplied by a scalar, then the value of the determinant is multiplied by the same scalar.
+
+    (d) If a scalar multiple of one column of a square matrix to added to another column, then the value of the determinant is unchanged.
+
+    (e) If a scalar multiple of one row of a square matrix to added to another row, then the value of the determinant is unchanged
+\end{theorem}
+
+\begin{theorem}
+    every unitary operator has determinant with absolute value $1$\\
+
+    Suppose $V$ is an inner product space and $S \in \mathcal{L}(V)$ is a unitary operator.
+    Then $|\det S| = 1$.
+\end{theorem}
+
+\begin{theorem}
+    every positive operator has nonnegative determinant\\
+
+    Suppose $V$ is an inner product space and $T \in \mathcal{L}(V)$ is a positive operator. Then $\det T \geq 0$.
+\end{theorem}
+
+\begin{theorem}
+    $|\det T| =$ product of singular values of $T$\\
+
+    Suppose $V$ is an inner product space and $T \in \mathcal{L}(V)$. Then
+    \[|\det T| = \sqrt{\det(T^\ast T)} = ~\text{product of singular values of}~ T.\]
+\end{theorem}
+
+\begin{theorem}
+    $T$ changes volume by factor of $|detT|$\\
+
+    Suppose $T \in \mathcal{L}(\RR^n) and \Omega \subset \RR^n$. Then
+    \[volume T(\Omega) = |\det T|(volume \Omega).\]
+\end{theorem}
+
+Recollect that the scalar is the product of the product of singular values of $T$ as we learned.\\
+
+\begin{theorem}
+    if $\FF = \CC$, then characteristic polynomial of $T$ equals $\det(zI - T)$\\
+
+    Suppose $\FF = \CC$ and $T \in \mathcal{L}(V)$. Let $\lambda_1,\ldots, \lambda_m$ denote the distinct eigenvalues
+    of $T$, and let $d_1,\ldots,d_m$ denote their multiplicities. Then
+    \[\det(zI - T) = (z- \lambda_1)^{d_1}\cdots(z- \lambda_m)^{d_m}.\]
+\end{theorem}
+
+\begin{definition}
+    characteristic polynomial\\
+
+    Suppose $T \in \mathcal{L}(V)$. The polynomial defined by
+    \[z \to \det(zI -T)\]
+    is called the characteristic polynomial of $T$
+\end{definition}
+
+Here we define the characteristic polynomial for more general case when $\FF = \RR$.
+
+\begin{theorem}
+    Cayley-Hamilton theorem\\
+
+    Suppose $T \in \mathcal{L}(V)$ and $q$ is the characteristic polynomial of $T$. Then $q(T) = 0$.
+\end{theorem}
+
+\begin{theorem}
+    characteristic polynomial, trace, and determinant\\
+
+    Suppose $T \in \mathcal{L}(V)$. Let $n = \dim V$. Then the characteristic polynomial of $T$ can be written as
+    \[z^n -(\tr T)z^{n-1} + \cdots+(-1)^n(detT)\]
+\end{theorem}
+
+\begin{theorem}
+    Hadamard's inequality\\
+
+    Suppose $A$ is an $n$-by-$n$ matrix. Let $v_1,\ldots,v_n$ denote the columns of $A$. Then
+    \[|\det A| = \prod_{k = 1}^n \|v_k\|\]
+\end{theorem}
+
+\begin{theorem}
+    determinant of Vandermonde matrix\\
+    \[\det \begin{pmatrix}
+        1&\beta_1&\beta_1^2&\cdots&\beta_1^{n-1}\\
+        1&\beta_2&\beta_2^2&\cdots&\beta_2^{n-1}\\
+        &&\ddots&&\\
+        1&\beta_n&\beta_n^2&\cdots&\beta_n^{n-1}\\
+    \end{pmatrix} = \prod_{1\leq j < k \leq n} (\beta_k - \beta_j)\]
+\end{theorem}
+
+\begin{exercise}
+    Suppose $V$ is an inner product space and $T \in \mathcal{L}(V)$. Use the polar decomposition to give a proof that
+    \[|\det T| = \sqrt{ \det(T^\ast T)}\]
+\end{exercise}
+
+\begin{solution}
+    This exercise is simple as you memorize the polar decomposition:
+    \[T = S \sqrt{T^\ast T}\]
+    where $S$ is a unitary operator.
+    Then apply $\det$ on both side and take the absolute value.
+\end{solution}
+
+\begin{exercise}
+    Suppose $n$ is a positive integer and $\delta: \CC^{n,n} \to \CC$ is a function such that
+    \[\delta(AB) = \delta(A)\cdot\delta(B)\]
+    for all $A,B \in \CC^{n,n}$ and $\delta(A)$ equals the product of the diagonal entries of $A$ for each diagonal matrix $A \in \CC^{n,n}$. Prove that
+    \[\delta(A) = \det A\]
+    for all $A \in \CC^{n,n}$.\\
+
+    Recall that $\CC^{n,n}$ denotes set of $n$-by-$n$ matrices with entries in $\CC$. This exercise shows that the determinant is the unique function defined on square matrices that is multiplicative and has the desired behavior on diagonal matrices. This result is analogous to Exercise 10 in Section 8D, which shows that the trace is uniquely determined by its algebraic properties
+\end{exercise}
+
+\begin{solution}
+    
+\end{solution}
+
 \subsection{Tensor Products}
+
+\subsubsection{Tensor Product of Two Vector Spaces}
+
+\begin{definition}
+    bilinear functional on $V \times W$, the vector space $\mathcal{B}(V,W)$\\
+
+    • A bilinear functional on $V\times W$ is a function $\beta: V\times W \to \FF$ such that $v \to\beta(v,w)$ is a linear functional on $V$ for each $w \in W$ and $w \to \beta(v,w)$ is a linear functional on $W$ for each $v \in V$.
+
+    • The vector space of bilinear functionals on $V\times W$ is denoted by $\mathcal{B}(V,W)$
+\end{definition}
+
+\begin{example}
+    bilinear functionals\\
+
+    • Suppose $\varphi \in V'$ and $\tau \in W'$. Define $\beta: V\times W \to \FF$ by $\beta(v,w) = \varphi(v)\tau(w)$. Then $\beta$ is a bilinear functional on $V\times W$.
+
+    • Suppose $v \in V$ and $w \in W$. Define $\beta: V'\times W' \to \FF$ by $\beta(\varphi,\tau) = \varphi(v)\tau(w)$. Then $\beta$ is a bilinear functional on $V'\times W'$.
+
+    • Define $\beta: V\times V' \to \FF$ by $\beta(v,\varphi)$ = $\varphi(v)$. Then $\beta$ is a bilinear functional on $V\times V'$.
+
+    • Suppose $\varphi \in V'$. Define $\beta: V\times\mathcal{L}(V) \to \FF$ by $\beta(v,T) = \varphi(Tv)$. Then $\beta$ is a bilinear functional on $V \times \mathcal{L}(V)$.
+
+    • Suppose $m$ and $n$ are positive integers. Define $\beta: \FF^{m,n}\times\FF^{n,m} \to \FF$ by $\beta(A,B) = \tr(AB)$. Then $\beta$ is a bilinear functional on $\FF^{m,n} \times \FF^{n,m}$.
+\end{example}
+
+\begin{theorem}
+    dimension of the vector space of bilinear functionals\\
+
+    \[\dim\mathcal{B}(V,W) = (\dim V)(\dim W).\]
+\end{theorem}
+
+\begin{definition}
+    tensor product, $V \otimes W, v \otimes w$\\
+
+    • The tensor product $V \otimes W$ is defined to be $\mathcal{B}(V',W')$.
+
+    • For $v \in V$ and $w\in W$, the tensor product $v \otimes w$ is the element of $V \otimes W$ defined by
+    \[(v \otimes w)(\varphi,\tau) = \varphi(v)\tau(w)\]
+    for all $(\varphi,\tau) \in V'\times W'$.
+\end{definition}
+
+\begin{theorem}
+    dimension of the tensor product of two vector spaces\\
+
+    \[\dim(V\otimes W) = (\dim V)(\dim W).\]
+\end{theorem}
+
+\begin{theorem}
+    bilinearity of tensor product\\
+
+    Suppose $v,v_1,v_2 \in V$ and $w,w_1,w_2 \in W$ and $\lambda \in \FF$. Then
+    \[(v_1 +v_2)\otimes w = v_1\otimes w+v_2\otimes w and v\otimes(w_1+w_2)=v\otimes w_1+v\otimes w_2\]
+    and
+    \[\lambda(v \otimes w) = (\lambda v)\otimes w =v \otimes(\lambda w)\]
+\end{theorem}
+
+For lists in this section with two indices, such as $\{e_j \otimes f_k\}_{j=1,\ldots,m;k=1,\ldots,n}$ in the next result, the ordering does not matter and we do not specify it—just choose any convenient ordering.
+
+\begin{theorem}
+    basis of $V\otimes W$\\
+
+    Suppose $e_1,\ldots,e_m$ is a list of vectors in $V$ and $f_1,\ldots, f_n$ is a list of vectors in $W$.
+
+    (a) If $e_1,\ldots,e_m$ and $f_1,\ldots, f_n$ are \textbf{both linearly independent lists}, then
+    \[\{e_j \otimes f_k\}_{j=1,\ldots,m;k=1,\ldots,n}\]
+    is a linearly independent list in $V\otimes W$.
+
+    (b) If $e_1,\ldots,e_m$ is a basis of $V$ and $f_1,\ldots, f_n$ is a \textbf{basis} of $W$, then the list
+    \[\{e_j \otimes f_k\}_{j=1,\ldots,m;k=1,\ldots,n}\]
+    is a basis of $V\otimes W$.
+\end{theorem}
+
+Every element of $V\otimes W$ is a finite sum of elements of the form $v \otimes w$, where $v \in V$ and $w\in W$,as implied by (b) in the result above.\\
+
+\begin{example}
+    tensor product of element of $\FF^m$ with element of $\FF^n$\\
+
+    Suppose $m$ and $n$ are positive integers. Let $e_1,\ldots,e_m$ denote the standard basis of $\FF^m$ and let $f_1,\ldots, f_n$ denote the standard basis of $\FF^n$. Suppose
+    \[v =(v_1,\ldots,v_m) \in \FF^m ~and~ w=(w_1,\ldots,w_n) \in \FF^n.\]
+    Then
+    \[
+        \begin{aligned}
+            v \otimes w &= \parameter{\sum_{j = 1}^{m} v_j e_j} \parameter{\sum_{k = 1}^{n} w_k f_k }\\
+            &= \sum_{j = 1}^{m} \sum_{k = 1}^{n} (v_j w_k) (e_j\otimes f_k)\\
+        \end{aligned}
+    \]
+    Thus with respect to the basis $\{e_j \otimes f_k\}_{j=1,\ldots,m;k=1,\ldots,n}$ of $\FF^m \otimes \FF^n$ provided
+    by 9.74(b), the coefficients of $v \otimes w$ are the numbers $\{v_j w_k\}_{j=1,\ldots,m;k=1,\ldots,n}$. If instead of writing these numbers in a list, we write them in an $m$-by-$n$ matrix with $v_j w_k$ in row $j$, column $k$, then we can identify $v \otimes w$ with the $m$-by-$n$ matrix
+    \[\begin{pmatrix}
+        v_1 w_1 &\cdots&v_1w_n\\
+        &\ddots&\\
+        v_n w_1 & \cdots &v_n w_n\\
+    \end{pmatrix}\]
+\end{example}
+
+\begin{definition}
+    bilinear map\\
+
+    A bilinear map from $V \times W$ to a vector space $U$ is a function $\Gamma: V\times W \to U$ such that $v \to \Gamma(v,w)$ is a linear map from $V to U$ for each $w \in W$ and $w \to\Gamma(v,w)$ is a linear map from $W$ to $U$ for each $v \in V$.
+\end{definition}
+
+\begin{theorem}
+    converting bilinear maps to linear maps\\
+
+    Suppose $U$ is a vector space.
+
+    (a) Suppose $\Gamma: V\times W \to U$ is a bilinear map. Then there exists a \textbf{unique} linear map $\hat{\Gamma}: V\otimes W \to U$ such that
+    \[\hat{\Gamma}(v \otimes w) = \Gamma(v,w)\]
+    for all $(v,w) \in V\times W$.
+
+    (b) Conversely, suppose $T: V \otimes W \to U$ is a linear map. There there exists a \textbf{unique} bilinear map $T^{\#}: V_\times W \to U$ such that
+    \[T^{\#}(v,w) = T(v\otimes w)\]
+    for all $(v,w) \in V\times W$.
+\end{theorem}
+
+    we could not just define $\hat{\Gamma}(v\otimes w) = \Gamma(v,w)$ forall $v\in V$ and$w \in W$(and then extend $\hat{\Gamma}$ linearly to all of $V\otimes W$) because elements of $V \otimes  W$do not have unique representations as finite sums of elements of the form $v\otimes w$. Our proof used a basis of $V$ and basis of $W$ to get around this problem. But conversely, there is no such problem so we can just define the $T^{\#}$
+
+Since that 
+\[2 (u \otimes v) =  (2 u \otimes v) = (u \otimes 2v)\]
+
+\subsubsection{Tensor Product of Inner Product Spaces}
+
+\begin{theorem}
+    inner product on tensor product of two inner product spaces\\
+
+    Suppose $V$ and $W$ are inner product spaces. Then there is a \textbf{unique} inner product on $V \otimes W$ such that
+    \[\left<v \otimes w,u\otimes x\right>=\left<v,u\right>\left<w,x\right>\]
+    for all $v,u\in V$ and $w,x\in W$.
+\end{theorem}
+
+    We could not have simply defined $\left<v\otimes w,u\otimes x\right>$ to be $\left<v,u\right>\left<w,x\right>$ (and then used additivity in each slot separately to extend the definition to $V\otimes W$) without some proof because elements of $V \otimes W$ do not have unique representations as finite sums of elements of the form $v \otimes w$. (The same reason again!)
+
+\begin{definition}
+    inner product on tensor product of two inner product spaces\\
+
+    Suppose $V$ and $W$ are inner product spaces. The inner product on $V\otimes W$ is the \textbf{unique} function $\left<\cdot,\cdot\right>$ from $(V\otimes W) \times (V\otimes W) to \FF$ such that
+    \[\left<v \otimes w,u \otimes x\right> = \left<v,u\right>\left<w,x\right>\]
+    for all $v,u \in V$ and $w,x \in W$.
+\end{definition}
+
+    Take $u = v$ and $x = w$ in the equation above and then take square roots to show that
+    \[\|v \otimes w\| = \|v\| \|w\|\]
+    for all $v \in V$ and all $w \in W$.
+ 
+\begin{theorem}
+    orthonormal basis of $V \otimes W$\\
+
+    Suppose $V$ and $W$ are inner product spaces, and $e_1,\ldots,e_m$ is an orthonormal basis of $V$ and $f_1,\ldots, f_n$ is an orthonormal basis of $W$. Then $\{e_j \otimes f_k\}_{j=1,\ldots,m;k=1,\ldots,n}$ is an orthonormal basis of $V \otimes W$.
+\end{theorem}
+
+Here the Orthonormal basis can be any one you want rather than the basis that used to define the inner product on $V \otimes W$\\
+
+\subsubsection{Tensor Product of Multiple Vector Spaces}
+
+\begin{definition}
+    notation: $V_1,\ldots,V_m$\\
+
+    For the rest of this subsection, $m$ denotes an integer greater than $1$ and $V_1, \ldots,V_m$ denote finite-dimensional vector spaces.
+\end{definition}
+
+\begin{definition}
+    $m$-linear functional, the vector space $\mathcal{B}(V_1,\ldots,V_m)$\\
+
+    • An $m$-linear functional on $V_1 \times \cdots \times V_m$ is a function $\beta: V_1 \times \cdots\times V_m \to \FF$ that is a linear functional in each slot when the other slots are held fixed.
+
+    • The vector space of $m$-linear functionals on $V_1 \times \cdots \times V_m$ is denoted by $\mathcal{B}(V_1,\ldots,V_m)$.
+\end{definition}
+
+\begin{theorem}
+    dimension of the vector space of m-linear functionals\\
+
+    \[\dim\mathcal{B}(V_1,\ldots,V_m) = (\dim V_1)\times\cdots\times(\dim V_m).\]
+\end{theorem}
+
+\begin{definition}
+    tensor product, $V_1 \otimes \cdots \otimes V_m, v_1 \otimes \cdots \otimes v_m$\\
+
+    • The tensor product $V_1 \otimes \cdots\otimes V_m$ is defined to be $\mathcal{B}(V_1',\ldots,V_m')$.
+
+    • For $v_1 \in V_1,\ldots,v_m \in V_m$, the tensor product $v_1 \otimes\cdots\otimes v_m$ is the element of $V_1 \otimes\cdots\otimes V_m$ defined by
+    \[(v_1 \otimes\cdots\otimes v_m)(\varphi_1,\ldots,\varphi_m) = \varphi_1(v_1)\cdots\varphi_m(v_m)\]
+    for all $(\varphi_1 \ldots,\varphi_m) \in V_1' \times \cdots\times V_m'$.
+\end{definition}
+
+\begin{theorem}
+    dimension of the tensor product\\
+
+    \[\dim(V_1 \otimes\cdots\otimes V_m) = (\dim V_1)\cdots(\dim V_m).\]
+\end{theorem}
+
+\begin{theorem}
+    basis of $V_1 \otimes\cdots\otimes V_m$\\
+
+ Suppose $\dim V_k = n_k$ and $e^k_1,\ldots,e^k_{n_k}$ is a basis of $V_k for k = 1,\ldots,m$. Then
+    \[\{e^1_{j_1}\otimes \cdots \otimes e^m_{j_m} \}_{j_1=1,\ldots,n_1;\cdots;j_m=1,\ldots,n_m}\]
+    is a basis of $V_1 \otimes \cdots\otimes V_m$.
+\end{theorem}
+
+\begin{definition}
+    $m$-linear map\\
+
+    An $m$-linear map from $V_1 \times \cdots \times V_m$ to a vector space $U$ is a function $\Gamma: V_1 \times\cdots\times V_m \to U$ that is a linear map in each slot when the other slots are held fixed. 
+\end{definition}
+
+\begin{theorem}
+    converting $m$-linear maps to linear maps\\
+
+    Suppose $U$ is a vector space.
+
+    (a) Suppose that $\Gamma: V_1 \times \cdots\times V_m \to U$ is an $m$-linear map. Then there exists a unique linear map $\hat{\Gamma}: V_1 \otimes \cdots\otimes V_m \to U$ such that
+    \[\hat{\Gamma}(v_1 \otimes\cdots\otimes v_m) = \Gamma(v_1,\ldots,v_m)\]
+    for all $(v_1,\ldots,v_m) \in V_1 \times \cdots\times V_m$.
+
+    (b) Conversely, suppose $T: V_1 \otimes \cdots \otimes V_m \to U$ is a linear map. There there exists a unique $m$-linear map $T^{\#}: V_1 \times \cdots \times V_m \to U$ such that
+    \[T^{\#}(v_1,\ldots,v_m) = T(v_1 \otimes\cdots\otimes v_m)\]
+    for all $(v_1,\ldots,v_m) \in V_1 \times \cdots\times V_m$.
+\end{theorem}
 
 \end{CJK}
 \end{document}

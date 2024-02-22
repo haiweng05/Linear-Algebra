@@ -1,13 +1,13 @@
 # Fdb version 3
-["pdflatex"] 1708313358 "c:/code/LaTeX/Linear-Algebra-Done-Right/Linear-Algebra-Done-Right.tex" "c:/code/LaTeX/Linear-Algebra-Done-Right/Linear-Algebra-Done-Right.pdf" "Linear-Algebra-Done-Right" 1708313373
-  "Linear-Algebra-Done-Right.aux" 1708313361 13890 cbb9d5571b72d51727bed076aaeabca1 "pdflatex"
-  "Linear-Algebra-Done-Right.tex" 1708313340 232848 61bfaea58deb3a946594a366926a00d1 ""
-  "Linear-Algebra-Done-Right.toc" 1708313361 9162 2588e41284585e9e272cf1804eaeca33 "pdflatex"
+["pdflatex"] 1708585642 "c:/code/LaTex/Linear-Algebra-Done-Right/Linear-Algebra-Done-Right.tex" "c:/code/LaTex/Linear-Algebra-Done-Right/Linear-Algebra-Done-Right.pdf" "Linear-Algebra-Done-Right" 1708585647
+  "Linear-Algebra-Done-Right.aux" 1708585646 14543 0cb4e05d897d45bab715f40609f57eed "pdflatex"
+  "Linear-Algebra-Done-Right.toc" 1708585647 9610 f918aab3e879cff7c787402413891842 "pdflatex"
   "c:/Windows/Fonts/msyh.ttc" 1689201545 19701556 07c864a5b15e68fa47639738197fae38 ""
   "c:/Windows/Fonts/simhei.ttf" 1651842600 9753388 6abc0fcfbaa40600f9cecca3afeb3aa7 ""
   "c:/Windows/Fonts/simkai.ttf" 1651842600 11787328 76179557c160634a761c845ea111c893 ""
-  "c:/code/LaTeX/Linear-Algebra-Done-Right/Linear-Algebra-Done-Right.aux" 1708313361 13890 cbb9d5571b72d51727bed076aaeabca1 ""
-  "c:/code/LaTeX/Linear-Algebra-Done-Right/Linear-Algebra-Done-Right.tex" 1708313340 232848 61bfaea58deb3a946594a366926a00d1 ""
+  "c:/code/LaTeX/Linear-Algebra-Done-Right/Linear-Algebra-Done-Right.tex" 1708585634 252731 9a5fb43d04dd9290785621853b4a6135 ""
+  "c:/code/LaTex/Linear-Algebra-Done-Right/Linear-Algebra-Done-Right.aux" 1708585646 14543 0cb4e05d897d45bab715f40609f57eed ""
+  "c:/code/LaTex/Linear-Algebra-Done-Right/Linear-Algebra-Done-Right.tex" 1708585634 252731 9a5fb43d04dd9290785621853b4a6135 ""
   "c:/texlive/2020/texmf-dist/fonts/map/fontname/texfonts.map" 1694701377 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2020/texmf-dist/fonts/sfd/ttf2pk/UGBK.sfd" 1694703577 182544 bcd31d5d273400b38612a969fcab55f9 ""
   "c:/texlive/2020/texmf-dist/fonts/sfd/ttf2pk/Unicode.sfd" 1694703577 103212 c249c63d38b8b55408aee52d643b0c18 ""
@@ -250,9 +250,9 @@
   "c:/texlive/2020/texmf-var/web2c/pdftex/pdflatex.fmt" 1694704035 2432378 92532017770d9edc84aa00180e15482f ""
   "c:/texlive/2020/texmf.cnf" 1694703879 673 4ae7b2f49cee444c5343a45b5d0f169c ""
   (generated)
-  "c:/code/LaTeX/Linear-Algebra-Done-Right/Linear-Algebra-Done-Right.pdf"
+  "c:/code/LaTex/Linear-Algebra-Done-Right/Linear-Algebra-Done-Right.log"
   "Linear-Algebra-Done-Right.aux"
-  "Linear-Algebra-Done-Right.log"
-  "c:/code/LaTeX/Linear-Algebra-Done-Right/Linear-Algebra-Done-Right.log"
+  "c:/code/LaTex/Linear-Algebra-Done-Right/Linear-Algebra-Done-Right.pdf"
   "Linear-Algebra-Done-Right.toc"
+  "Linear-Algebra-Done-Right.log"
   "Linear-Algebra-Done-Right.pdf"
